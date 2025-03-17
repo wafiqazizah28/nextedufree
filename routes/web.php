@@ -17,7 +17,11 @@ use App\Http\Controllers\GenerativeAIController;
 
 // 📌 Halaman utama
 Route::get('/', [AppController::class, 'index']);
-Route::get('/tanyaJurpan', [AppController::class, 'tanyaJurpan']);
+Route::get('/tanyaJurpan', function () {
+    return \Illuminate\Support\Facades\Auth::check() ? redirect('/tanyaJurpan/page') : redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+});
+
+Route::get('/tanyaJurpan/page', [AppController::class, 'tanyaJurpan'])->middleware('auth');
 Route::get('/artikelPage', [AppController::class, 'artikel']);
 Route::post('/generate', [GenerativeAIController::class, 'generate']);
 

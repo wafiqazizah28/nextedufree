@@ -2,10 +2,10 @@
 
 @section('content')
 <section class="pt-14 pb-12 lg:pt-24 bg-white min-h-screen">
-    <div class="relative h-screen bg-cover bg-top flex flex-col justify-center items-center"
-        style="background-image: url('{{ asset('assets/img/bannerTes.png') }}');">
-        
-    </div>
+    <div class="relative w-full min-h-[580px] flex flex-col justify-center items-center px-4 bg-no-repeat bg-cover bg-center"
+    style="background-image: url('{{ asset('assets/img/bannerTes.png') }}');">
+</div>
+
     <div class="mt-6 bg-white shadow-lg rounded-lg p-6">
         <div style="text-align: center;">
             <h2 class="text-xl font-bold text-gray-700" style="font-size: 2rem;">Jawablah yang sesuai dengan dirimu!</h2>

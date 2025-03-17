@@ -363,13 +363,10 @@
     </div>
 </section>
 
-
-
-
 <section id="testimoni" class="pt-20 pb-24 lg:pt-28 lg:pb-32 bg-backgroundLight h-auto max-w-screen overflow-hidden">
     <div class="container mx-auto px-6">
         <div class="grid lg:grid-cols-2 gap-14 items-center">
-            <!-- Bagian Kiri -->
+            <!-- Left Section -->
             <div class="ml-10 lg:ml-20">
                 <h2 class="text-5xl font-bold mb-3">Testimoni</h2>
                 <h3 class="text-5xl font-bold text-purpleMain mb-6">nextEdu.</h3>
@@ -378,67 +375,92 @@
                 </p>
                 <div class="flex gap-6">
                     <button id="prevBtn" class="p-3 rounded-full border border-gray-400 hover:bg-gray-200 transition">
-                        <img src="{{ asset('assets/icon/testimoni1.svg') }}" alt="">
+                        <img src="{{ asset('assets/icon/testimoni1.svg') }}" alt="Previous">
                     </button>
                     <button id="nextBtn" class="p-3 rounded-full bg-purpleMain text-white hover:bg-indigo-700 transition">
-                        <img src="{{ asset('assets/icon/testimoni2.svg') }}" alt="">
+                        <img src="{{ asset('assets/icon/testimoni2.svg') }}" alt="Next">
                     </button>
                 </div>
             </div>
 
-            <!-- Bagian Testimoni -->
-            <div class="relative w-full max-w-lg overflow-hidden">
-                @foreach ($testimonis as $index => $testimoni)
-                    <div class="absolute inset-0 bg-white p-8 rounded-lg shadow-lg transition-all duration-500 transform
-                        {{ $index == 0 ? 'z-10 opacity-100 scale-100' : '-z-10 opacity-50 scale-95' }}"
-                        data-index="{{ $index }}">
-                        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
-                            "{{ $testimoni->testimoni }}"
-                        </p>
-                        <div class="flex items-center gap-4">
-                            <img src="{{ asset($testimoni->user->foto_profil ?? 'assets/img/default-profile.png') }}"
-                                alt="{{ $testimoni->user->name }}" class="w-14 h-14 rounded-full object-cover">
-                            <div>
-                                <h4 class="text-lg font-semibold">{{ $testimoni->user->name }}</h4>
-                                <p class="text-gray-600">{{ $testimoni->user->asal_sekolah }}</p>
+            <!-- Testimonial Cards Section -->
+            <div class="relative w-full max-w-lg">
+                @if ($testimonis->isEmpty())
+                    <p class="text-red-500">Tidak ada testimoni yang tersedia.</p>
+                @else
+                    <div class="testimonial-container relative h-72">
+                        @foreach ($testimonis as $index => $testimoni)
+                            <div class="testimoni-item absolute top-0 left-0 w-full transition-all duration-300 ease-in-out transform 
+                                {{ $index === 0 ? 'z-10 opacity-100 translate-x-0' : 'z-0 opacity-0 translate-x-full' }}"
+                                data-index="{{ $index }}">
+                                <div class="p-6 bg-white border border-gray-300 rounded-lg shadow-md">
+                                    <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                                        "{{ $testimoni->testimoni }}"
+                                    </p>
+                                    <div class="flex items-center gap-4 mt-4">
+                                        <img src="{{ asset($testimoni->user->foto_profil ?? 'assets/img/default-profile.png') }}"
+                                            alt="{{ $testimoni->user->name ?? 'User Tidak Diketahui' }}" 
+                                            class="w-14 h-14 rounded-full object-cover">
+                                        <div>
+                                            <h4 class="text-lg font-semibold">
+                                                {{ $testimoni->user->name ?? 'User Tidak Diketahui' }}
+                                            </h4>
+                                            <p class="text-gray-600">
+                                                {{ $testimoni->user->asal_sekolah ?? 'Sekolah Tidak Diketahui' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
+                @endif
             </div>
         </div>
     </div>
 </section>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-    const testimonials = document.querySelectorAll("[data-index]");
-    let currentIndex = 0;
+        const testimonials = document.querySelectorAll(".testimoni-item");
+        let currentIndex = 0;
+        const totalItems = testimonials.length;
+        
+        if (totalItems === 0) return;
 
-    function showTestimonial(index) {
-        testimonials.forEach((testi, i) => {
-            if (i === index) {
-                testi.classList.add("z-10", "opacity-100", "scale-100");
-                testi.classList.remove("-z-10", "opacity-50", "scale-95");
-            } else {
-                testi.classList.add("-z-10", "opacity-50", "scale-95");
-                testi.classList.remove("z-10", "opacity-100", "scale-100");
-            }
+        function updateTestimonials() {
+            testimonials.forEach((item, index) => {
+                // Reset all items
+                item.classList.remove('z-10', 'opacity-100', 'translate-x-0', 'translate-x-full', 'translate-x-negative');
+                item.classList.add('opacity-0', 'z-0');
+                
+                // Calculate position relative to current
+                if (index === currentIndex) {
+                    // Current item
+                    item.classList.add('z-10', 'opacity-100', 'translate-x-0');
+                } else if (index < currentIndex) {
+                    // Items before current
+                    item.classList.add('translate-x-negative');
+                } else {
+                    // Items after current
+                    item.classList.add('translate-x-full');
+                }
+            });
+        }
+
+        document.getElementById("prevBtn").addEventListener("click", function () {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateTestimonials();
         });
-    }
 
-    document.getElementById("prevBtn").addEventListener("click", function () {
-        currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
-        showTestimonial(currentIndex);
+        document.getElementById("nextBtn").addEventListener("click", function () {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateTestimonials();
+        });
+
+        // Initialize the first testimonial
+        updateTestimonials();
     });
-
-    document.getElementById("nextBtn").addEventListener("click", function () {
-        currentIndex = (currentIndex + 1) % testimonials.length;
-        showTestimonial(currentIndex);
-    });
-
-    showTestimonial(currentIndex);
-});
-
 </script>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

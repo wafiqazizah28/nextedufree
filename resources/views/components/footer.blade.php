@@ -2,8 +2,8 @@
   <div class="container mx-auto px-6 lg:px-20">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Bagian Kiri -->
-      <div>
-        <p class="text-gray-600 text-lg mb-4">
+      <div class="mt-10">
+        <p class="text-gray-600 text-sm mb-4">
           Temukan jurusan anda dengan nextEdu hasil tepat dan sesuai.
         </p>
         <div class="flex space-x-3">

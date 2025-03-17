@@ -9,6 +9,7 @@ use App\Models\SaranPekerjaan;
 use App\Models\Artikel;
 use App\Models\Rule;
 use App\Models\Pertanyaan;
+use App\Models\Testimoni;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class AppController extends Controller
         $jurusanList = Jurusan::all();
         $artikelList = Artikel::all();
         $hasilTes = HasilTes::all();
-        $testimonis = \App\Models\Testimoni::with('user')->get(); // Ambil data testimoni
+        $testimonis = Testimoni::with('user')->get();
     
         return view('pages.home', [
             'users' => $users,
@@ -35,6 +36,13 @@ class AppController extends Controller
             'testimonis' => $testimonis // Kirim testimoni ke view
         ]);
     }
+    
+    public function tanyaJurpan()
+    {
+        return view('pages.tanyaJurpan'); // Pastikan file Blade ini ada di resources/views/pages/
+    }
+    
+
     
     public function hasilTes()
     {

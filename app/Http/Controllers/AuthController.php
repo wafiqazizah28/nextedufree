@@ -60,17 +60,12 @@ class AuthController extends Controller
         $validatedData['is_admin'] = 0; // Default user biasa
 
         // Simpan user ke database
-        $user = User::create($validatedData);
+        User::create($validatedData);
 
-        // Generate token setelah user berhasil didaftarkan
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Account registered successfully',
-            'user' => $user,
-            'token' => $token
-        ], 201);
+        // Redirect ke halaman login dengan pesan sukses
+        return redirect()->route('login')->with('success', 'Akun berhasil dibuat, silakan login.');
     }
+
 
     /**
      * Logout user (hanya menghapus token yang aktif)
