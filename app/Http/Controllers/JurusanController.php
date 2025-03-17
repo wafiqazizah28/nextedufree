@@ -65,8 +65,8 @@ class JurusanController extends Controller
         $validatedData = $request->validate([
             'jurusan_code' => 'required',
             'jurusan' => 'required',
-            'type' => 'required',
-            'description' => 'required',
+            'jenis' => 'required',
+            'deskripsi' => 'required',
         ]);
     
         $validatedData['img'] = 'https://source.unsplash.com/bkc-m0iZ4Sk';
@@ -119,8 +119,8 @@ class JurusanController extends Controller
         $validatedData = $request->validate([
             'jurusan_code' => 'required',
             'jurusan' => 'required',
-            'type' => 'required',
-            'description' => 'required',
+            'jenis' => 'required',
+            'deskripsi' => 'required',
         ]);
     
         $jurusan->update($validatedData);
