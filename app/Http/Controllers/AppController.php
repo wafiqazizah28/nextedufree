@@ -14,10 +14,7 @@ use Illuminate\Http\Request;
 
 class AppController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin')->except(['index', 'hasilTes', 'artikel', 'tanyaJurpan', 'forwardChaining', 'forwardChainingGuest']);
-    }
+   
 
     public function index()
     {

@@ -23,7 +23,7 @@ class ArtikelController extends Controller
         $artikelList = Artikel::orderby('jurusan_id');
         $artikelListInfo = Artikel::all();
         $jurusansInfo = Jurusan::all();
-        $pertanyaansInfo = Pertanyaan::all();
+        $pertanyaanInfo = Pertanyaan::all();
         $usersInfo = User::all();
 
         if (request('search')){
@@ -34,7 +34,7 @@ class ArtikelController extends Controller
             'artikelList' => $artikelList->paginate(10)->withQueryString(),
             'artikelListInfo' => $artikelListInfo,
             'jurusansInfo' => $jurusansInfo,
-            'pertanyaansInfo' => $pertanyaansInfo,
+            'pertanyaanInfo' => $pertanyaanInfo,
             'usersInfo' => $usersInfo
         ]);
     }
@@ -46,13 +46,13 @@ class ArtikelController extends Controller
     {
         $artikelListInfo = Artikel::all();
         $jurusansInfo = Jurusan::all();
-        $pertanyaansInfo = Pertanyaan::all();
+        $pertanyaanInfo = Pertanyaan::all();
         $usersInfo = User::all();
 
         return view('components.admin.artikels.add', [
             'artikelListInfo' => $artikelListInfo,
             'jurusansInfo' => $jurusansInfo,
-            'pertanyaansInfo' => $pertanyaansInfo,
+            'pertanyaanInfo' => $pertanyaanInfo,
             'usersInfo' => $usersInfo
         ]);
     }
@@ -95,14 +95,14 @@ class ArtikelController extends Controller
     {
         $artikelListInfo = Artikel::all();
         $jurusansInfo = Jurusan::all();
-        $pertanyaansInfo = Pertanyaan::all();
+        $pertanyaanInfo = Pertanyaan::all();
         $usersInfo = User::all();
 
         return view('components.admin.artikels.edit', [
             'artikel' => $artikel,
             'artikelListInfo' => $artikelListInfo,
             'jurusansInfo' => $jurusansInfo,
-            'pertanyaansInfo' => $pertanyaansInfo,
+            'pertanyaanInfo' => $pertanyaanInfo,
             'usersInfo' => $usersInfo
         ]);
     }

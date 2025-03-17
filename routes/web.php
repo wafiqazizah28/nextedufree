@@ -16,31 +16,44 @@ use App\Http\Controllers\GenerativeAIController;
 
 // 📌 Halaman utama
 Route::get('/', [AppController::class, 'index']);
-Route::get('/tesMinatmu', [AppController::class, 'hasilTes'])->middleware('auth');
 Route::get('/tanyaJurpan', [AppController::class, 'tanyaJurpan']);
 Route::get('/artikelPage', [AppController::class, 'artikel']);
 Route::post('/generate', [GenerativeAIController::class, 'generate']);
 
 // 📌 Halaman hasil tes (User yang sudah login dapat melihat sekolah berdasarkan hasil tes)
-Route::get('/tesMinatmu', [AppController::class, 'hasilTes'])->name('hasilTes')->middleware('auth');
-Route::get('/hasil-tes', [AppController::class, 'hasilTes'])->name('hasilTes')->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('/tesMinatmu', [AppController::class, 'hasilTes'])->name('hasilTes');
+    Route::get('/hasil-tes', [AppController::class, 'hasilTes'])->name('hasilTes');
+});
 
 // 📌 Authentication
-Route::get('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/register', [AuthController::class, 'register']);
+});
+
 Route::post('/login', [AuthController::class, 'authenticate']);
-Route::get('/register', [AuthController::class, 'register'])->middleware('guest');
 Route::post('/register', [AuthController::class, 'store']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 
 // 📌 Dashboard
 Route::get('/dashboard', [DashboardController::class, 'user'])->middleware('auth');
-Route::get('/adminDashboard', [DashboardController::class, 'admin'])->middleware('admin');
 
-
-// 📌 Rules
-Route::get('/rules', [AppController::class, 'logicRelation']);
-Route::get('/rules/{id}/edit', [AppController::class, 'edit']);
-Route::post('/rules-change', [AppController::class, 'update']);
+// 📌 Admin routes
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/adminDashboard', [DashboardController::class, 'admin']);
+    
+    // 📌 Rules
+    Route::get('/rules', [AppController::class, 'logicRelation']);
+    Route::get('/rules/{id}/edit', [AppController::class, 'edit']);
+    Route::post('/rules-change', [AppController::class, 'update']);
+    
+    // 📌 Testimoni - Admin hanya bisa melihat
+    Route::get('/admin/testimoni', [TestimoniController::class, 'index'])->name('admin.testimoni.view');
+    
+    // 📌 Sekolah - Admin bisa CRUD sekolah
+    Route::resource('/admin/sekolah', SekolahController::class);
+});
 
 // 📌 Sistem Pakar
 Route::post('/submit-answer/{id}', [AppController::class, 'forwardChaining']);
@@ -48,30 +61,21 @@ Route::post('/submit-answer-guest', [AppController::class, 'forwardChainingGuest
 
 // 📌 Resource Routes
 Route::resources([
-    'pertanyaans' => PertanyaanController::class,
+    'pertanyaan' => PertanyaanController::class,
     'jurusans' => JurusanController::class,
     'saranpekerjaans' => SaranPekerjaanController::class,
     'artikels' => ArtikelController::class,
     'users' => UserController::class,
     'testimoni' => TestimoniController::class,
-    
 ]);
 
-// 📌 Rute untuk Admin
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-    // 📌 Testimoni - Admin hanya bisa melihat
-    Route::get('/testimoni', [TestimoniController::class, 'index'])->name('admin.testimoni.view'); 
-    Route::post('/testimoni/store', [TestimoniController::class, 'store'])->middleware('auth')->name('user.testimoni.store');
-
-    // 📌 Sekolah - Admin bisa CRUD sekolah
-    Route::resource('/sekolah', SekolahController::class);
+// 📌 User authenticated routes
+Route::middleware('auth')->group(function () {
+    Route::post('/testimoni/store', [TestimoniController::class, 'store'])->name('user.testimoni.store');
+    
+    // 📌 Rute untuk user biasa melihat sekolah berdasarkan hasil tes
+    Route::get('/sekolah-hasil-tes', [SekolahController::class, 'showByHasilTes'])->name('sekolah.hasilTes');
 });
-
-
-// 📌 Rute untuk user biasa melihat sekolah berdasarkan hasil tes
-Route::get('/sekolah-hasil-tes', [SekolahController::class, 'showByHasilTes'])
-    ->name('sekolah.hasilTes')
-    ->middleware('auth');
 
 // 📌 Pastikan route `/sekolah` tetap tersedia jika di luar admin
 Route::get('/sekolah', [SekolahController::class, 'index'])->name('sekolah');
