@@ -6,8 +6,6 @@
         style="background-image: url('{{ asset('assets/img/bannerTes.png') }}');">
         
     </div>
- 
- 
     <div class="mt-6 bg-white shadow-lg rounded-lg p-6">
         <div style="text-align: center;">
             <h2 class="text-xl font-bold text-gray-700" style="font-size: 2rem;">Jawablah yang sesuai dengan dirimu!</h2>
@@ -68,8 +66,6 @@
         }
     });
 </script>
-
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

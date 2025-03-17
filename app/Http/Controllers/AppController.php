@@ -14,7 +14,10 @@ use Illuminate\Http\Request;
 
 class AppController extends Controller
 {
-   
+    public function __construct()
+    {
+        $this->middleware('admin')->except(['index', 'hasilTes', 'artikel', 'about', 'forwardChaining', 'forwardChainingGuest']);
+    }
 
     public function index()
     {
@@ -22,12 +25,14 @@ class AppController extends Controller
         $jurusanList = Jurusan::all();
         $artikelList = Artikel::all();
         $hasilTes = HasilTes::all();
+        $testimonis = \App\Models\Testimoni::with('user')->get(); // Ambil data testimoni
     
         return view('pages.home', [
             'users' => $users,
             'jurusanList' => $jurusanList,
             'artikelList' => $artikelList,
-            'hasilTes' => $hasilTes
+            'hasilTes' => $hasilTes,
+            'testimonis' => $testimonis // Kirim testimoni ke view
         ]);
     }
     
@@ -61,9 +66,9 @@ class AppController extends Controller
         ]);
     }
     
-    public function tanyaJurpan()
+    public function about()
     {
-        return view('pages.tanyaJurpan');
+        return view('pages.about');
     }
     
     
@@ -202,9 +207,9 @@ public function update(Request $request)
         // Simpan hasil tes
         HasilTes::create([
             'user_id' => $id,
-            'result' => $result
+            'hasil' => $result // Ganti 'result' dengan 'hasil' sesuai dengan nama kolom di database
         ]);
-    
+        
         return response()->json([
             'status' => 200,
             'user_id' => $id,

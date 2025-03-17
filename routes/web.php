@@ -14,6 +14,7 @@ use App\Http\Controllers\SekolahController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenerativeAIController;
 
+
 // 📌 Halaman utama
 Route::get('/', [AppController::class, 'index']);
 Route::get('/tanyaJurpan', [AppController::class, 'tanyaJurpan']);

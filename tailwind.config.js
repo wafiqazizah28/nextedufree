@@ -21,9 +21,13 @@ export default {
         purpleSecondarry: "#8174A0",
         grayMain: "#555555",
         graySecondary: "#EEEEEE",
+        hitam: "#000000",
       },
       screens: {
         "2xl": "1320px",
+      },
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
       },
     },
   },

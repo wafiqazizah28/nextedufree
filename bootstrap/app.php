@@ -14,7 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             '/register',
             '/login',
-            '/logout'
+            '/logout',
+            '/submit-answer'
         ]);
 
         // Menambahkan middleware khusus

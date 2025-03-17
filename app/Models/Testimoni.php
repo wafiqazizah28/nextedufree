@@ -10,23 +10,23 @@ class Testimoni extends Model
     use HasFactory;
 
     protected $table = 'testimonis';
-    protected $guarded = ['id'];
+    protected $fillable = ['user_id', 'jurusan_id', 'asal_sekolah', 'testimoni', 'foto_profil'];
 
-    // Relasi ke User (Menghubungkan testimoni dengan user yang memberikan testimoni)
+    // Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id')->withDefault([
-            'name' => 'User Tidak Diketahui', // Default jika user_id NULL
-            'foto_profil' => 'default.png',  // Default foto jika tidak ada
-            'asal_sekolah' => 'Tidak Diketahui', // Default asal sekolah
+            'name' => 'User Tidak Diketahui',
+            'foto_profil' => 'assets/img/default-profile.png',  // Sesuai dengan path di Blade
+            'asal_sekolah' => 'Tidak Diketahui',
         ]);
     }
 
     // Relasi ke Jurusan
     public function jurusan()
     {
-        return $this->belongsTo(Jurusan::class, 'nama_jurusan_id')->withDefault([
-            'name' => 'Jurusan Tidak Diketahui', // Default jika jurusan tidak ada
+        return $this->belongsTo(Jurusan::class, 'jurusan_id')->withDefault([
+            'name' => 'Jurusan Tidak Diketahui',
         ]);
     }
 }

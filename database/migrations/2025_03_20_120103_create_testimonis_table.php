@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('testimonis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Relasi ke users
-            $table->foreignId('nama_jurusan_id')->constrained('jurusan')->onDelete('cascade'); // Relasi ke jurusan
+            $table->foreignId('jurusan_id')->constrained('jurusan')->onDelete('cascade'); // Relasi ke jurusan
             $table->string('asal_sekolah');
             $table->text('testimoni');
             $table->string('foto_profil')->nullable(); // Menyimpan path foto profil

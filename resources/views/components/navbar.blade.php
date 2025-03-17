@@ -10,30 +10,31 @@
                     <li class="group">
                         <div class="px-4 mt-[-8px]">
                             <a href="/">
-                                <img src="{{ asset(path: 'assets/logo/logo-typo.svg') }}" 
-                                     alt="Logo" 
-                                     class="w-28 lg:w-32 sm:w-24">
+                                <img src="{{ asset(path: 'assets/logo/logo-typo.svg') }}" alt="Logo"
+                                    class="w-28 lg:w-32 sm:w-24">
                             </a>
-                            
+
                         </div>
 
                     </li>
                     <li class="group">
-                        <a href="/" class="text-dark mx-8 flex py-2 text-base group-hover:text-purpleMain">Beranda</a>
+                        <a href="/" class="text-black font-medium mx-8 flex py-2 text-base group-hover:text-purpleMain">Beranda</a>
                     </li>
                     <li class="group">
-                        <a href="/tesMinatmu" class="text-dark mx-8 flex py-2 text-base group-hover:text-purpleMain">Tes
-                            Minatmu</a>
+                        <a href="/tesMinatmu" class="text-black font-medium mx-8 flex py-2 text-base group-hover:text-purpleMain">Tes Minatmu</a>
                     </li>
                     <li class="group">
-                        <a href="/tanyaJurpan"
-                            class="text-dark mx-8 flex py-2 text-base group-hover:text-purpleMain">Edubot</a>
+                        <a href="/tanyaJurpan" class="text-black font-medium mx-8 flex py-2 text-base group-hover:text-purpleMain">Edubot</a>
                     </li>
                     <li class="group">
-                        <a href="/artikelPage"
-                            class="text-dark mx-8 flex py-2 text-base group-hover:text-purpleMain">Artikel</a>
+                        <a href="/artikelPage" class="text-black font-medium mx-8 flex py-2 text-base group-hover:text-purpleMain">Artikel</a>
                     </li>
-
+                    <li class="group">
+                        @auth
+                        <a href="/dashboard" class="text-black font-medium mx-8 flex py-2 text-base group-hover:text-purpleMain">Riwayat Tes</a>
+                        @endauth
+                    </li>
+                    
                     <li class="lg:hidden block">
                         <div class="flex flex-col">
                             @if (auth()->user() !== null)
@@ -81,12 +82,12 @@
                 @else
                 <div class="flex space-x-3">
                     <a href="/login"
-                    class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-800 transition">
-                    Login
+                        class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-800 transition">
+                        Login
                     </a>
                     <a href="/register"
-                    class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-800 transition">
-                    Register
+                        class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-800 transition">
+                        Register
                     </a>
                 </div>
                 @endif

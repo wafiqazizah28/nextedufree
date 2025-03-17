@@ -8,13 +8,14 @@
 @tailwind utilities;
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 body {
-    font-family: "Lato", sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #f4f4f8;
 }
+
 
 .btnn:hover {
     box-shadow: 10px 8px #feffff;
@@ -174,3 +175,9 @@ html, body {
     -webkit-backdrop-filter: blur(10px); /* For Safari 9+, Safari on iOS 9+ */
     backdrop-filter: blur(10px); /* Standard property */
 }
+
+.shadow-orange:hover {
+    box-shadow: 0px 10px 25px rgba(254, 147, 94, 0.349);
+}
+
+

@@ -54,7 +54,7 @@
             </p>
             <h1 class="text-2xl font-bold text-primary">
               @if (count($person))
-                {{ $p['result'] }}
+                {{ $p['hasil'] }}
               @else
                 <span class="text-slate-500">Tidak Ada Hasil</span>
               @endif

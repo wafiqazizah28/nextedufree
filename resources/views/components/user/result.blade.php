@@ -28,7 +28,7 @@
             <td class="border px-6 py-2 text-justify">
               {{ date('d F Y', strtotime($per['created_at'])) }} at
               {{ date('g:i a', strtotime($per['created_at'])) }}</td>
-            <td class="border px-6 py-2 text-justify">{{ $per['result'] }}</td>
+            <td class="border px-6 py-2 text-justify">{{ $per['hasil'] }}</td>
           </tr>
           @endforeach
         </tbody>

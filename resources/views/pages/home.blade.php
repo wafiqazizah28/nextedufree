@@ -173,7 +173,7 @@
 
         <!-- Kolom Kiri: Teks -->
         <div class="lg:col-span-4 pl-10" data-aos="fade-right" data-aos-duration="1000">
-            <h1 class="text-4xl font-bold tracking-tight md:text-5xl">
+            <h1 class="text-4xl font-bold tracking-tight md:text-5xl whitespace-nowrap">
                 Apa itu <span>Jurusanku</span>?
             </h1>
             <p class="text-gray-600 md:text-lg my-6">
@@ -255,8 +255,8 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 lg:gap-12 max-w-6xl mx-auto px-4">
             {{-- Card 1 - Sistem IT --}}
             <div class="flex justify-center" data-aos="fade-up">
-                <a href="#"
-                    class="bg-white w-[290px] h-[320px] rounded-lg shadow-sm hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
+                <a href="#" class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
+
                     <img class="w-full h-50 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek1.png') }}"
                         alt="Sistem IT">
                     <div class="p-4 flex justify-between items-center">
@@ -268,8 +268,8 @@
 
             {{-- Card 2 - Bisnis --}}
             <div class="flex justify-center" data-aos="fade-up">
-                <a href="#"
-                    class="bg-white w-[290px] h-[320px] rounded-lg shadow-sm hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
+                <a href="#" class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
+
                     <img class="w-full h-50 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek2.png') }}"
                         alt="Bisnis">
                     <div class="p-4 flex justify-between items-center">
@@ -364,174 +364,82 @@
 </section>
 
 
+
+
 <section id="testimoni" class="pt-20 pb-24 lg:pt-28 lg:pb-32 bg-backgroundLight h-auto max-w-screen overflow-hidden">
     <div class="container mx-auto px-6">
         <div class="grid lg:grid-cols-2 gap-14 items-center">
             <!-- Bagian Kiri -->
-            <div class="ml-10 lg:ml-20" data-aos="fade-right" data-aos-duration="1000">
+            <div class="ml-10 lg:ml-20">
                 <h2 class="text-5xl font-bold mb-3">Testimoni</h2>
                 <h3 class="text-5xl font-bold text-purpleMain mb-6">nextEdu.</h3>
                 <p class="text-lg text-gray-700 mb-8 leading-relaxed">
                     Sebuah ucapan kepuasan oleh customer yang pernah melakukan tes minat di nextEdu.
                 </p>
                 <div class="flex gap-6">
-                    <button id="prevBtn"
-                        class="p-3 rounded-full border border-gray-400 hover:bg-gray-200 transition animate__animated animate__bounceIn">
+                    <button id="prevBtn" class="p-3 rounded-full border border-gray-400 hover:bg-gray-200 transition">
                         <img src="{{ asset('assets/icon/testimoni1.svg') }}" alt="">
-
                     </button>
-                    <button id="nextBtn"
-                        class="p-3 rounded-full bg-purpleMain text-white hover:bg-indigo-700 transition animate__animated animate__bounceIn">
+                    <button id="nextBtn" class="p-3 rounded-full bg-purpleMain text-white hover:bg-indigo-700 transition">
                         <img src="{{ asset('assets/icon/testimoni2.svg') }}" alt="">
                     </button>
-
-
                 </div>
             </div>
 
             <!-- Bagian Testimoni -->
-            <div class="relative w-full max-w-lg">
-                <!-- Testimoni Aktif -->
-                <div class="bg-white p-8 rounded-lg shadow-xl transition-all duration-500 relative z-10"
-                    id="testimonial" data-aos="zoom-in" data-aos-duration="1200">
-                    <p class="text-lg text-gray-700 mb-6 leading-relaxed" id="testiText">
-                        "Hasil yang sangat memuaskan, pertanyaan yang disebutkan mudah dipahami, berkat nextEdu kini
-                        saya belajar sesuai dengan minat saya."
-                    </p>
-                    <div class="flex items-center gap-4">
-                        <img src="{{ asset('assets/img/profile.png') }}" alt="Zizi"
-                            class="w-14 h-14 rounded-full object-cover" id="testiImage">
-
-                        <div>
-                            <h4 class="text-lg font-semibold" id="testiName">Zizi</h4>
-                            <p class="text-gray-600" id="testiSchool">SMP 1 Purwokerto</p>
+            <div class="relative w-full max-w-lg overflow-hidden">
+                @foreach ($testimonis as $index => $testimoni)
+                    <div class="absolute inset-0 bg-white p-8 rounded-lg shadow-lg transition-all duration-500 transform
+                        {{ $index == 0 ? 'z-10 opacity-100 scale-100' : '-z-10 opacity-50 scale-95' }}"
+                        data-index="{{ $index }}">
+                        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                            "{{ $testimoni->testimoni }}"
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <img src="{{ asset($testimoni->user->foto_profil ?? 'assets/img/default-profile.png') }}"
+                                alt="{{ $testimoni->user->name }}" class="w-14 h-14 rounded-full object-cover">
+                            <div>
+                                <h4 class="text-lg font-semibold">{{ $testimoni->user->name }}</h4>
+                                <p class="text-gray-600">{{ $testimoni->user->asal_sekolah }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Testimoni Berikutnya -->
-                <div class="absolute top-16 left-6 bg-white p-8 rounded-lg shadow-lg opacity-40 scale-95 transition-all duration-500 transform translate-x-4"
-                    id="nextTestimonial" data-aos="fade-up" data-aos-delay="500">
-                    <p class="text-lg text-gray-500 mb-6 leading-relaxed" id="nextTestiText">
-                        "Tes minat ini sangat membantu saya dalam menentukan jurusan. Sekarang saya lebih yakin dengan
-                        pilihan saya!"
-                    </p>
-                    <div class="flex items-center gap-4">
-                        <img src="{{ asset('assets/img/profile2.jpg') }}" alt="Aisyah" class="w-14 h-14 rounded-full"
-                            id="nextTestiImage">
-                        <div>
-                            <h4 class="text-lg font-semibold" id="nextTestiName">Aisyah</h4>
-                            <p class="text-gray-500" id="nextTestiSchool">SMA Negeri 3 Jakarta</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
 </section>
-
-
 <script>
-    const testimonials = [
-        {
-            text: "Hasil yang sangat memuaskan, pertanyaan yang disebutkan mudah dipahami, berkat nextEdu kini saya belajar sesuai dengan minat saya.",
-            image: "{{ asset('assets/img/profile.jpg') }}",
-            name: "Irfan",
-            school: "SMP 1 Purwokerto"
-        },
-        {
-            text: "Tes minat ini sangat membantu saya dalam menentukan jurusan. Sekarang saya lebih yakin dengan pilihan saya!",
-            image: "{{ asset('assets/img/profile2.jpg') }}",
-            name: "Aisyah",
-            school: "SMA Negeri 3 Jakarta"
-        },
-        {
-            text: "Menakjubkan! Tes ini membuat saya semakin mengenal potensi diri saya sendiri.",
-            image: "{{ asset('assets/img/profile3.jpg') }}",
-            name: "Budi",
-            school: "SMA 2 Surabaya"
-        }
-    ];
-
+    document.addEventListener("DOMContentLoaded", function () {
+    const testimonials = document.querySelectorAll("[data-index]");
     let currentIndex = 0;
 
-    document.getElementById("prevBtn").addEventListener("click", function() {
-        currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
-        updateTestimonial();
-    });
-
-    document.getElementById("nextBtn").addEventListener("click", function() {
-        currentIndex = (currentIndex + 1) % testimonials.length;
-        updateTestimonial();
-    });
-
-    function updateTestimonial() {
-        // Testimoni utama
-        document.getElementById("testiText").innerText = testimonials[currentIndex].text;
-        document.getElementById("testiImage").src = testimonials[currentIndex].image;
-        document.getElementById("testiName").innerText = testimonials[currentIndex].name;
-        document.getElementById("testiSchool").innerText = testimonials[currentIndex].school;
-
-        // Testimoni berikutnya dengan efek bayangan
-        let nextIndex = (currentIndex + 1) % testimonials.length;
-        document.getElementById("nextTestiText").innerText = testimonials[nextIndex].text;
-        document.getElementById("nextTestiImage").src = testimonials[nextIndex].image;
-        document.getElementById("nextTestiName").innerText = testimonials[nextIndex].name;
-        document.getElementById("nextTestiSchool").innerText = testimonials[nextIndex].school;
-    }
-</script>
-
-<script>
-    const testimonials = [
-            {
-                text: "Hasil yang sangat memuaskan, pertanyaan yang disebutkan mudah dipahami, berkat nextEdu kini saya belajar sesuai dengan minat saya.",
-                image: "{{ asset('assets/img/profile.jpg') }}",
-                name: "Irfan",
-                school: "SMP 1 Purwokerto"
-            },
-            {
-                text: "Tes minat ini sangat membantu saya dalam menentukan jurusan. Sekarang saya lebih yakin dengan pilihan saya!",
-                image: "{{ asset('assets/img/profile2.jpg') }}",
-                name: "Aisyah",
-                school: "SMA Negeri 3 Jakarta"
-            },
-            {
-                text: "Menakjubkan! Tes ini membuat saya semakin mengenal potensi diri saya sendiri.",
-                image: "{{ asset('assets/img/profile3.jpg') }}",
-                name: "Budi",
-                school: "SMA 2 Surabaya"
+    function showTestimonial(index) {
+        testimonials.forEach((testi, i) => {
+            if (i === index) {
+                testi.classList.add("z-10", "opacity-100", "scale-100");
+                testi.classList.remove("-z-10", "opacity-50", "scale-95");
+            } else {
+                testi.classList.add("-z-10", "opacity-50", "scale-95");
+                testi.classList.remove("z-10", "opacity-100", "scale-100");
             }
-        ];
-    
-        let currentIndex = 0;
-    
-        document.getElementById("prevBtn").addEventListener("click", function() {
-            currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
-            updateTestimonial();
         });
-    
-        document.getElementById("nextBtn").addEventListener("click", function() {
-            currentIndex = (currentIndex + 1) % testimonials.length;
-            updateTestimonial();
-        });
-    
-        function updateTestimonial() {
-            // Testimoni utama
-            document.getElementById("testiText").innerText = testimonials[currentIndex].text;
-            document.getElementById("testiImage").src = testimonials[currentIndex].image;
-            document.getElementById("testiName").innerText = testimonials[currentIndex].name;
-            document.getElementById("testiSchool").innerText = testimonials[currentIndex].school;
-    
-            // Testimoni berikutnya dengan efek bayangan
-            let nextIndex = (currentIndex + 1) % testimonials.length;
-            document.getElementById("nextTestiText").innerText = testimonials[nextIndex].text;
-            document.getElementById("nextTestiImage").src = testimonials[nextIndex].image;
-            document.getElementById("nextTestiName").innerText = testimonials[nextIndex].name;
-            document.getElementById("nextTestiSchool").innerText = testimonials[nextIndex].school;
-        }
+    }
+
+    document.getElementById("prevBtn").addEventListener("click", function () {
+        currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+        showTestimonial(currentIndex);
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", function () {
+        currentIndex = (currentIndex + 1) % testimonials.length;
+        showTestimonial(currentIndex);
+    });
+
+    showTestimonial(currentIndex);
+});
+
 </script>
-</section>
-{{-- Section 3: Subscribe --}}
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>

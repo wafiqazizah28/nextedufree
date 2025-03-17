@@ -9,8 +9,8 @@
  
     <link rel="icon" href="{{ asset(path: 'assets//logo.png') }}" sizes="128x128" type="image/png">
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body class="bg-gray-100">

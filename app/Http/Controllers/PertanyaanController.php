@@ -45,18 +45,18 @@ class PertanyaanController extends Controller
         ]);
     }
 
-    public function store(StorePertanyaanRequest $request)
-    {
-        Pertanyaan::create([
-            'pertanyaan_code' => $request->pertanyaan_code,
-            'pertanyaan' => $request->pertanyaan,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-    
-        return redirect()->route('pertanyaan.index')->with('success', 'Pertanyaan berhasil ditambahkan');
-    }
-    
+ public function store(StorePertanyaanRequest $request)
+{
+    Pertanyaan::create([
+        'pertanyaan_code' => $request->pertanyaan_code,
+        'pertanyaan' => $request->pertanyaan,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return redirect()->route('pertanyaan.index')->with('success', 'Pertanyaan berhasil ditambahkan');
+}
+
 
     public function show(Pertanyaan $pertanyaan)
     {
