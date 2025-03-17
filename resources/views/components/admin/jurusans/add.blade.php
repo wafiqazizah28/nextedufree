@@ -38,22 +38,22 @@
               @enderror
             </div>
             <div class="mb-4 w-full px-4">
-              <label for="type" class="text-base font-bold text-primary lg:text-xl">
-                Type
+              <label for="jenis" class="text-base font-bold text-primary lg:text-xl">
+                Jenis
               </label>
-              <input type="text" id="type " name="type" value="{{ @old('type') }}"
+              <input type="text" id="jenis " name="jenis" value="{{ @old('type') }}"
                 class="@error('type') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
-              @error('type')
+              @error('jenis')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
             <div class="mb-4 w-full px-4">
-              <label for="description" class="text-base font-bold text-primary lg:text-xl">
-                Description
+              <label for="deskripsi" class="text-base font-bold text-primary lg:text-xl">
+                Deskripsi
               </label>
-              <textarea id="description " name="description"
-                class="@error('description') border-red-500 @else border-[#BBBBBB] @enderror h-[100px] w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500">{{ @old('description') }}</textarea>
-              @error('description')
+              <textarea id="deskripsi " name="deskripsi"
+                class="@error('deskripsi') border-red-500 @else border-[#BBBBBB] @enderror h-[100px] w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500">{{ @old('description') }}</textarea>
+              @error('deskripsi')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
