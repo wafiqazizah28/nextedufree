@@ -11,8 +11,17 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('kategori_artikel', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('nama_kategori', 100);
+            $table->timestamps();
+        });
+
+        Schema::create('artikels', function (Blueprint $table) {
+            $table->id();
+            $table->string('judul', 255);
+            $table->string('link_artikel', 255);
+            $table->foreignId('jurusan_id')->constrained('jurusans')->onDelete('cascade');
+            $table->foreignId('kategori_id')->constrained('kategori_artikel')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -20,9 +29,7 @@ return new class extends Migration {
      * Rollback migrasi.
      */
     public function down(): void {
+        Schema::dropIfExists('artikels');
         Schema::dropIfExists('kategori_artikel');
     }
 };
-
-
- 

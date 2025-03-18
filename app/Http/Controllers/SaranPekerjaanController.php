@@ -47,12 +47,12 @@ class SaranPekerjaanController extends Controller
     public function store(StoreSaranPekerjaanRequest $request)
     {
         $validatedData = $request->validate([
-            'jurusan_id' => 'required|exists:jurusan,id',
+            'jurusan_id' => 'required|exists:jurusans,id', // Perbaikan validasi tabel jurusans
             'saranpekerjaan' => 'required|string|max:255'
         ]);
 
         SaranPekerjaan::create($validatedData);
-        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil ditambahkan');
+        return redirect('/saranpekerjaans')->with('success', 'Saran Pekerjaan berhasil ditambahkan');
     }
 
     /**
@@ -86,12 +86,12 @@ class SaranPekerjaanController extends Controller
     public function update(UpdateSaranPekerjaanRequest $request, SaranPekerjaan $saranPekerjaan)
     {
         $validatedData = $request->validate([
-            'jurusan_id' => 'required|exists:jurusan,id',
+            'jurusan_id' => 'required|exists:jurusans,id', 
             'saranpekerjaan' => 'required|string|max:255',
         ]);
 
         $saranPekerjaan->update($validatedData);
-        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil diubah');
+        return redirect('/saranpekerjaans')->with('success', 'Saran Pekerjaan berhasil diubah');
     }
 
     /**
@@ -100,6 +100,6 @@ class SaranPekerjaanController extends Controller
     public function destroy(SaranPekerjaan $saranPekerjaan)
     {
         $saranPekerjaan->delete();
-        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil dihapus');
+        return redirect('/saranpekerjaans')->with('success', 'Saran Pekerjaan berhasil dihapus');
     }
 }

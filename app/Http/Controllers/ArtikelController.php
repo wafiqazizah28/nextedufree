@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artikel;
-use App\Http\Requests\StoreArtikelRequest;
-use App\Http\Requests\UpdateArtikelRequest;
-use App\Models\Jurusan;
-use App\Models\Pertanyaan;
-use App\Models\User;
+use Illuminate\Http\Request;
 
 class ArtikelController extends Controller
 {
@@ -20,22 +16,14 @@ class ArtikelController extends Controller
      */
     public function index()
     {
-        $artikelList = Artikel::orderby('jurusan_id');
-        $artikelListInfo = Artikel::all();
-        $jurusansInfo = Jurusan::all();
-        $pertanyaanInfo = Pertanyaan::all();
-        $usersInfo = User::all();
+        $artikelList = Artikel::query(); // Hapus with('jurusan') karena tidak ada relasi
 
         if (request('search')){
-            $artikelList->where('name', 'like', '%' . request('search') . '%');
+            $artikelList->where('judul', 'like', '%' . request('search') . '%');
         }
 
         return view('components.admin.artikels.view', [
             'artikelList' => $artikelList->paginate(10)->withQueryString(),
-            'artikelListInfo' => $artikelListInfo,
-            'jurusansInfo' => $jurusansInfo,
-            'pertanyaanInfo' => $pertanyaanInfo,
-            'usersInfo' => $usersInfo
         ]);
     }
 
@@ -44,33 +32,21 @@ class ArtikelController extends Controller
      */
     public function create()
     {
-        $artikelListInfo = Artikel::all();
-        $jurusansInfo = Jurusan::all();
-        $pertanyaanInfo = Pertanyaan::all();
-        $usersInfo = User::all();
-
-        return view('components.admin.artikels.add', [
-            'artikelListInfo' => $artikelListInfo,
-            'jurusansInfo' => $jurusansInfo,
-            'pertanyaanInfo' => $pertanyaanInfo,
-            'usersInfo' => $usersInfo
-        ]);
+        return view('components.admin.artikels.add'); // Hapus pengambilan data dari tabel 'jurusans'
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreArtikelRequest $request)
+    public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'jurusan_id' => 'required',
-            'description' => 'required',
-            'composition' => 'required',
-            'dose' => 'required',
+            'judul' => 'required|string|max:100',
+            'jurusan' => 'required|string', // Hanya string, tidak dicek di tabel 'jurusans'
+            'sinopsis' => 'nullable|string',
+            'img' => 'nullable|url',
+            'link' => 'required|url',
         ]);
-
-        $validatedData['img'] = 'https://source.unsplash.com/w8p9cQDLX7I';
 
         Artikel::create($validatedData);
         return redirect('/artikels')->with('success', 'Artikel berhasil ditambahkan');
@@ -81,10 +57,8 @@ class ArtikelController extends Controller
      */
     public function show(Artikel $artikel)
     {
-        $jurusans = Artikel::all();
-        return view('pages.medDetail', [
-            'artikel' => $artikel,
-            'jurusans' => $jurusans
+        return view('pages.artikelDetail', [
+            'artikel' => $artikel
         ]);
     }
 
@@ -93,34 +67,23 @@ class ArtikelController extends Controller
      */
     public function edit(Artikel $artikel)
     {
-        $artikelListInfo = Artikel::all();
-        $jurusansInfo = Jurusan::all();
-        $pertanyaanInfo = Pertanyaan::all();
-        $usersInfo = User::all();
-
         return view('components.admin.artikels.edit', [
-            'artikel' => $artikel,
-            'artikelListInfo' => $artikelListInfo,
-            'jurusansInfo' => $jurusansInfo,
-            'pertanyaanInfo' => $pertanyaanInfo,
-            'usersInfo' => $usersInfo
-        ]);
+            'artikel' => $artikel
+        ]); // Hapus pengambilan data dari tabel 'jurusans'
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateArtikelRequest $request, Artikel $artikel)
+    public function update(Request $request, Artikel $artikel)
     {
-        $rules = [
-            'name' => 'required',
-            'jurusan_id' => 'required',
-            'description' => 'required',
-            'composition' => 'required',
-            'dose' => 'required',
-        ];
-
-        $validatedData = $request->validate($rules);
+        $validatedData = $request->validate([
+            'judul' => 'required|string|max:100',
+            'jurusan' => 'required|string', // Hanya string, tidak dicek di tabel 'jurusans'
+            'sinopsis' => 'nullable|string',
+            'img' => 'nullable|url',
+            'link' => 'required|url',
+        ]);
 
         $artikel->update($validatedData);
         return redirect('/artikels')->with('success', 'Artikel berhasil diubah');
@@ -131,7 +94,7 @@ class ArtikelController extends Controller
      */
     public function destroy(Artikel $artikel)
     {
-        Artikel::destroy($artikel['id']);
+        $artikel->delete();
         return redirect('/artikels')->with('success', 'Artikel berhasil dihapus');
     }
 }

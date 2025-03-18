@@ -1,17 +1,19 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Models;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class ArtikelSeeder extends Seeder
+class Artikel extends Model
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    use HasFactory;
+
+    protected $table = 'artikels';
+    protected $guarded = ['id'];
+
+    public function jurusan()
     {
-        //
+        return $this->belongsTo(Jurusan::class, 'jurusan');
     }
 }

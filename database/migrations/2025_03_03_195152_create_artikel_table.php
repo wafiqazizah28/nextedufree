@@ -9,12 +9,12 @@ return new class extends Migration {
      * Jalankan migrasi.
      */
     public function up(): void {
-        Schema::create('artikel', function (Blueprint $table) {
+        Schema::create('artikels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kategori_id')->constrained('kategori_artikel')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('jurusan')->constrained('jurusan')->onDelete('cascade');
             $table->string('judul', 100);
             $table->string('img', 255)->nullable();
-            $table->text('sinopsis');
+            $table->text('sinopsis')->nullable();
             $table->text('link');
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration {
      * Rollback migrasi.
      */
     public function down(): void {
-        Schema::dropIfExists('artikel');
+        Schema::dropIfExists('artikels');
     }
 };

@@ -4,7 +4,7 @@
   <div class="w-full self-center px-4">
     <div class="flex flex-wrap">
       <div class="self-center lg:w-2/3">
-        <div class="space-beetween flex">
+        <div class="space-between flex">
           <h1 class="text-2xl font-bold text-primary lg:text-3xl">
             Edit <span class="text-secondary">Artikel</span>
           </h1>
@@ -13,69 +13,72 @@
             <a href="/artikels">Back</a>
           </button>
         </div>
-        <form class="mt-5" method="post" action="/artikels/{{ $artikel['id'] }}">
+        
+        <form class="mt-5" method="post" action="/artikels/{{ $artikel->id }}" enctype="multipart/form-data">
           @method('put')
           @csrf
+          
           <div class="w-full lg:mx-auto">
             <div class="mb-4 w-full px-4">
-              <label for="jurusan_id" class="text-base font-bold text-primary lg:text-xl">
-                jurusans
+              <label for="judul" class="text-base font-bold text-primary lg:text-xl">
+                Judul
               </label>
-              <select name="jurusan_id" id="jurusan_id"
-                class="@error('jurusan_id') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500">
-                @foreach ($jurusansInfo as $jurusan)
-                  @if ($jurusan['id'] == $artikel['jurusan_id'])
-                    <option value="{{ $jurusan['id'] }}" selected>{{ $jurusan['jurusans'] }}</option>
-                  @else
-                    <option value="{{ $jurusan['id'] }}">{{ $jurusan['jurusans'] }}</option>
-                  @endif
-                @endforeach
-              </select>
-              @error('jurusan_id')
+              <input type="text" id="judul" name="judul" value="{{ old('judul', $artikel->judul) }}"
+                class="@error('judul') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" required />
+              @error('judul')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
+
             <div class="mb-4 w-full px-4">
-              <label for="name" class="text-base font-bold text-primary lg:text-xl">
-                Name
+              <label for="jurusan" class="text-base font-bold text-primary lg:text-xl">
+                Jurusan
               </label>
-              <input type="text" id="name" name="name" value="{{ @old('name', $artikel['name']) }}"
-                class="@error('name') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
-              @error('name')
+              <input type="text" id="jurusan" name="jurusan" value="{{ old('jurusan', $artikel->jurusan) }}"
+                class="@error('jurusan') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" required />
+              @error('jurusan')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
+
             <div class="mb-4 w-full px-4">
-              <label for="description" class="text-base font-bold text-primary lg:text-xl">
-                Description
+              <label for="img" class="text-base font-bold text-primary lg:text-xl">
+                Gambar
               </label>
-              <textarea id="description " name="description"
-                class="@error('description') border-red-500 @else border-[#BBBBBB] @enderror h-[100px] w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500">{{ @old('description', $medicine['description']) }}</textarea>
-              @error('description')
+              <input type="file" id="img" name="img"
+                class="w-full rounded-sm border border-[#BBBBBB] bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
+              @if ($artikel->img)
+                <div class="mt-2">
+                  <img src="{{ asset('storage/' . $artikel->img) }}" alt="Artikel Image" class="h-32 w-auto">
+                </div>
+              @endif
+              @error('img')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
+
             <div class="mb-4 w-full px-4">
-              <label for="composition" class="text-base font-bold text-primary lg:text-xl">
-                Composition
+              <label for="sinopsis" class="text-base font-bold text-primary lg:text-xl">
+                Sinopsis
               </label>
-              <input type="text" id="composition " name="composition"
-                value="{{ @old('composition', $medicine['composition']) }}"
-                class="@error('composition') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
-              @error('composition')
+              <textarea id="sinopsis" name="sinopsis" rows="4"
+                class="@error('sinopsis') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500">{{ old('sinopsis', $artikel->sinopsis) }}</textarea>
+              @error('sinopsis')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
+
             <div class="mb-4 w-full px-4">
-              <label for="dose" class="text-base font-bold text-primary lg:text-xl">
-                Dose
+              <label for="link" class="text-base font-bold text-primary lg:text-xl">
+                Link
               </label>
-              <input type="text" id="dose " name="dose" value="{{ @old('dose', $artikel['dose']) }}"
-                class="@error('dose') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
-              @error('dose')
+              <input type="url" id="link" name="link" value="{{ old('link', $artikel->link) }}"
+                class="@error('link') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
+              @error('link')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
+
             <div class="mt-10 w-full px-4">
               <button type="submit"
                 class="btnn w-full rounded-sm border-2 border-black bg-black py-3 px-8 text-white duration-300 ease-out hover:bg-white hover:text-black focus:outline-none focus:ring focus:ring-blue-500">
@@ -84,8 +87,8 @@
             </div>
           </div>
         </form>
-
       </div>
+
       <div class="hidden w-full self-center md:block lg:w-1/3">
         <div class="mt-10 lg:right-0">
           <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
