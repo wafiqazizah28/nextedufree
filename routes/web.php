@@ -12,15 +12,25 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\SekolahController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GenerativeAIController;
 
 
 // 📌 Halaman utama
 Route::get('/', [AppController::class, 'index']);
+
 Route::get('/tanyaJurpan', function () {
-    return \Illuminate\Support\Facades\Auth::check() ? redirect('/tanyaJurpan/page') : redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+    return Auth::check() 
+        ? redirect('/tanyaJurpan/page') 
+        : redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update'); // ✅ HARUS PUT
 });
 
+// Middleware auth memastikan hanya user yang login bisa mengakses
 Route::get('/tanyaJurpan/page', [AppController::class, 'tanyaJurpan'])->middleware('auth');
 Route::get('/artikelPage', [AppController::class, 'artikel']);
 Route::post('/generate', [GenerativeAIController::class, 'generate']);

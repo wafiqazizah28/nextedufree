@@ -388,38 +388,36 @@
                 @if ($testimonis->isEmpty())
                     <p class="text-red-500">Tidak ada testimoni yang tersedia.</p>
                 @else
-                    <div class="testimonial-container relative h-72">
-                        @foreach ($testimonis as $index => $testimoni)
-                            <div class="testimoni-item absolute top-0 left-0 w-full transition-all duration-300 ease-in-out transform 
-                                {{ $index === 0 ? 'z-10 opacity-100 translate-x-0' : 'z-0 opacity-0 translate-x-full' }}"
-                                data-index="{{ $index }}">
-                                <div class="p-6 bg-white border border-gray-300 rounded-lg shadow-md">
-                                    <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                                        "{{ $testimoni->testimoni }}"
-                                    </p>
-                                    <div class="flex items-center gap-4 mt-4">
-                                        <img src="{{ asset($testimoni->user->foto_profil ?? 'assets/img/default-profile.png') }}"
-                                            alt="{{ $testimoni->user->name ?? 'User Tidak Diketahui' }}" 
-                                            class="w-14 h-14 rounded-full object-cover">
-                                        <div>
-                                            <h4 class="text-lg font-semibold">
-                                                {{ $testimoni->user->name ?? 'User Tidak Diketahui' }}
-                                            </h4>
-                                            <p class="text-gray-600">
-                                                {{ $testimoni->user->asal_sekolah ?? 'Sekolah Tidak Diketahui' }}
-                                            </p>
-                                        </div>
+                <div class="testimonial-container relative">
+                    @foreach ($testimonis as $index => $testimoni)
+                        <div class="testimoni-item {{ $index === 0 ? 'testimoni-current' : ($index === 1 ? 'testimoni-next' : ($index === 2 ? 'testimoni-nextplus' : 'testimoni-prev')) }}"
+                            data-index="{{ $index }}">
+                            <div class="p-6 bg-white border border-gray-300 rounded-lg shadow-md">
+                                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                                    "{{ $testimoni->testimoni }}"
+                                </p>
+                                <div class="flex items-center gap-4 mt-4">
+                                    <img src="{{ asset($testimoni->user->foto_profil ?? 'assets/img/default-profile.png') }}"
+                                        alt="{{ $testimoni->user->name ?? 'User Tidak Diketahui' }}" 
+                                        class="w-14 h-14 rounded-full object-cover">
+                                    <div>
+                                        <h4 class="text-lg font-semibold">
+                                            {{ $testimoni->user->name ?? 'User Tidak Diketahui' }}
+                                        </h4>
+                                        <p class="text-gray-600">
+                                            {{ $testimoni->user->asal_sekolah ?? 'Sekolah Tidak Diketahui' }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
+                </div>
                 @endif
             </div>
         </div>
     </div>
 </section>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const testimonials = document.querySelectorAll(".testimoni-item");
@@ -430,20 +428,18 @@
 
         function updateTestimonials() {
             testimonials.forEach((item, index) => {
-                // Reset all items
-                item.classList.remove('z-10', 'opacity-100', 'translate-x-0', 'translate-x-full', 'translate-x-negative');
-                item.classList.add('opacity-0', 'z-0');
+                // Reset semua kelas
+                item.classList.remove('testimoni-current', 'testimoni-next', 'testimoni-nextplus', 'testimoni-prev');
                 
-                // Calculate position relative to current
+                // Hitung posisi relatif terhadap item saat ini
                 if (index === currentIndex) {
-                    // Current item
-                    item.classList.add('z-10', 'opacity-100', 'translate-x-0');
-                } else if (index < currentIndex) {
-                    // Items before current
-                    item.classList.add('translate-x-negative');
+                    item.classList.add('testimoni-current');
+                } else if (index === (currentIndex + 1) % totalItems) {
+                    item.classList.add('testimoni-next');
+                } else if (index === (currentIndex + 2) % totalItems) {
+                    item.classList.add('testimoni-nextplus');
                 } else {
-                    // Items after current
-                    item.classList.add('translate-x-full');
+                    item.classList.add('testimoni-prev');
                 }
             });
         }
@@ -458,7 +454,7 @@
             updateTestimonials();
         });
 
-        // Initialize the first testimonial
+        // Inisialisasi tampilan pertama
         updateTestimonials();
     });
 </script>

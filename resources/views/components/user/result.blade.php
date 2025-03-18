@@ -111,12 +111,10 @@
 
   @if (count($person))
   @if ($p['result'] == 'SMA')
-  @include('components.prevent')
-  @else
+   @else
   @endif
   @else
-  @include('components.prevent')
-  @endif
+   @endif
 </div>
 <script>
   const historyTable = document.getElementById('historyTable');

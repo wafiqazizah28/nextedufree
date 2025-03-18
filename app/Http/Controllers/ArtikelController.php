@@ -4,21 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Artikel;
 use Illuminate\Http\Request;
+use App\Models\Kategori;
+use Illuminate\Support\Facades\Storage; // Tambahkan titik koma di sini
 
 class ArtikelController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('admin')->except(['show']);
     }
 
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar artikel.
      */
     public function index()
     {
-        $artikelList = Artikel::query(); // Hapus with('jurusan') karena tidak ada relasi
+        $artikelList = Artikel::query();
 
-        if (request('search')){
+        if (request('search')) {
             $artikelList->where('judul', 'like', '%' . request('search') . '%');
         }
 
@@ -28,72 +31,86 @@ class ArtikelController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form tambah artikel.
      */
     public function create()
     {
-        return view('components.admin.artikels.add'); // Hapus pengambilan data dari tabel 'jurusans'
+        $kategoriList = Kategori::all(); // Mengambil semua kategori
+        return view('components.admin.artikels.add', compact('kategoriList'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan artikel baru ke database.
      */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'kategori_id' => 'required|integer|exists:kategori_artikel,id',
             'judul' => 'required|string|max:100',
-            'jurusan' => 'required|string', // Hanya string, tidak dicek di tabel 'jurusans'
             'sinopsis' => 'nullable|string',
-            'img' => 'nullable|url',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi gambar
             'link' => 'required|url',
         ]);
+
+        // Jika ada gambar yang diunggah, simpan ke storage
+        if ($request->hasFile('img')) {
+            $validatedData['img'] = $request->file('img')->store('artikel_images', 'public');
+        }
 
         Artikel::create($validatedData);
         return redirect('/artikels')->with('success', 'Artikel berhasil ditambahkan');
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail artikel.
      */
     public function show(Artikel $artikel)
     {
-        return view('pages.artikelDetail', [
-            'artikel' => $artikel
-        ]);
+        return view('pages.artikelDetail', compact('artikel'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form edit artikel.
      */
     public function edit(Artikel $artikel)
     {
-        return view('components.admin.artikels.edit', [
-            'artikel' => $artikel
-        ]); // Hapus pengambilan data dari tabel 'jurusans'
+        return view('components.admin.artikels.edit', compact('artikel'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui artikel di database.
      */
     public function update(Request $request, Artikel $artikel)
     {
         $validatedData = $request->validate([
+            'kategori_id' => 'required|integer|exists:kategori_artikel,id',
             'judul' => 'required|string|max:100',
-            'jurusan' => 'required|string', // Hanya string, tidak dicek di tabel 'jurusans'
             'sinopsis' => 'nullable|string',
-            'img' => 'nullable|url',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'link' => 'required|url',
         ]);
 
+        // Jika ada gambar baru yang diunggah, simpan dan hapus yang lama
+        if ($request->hasFile('img')) {
+            if ($artikel->img) {
+                Storage::disk('public')->delete($artikel->img);
+            }
+            $validatedData['img'] = $request->file('img')->store('artikel_images', 'public');
+        }
+
         $artikel->update($validatedData);
-        return redirect('/artikels')->with('success', 'Artikel berhasil diubah');
+        return redirect('/artikels')->with('success', 'Artikel berhasil diperbarui');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus artikel dari database.
      */
     public function destroy(Artikel $artikel)
     {
+        if ($artikel->img) {
+            Storage::disk('public')->delete($artikel->img);
+        }
+
         $artikel->delete();
         return redirect('/artikels')->with('success', 'Artikel berhasil dihapus');
     }

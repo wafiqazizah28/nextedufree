@@ -22,6 +22,7 @@ export default {
         grayMain: "#555555",
         graySecondary: "#EEEEEE",
         hitam: "#000000",
+       foocolor: "F7F8FC",
       },
       screens: {
         "2xl": "1320px",

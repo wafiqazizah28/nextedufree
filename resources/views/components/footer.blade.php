@@ -1,4 +1,4 @@
-<footer class="bg-gray-100 py-10">
+<footer class="bg-foocolor py-10">
   <div class="container mx-auto px-6 lg:px-20">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Bagian Kiri -->

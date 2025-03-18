@@ -30,17 +30,26 @@
               @enderror
             </div>
 
+            {{-- Perbaikan: Ganti input text dengan dropdown kategori --}}
             <div class="mb-4 w-full px-4">
-              <label for="jurusan" class="text-base font-bold text-primary lg:text-xl">
-                Jurusan
+              <label for="kategori_id" class="text-base font-bold text-primary lg:text-xl">
+                Kategori
               </label>
-              <input type="text" id="jurusan" name="jurusan" value="{{ old('jurusan', $artikel->jurusan) }}"
-                class="@error('jurusan') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" required />
-              @error('jurusan')
+              <select id="kategori_id" name="kategori_id"
+                class="@error('kategori_id') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" required>
+                <option value="" disabled selected>Pilih Kategori</option>
+                @foreach ($kategoriList as $kategori)
+                  <option value="{{ $kategori->id }}" {{ old('kategori_id', $artikel->kategori_id) == $kategori->id ? 'selected' : '' }}>
+                    {{ $kategori->nama_kategori }}
+                  </option>
+                @endforeach
+              </select>
+              @error('kategori_id')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
 
+            {{-- Perbaikan: Tampilan gambar tetap ada jika belum diubah --}}
             <div class="mb-4 w-full px-4">
               <label for="img" class="text-base font-bold text-primary lg:text-xl">
                 Gambar
@@ -49,7 +58,8 @@
                 class="w-full rounded-sm border border-[#BBBBBB] bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
               @if ($artikel->img)
                 <div class="mt-2">
-                  <img src="{{ asset('storage/' . $artikel->img) }}" alt="Artikel Image" class="h-32 w-auto">
+                  <img src="{{ asset('storage/' . $artikel->img) }}" alt="Artikel Image" class="h-32 w-auto rounded-lg">
+                  <p class="text-sm text-gray-500">Biarkan kosong jika tidak ingin mengganti gambar</p>
                 </div>
               @endif
               @error('img')

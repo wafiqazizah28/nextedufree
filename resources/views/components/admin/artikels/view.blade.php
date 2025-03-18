@@ -33,7 +33,7 @@
                 <th class="border bg-slate-50 px-6 py-3">Gambar</th>
                 <th class="border bg-slate-50 px-6 py-3">Sinopsis</th>
                 <th class="border bg-slate-50 px-6 py-3">Link</th>
-                <th class="border bg-slate-50 px-6 py-3">Jurusan</th>
+                <th class="border bg-slate-50 px-6 py-3">Kategori</th>
                 <th class="border bg-slate-50 px-6 py-3">Action</th>
               </tr>
             </thead>
@@ -44,7 +44,7 @@
                   <td class="border px-6 py-2">{{ $artikel->judul }}</td>
                   <td class="border px-6 py-2">
                     @if ($artikel->img)
-                      <img src="{{ $artikel->img }}" alt="Gambar Artikel" class="h-16 w-16 object-cover mx-auto">
+                      <img src="{{ asset('storage/' . $artikel->img) }}" alt="Gambar Artikel" class="h-16 w-16 object-cover mx-auto rounded-lg">
                     @else
                       <span class="text-gray-500">Tidak ada gambar</span>
                     @endif
@@ -56,7 +56,7 @@
                     <a href="{{ $artikel->link }}" class="text-blue-500" target="_blank">Baca</a>
                   </td>
                   <td class="border px-6 py-2 text-justify">
-                    {{ $artikel->jurusan->nama ?? 'Unknown' }}
+                    {{ $artikel->kategori->nama_kategori ?? 'Tidak Ada Kategori' }}
                   </td>
                   <td class="flex content-center justify-center border px-6 py-2">
                     <a class="mx-2 text-blue-400" href="/artikels/{{ $artikel->id }}">View</a>

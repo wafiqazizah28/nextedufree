@@ -181,26 +181,42 @@ html, body {
 }
 
 
-    .testimonial-container {
-        perspective: 1000px;
-    }
-    
-    .testimoni-item {
-        transition: all 0.5s ease-in-out;
-    }
-    
-    .translate-x-negative {
-        transform: translateX(-100%);
-    }
-    
-    .translate-x-full {
-        transform: translateX(100%);
-    }
-    
-    .opacity-0 {
-        opacity: 0;
-    }
-    
-    .opacity-100 {
-        opacity: 1;
-    }
+.testimoni-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: all 0.5s ease;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.testimoni-current {
+    z-index: 30;
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+.testimoni-next {
+    z-index: 20;
+    opacity: 0.7;
+    transform: translateX(40px) scale(0.9);
+}
+
+.testimoni-nextplus {
+    z-index: 10;
+    opacity: 0.4;
+    transform: translateX(100px) scale(0.8);
+}
+
+.testimoni-prev {
+    z-index: 10;
+    opacity: 0;
+    transform: translateX(-100%) scale(0.9);
+}
+
+.testimonial-container {
+    height: 350px;
+    position: relative;
+    overflow: visible;
+}

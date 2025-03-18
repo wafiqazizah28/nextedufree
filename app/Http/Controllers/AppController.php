@@ -17,7 +17,7 @@ class AppController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->except(['index', 'hasilTes', 'artikel', 'about', 'forwardChaining', 'forwardChainingGuest']);
+        $this->middleware('admin')->except(['index', 'hasilTes', 'artikel', 'tanyaJurpan', 'forwardChaining', 'forwardChainingGuest']);
     }
 
     public function index()
