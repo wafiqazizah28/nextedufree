@@ -24,7 +24,7 @@
                 {{-- Cek apakah ada data jurusan dari database --}}
                 @if ($jurusanInfo->count() > 0)
                     @foreach ($jurusanInfo as $jurusan)
-                        <option value="{{ $jurusan->id }}">{{ $jurusan->nama_jurusan }}</option>
+                        <option value="{{ $jurusan->id }}">{{ $jurusan->jurusan }}</option>
                     @endforeach
                 @else
                     {{-- Jika database kosong, gunakan data statis --}}

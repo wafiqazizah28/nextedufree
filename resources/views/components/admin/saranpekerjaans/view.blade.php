@@ -39,8 +39,8 @@
               @foreach ($saranPekerjaanList as $saranpekerjaan)
                 <tr class="px-6 py-3 text-center">
                   <td class="border px-6 py-2">{{ $loop->iteration }}</td>
-                  <td class="border px-6 py-2">{{ $saranpekerjaan->saran_code }}</td>
-                  <td class="border px-6 py-2 text-justify">{{ $saranpekerjaan->saran }}</td>
+                  <td class="border px-6 py-2">{{ $saranpekerjaan->id }}</td>
+                  <td class="border px-6 py-2 text-justify">{{ $saranpekerjaan->saran_pekerjaan }}</td>
                   <td class="flex justify-center border px-6 py-2">
                     <a class="mx-2 text-yellow-400" href="/saranpekerjaans/{{ $saranpekerjaan->id }}/edit">
                       Edit

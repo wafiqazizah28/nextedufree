@@ -12,4 +12,9 @@ class Kategori extends Model
     protected $table = 'kategori_artikel'; // Ubah sesuai dengan nama tabel
 
     protected $fillable = ['nama_kategori']; // Sesuaikan dengan kolom di tabel
+
+    public function artikel()
+    {
+        return $this->hasMany(Artikel::class, 'kategori_id');
+    }
 }

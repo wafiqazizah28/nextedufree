@@ -21,7 +21,7 @@
               <label for="jurusan_id" class="text-base font-bold text-primary lg:text-xl">Jurusan</label>
               <select name="jurusan_id" id="jurusan_id" class="w-full rounded-sm border bg-white p-3">
                 @foreach ($jurusanInfo as $jurusan)
-                  <option value="{{ $jurusan->id }}" {{ $jurusan->id == $saranPekerjaan->jurusan_id ? 'selected' : '' }}>{{ $jurusan->jurusans }}</option>
+                  <option value="{{ $jurusan->id }}" {{ $jurusan->id == $saranPekerjaan->jurusan_id ? 'selected' : '' }}>{{ $jurusan->jurusan }}</option>
                 @endforeach
               </select>
             </div>

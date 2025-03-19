@@ -74,7 +74,9 @@ class ArtikelController extends Controller
      */
     public function edit(Artikel $artikel)
     {
-        return view('components.admin.artikels.edit', compact('artikel'));
+        $kategoriList = Kategori::all();
+        return view('components.admin.artikels.edit', compact('artikel','kategoriList'));
+        
     }
 
     /**
