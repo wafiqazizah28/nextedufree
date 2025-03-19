@@ -1,7 +1,6 @@
 <?php
 
 namespace Database\Seeders;
-
 use App\Models\Jurusan;
 use App\Models\KategoriArtikel;
 use Illuminate\Database\Seeder;

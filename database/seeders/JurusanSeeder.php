@@ -41,6 +41,15 @@ class JurusanSeeder extends Seeder
                 'created_at'   => Carbon::now(),
                 'updated_at'   => Carbon::now(),
             ],
+            [
+                'jurusan_code' => 'J4',
+                'jurusan'      => 'Admin Perkantoran',
+                'jenis'        => 'Business', // atau bisa 'Administration'
+                'img'          => 'admin_perkantoran.jpg',
+                'deskripsi'    => 'Jurusan yang berfokus pada administrasi perkantoran, manajemen dokumen, pelayanan publik, dan keterampilan komunikasi dalam lingkungan bisnis.',
+                'created_at'   => Carbon::now(),
+                'updated_at'   => Carbon::now(),
+            ],
             
         ];
 
