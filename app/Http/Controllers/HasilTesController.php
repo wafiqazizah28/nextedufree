@@ -12,9 +12,14 @@ class HasilTesController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-    }
+{
+    $hasilTerbaru = HasilTes::where('user_id', auth()->id())->latest()->first();
+
+    return view('pages.hasilTes', [
+        'hasilTes' => $hasilTerbaru
+    ]);
+}
+
 
     /**
      * Show the form for creating a new resource.

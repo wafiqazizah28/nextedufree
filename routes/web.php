@@ -14,7 +14,7 @@ use App\Http\Controllers\SekolahController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GenerativeAIController;
-
+use App\Http\Controllers\HasilTesController;
 
 // 📌 Halaman utama
 Route::get('/', [AppController::class, 'index']);
@@ -38,7 +38,7 @@ Route::post('/generate', [GenerativeAIController::class, 'generate']);
 // 📌 Halaman hasil tes (User yang sudah login dapat melihat sekolah berdasarkan hasil tes)
 Route::middleware('auth')->group(function () {
     Route::get('/tesMinatmu', [AppController::class, 'hasilTes'])->name('hasilTes');
-    Route::get('/hasil-tes', [AppController::class, 'hasilTes'])->name('hasilTes');
+    Route::get('/hasiltes', [AppController::class, 'hasilTes'])->name('hasilTes');
 });
 
 // 📌 Authentication
@@ -73,6 +73,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // 📌 Sistem Pakar
 Route::post('/submit-answer/{id}', [AppController::class, 'forwardChaining']);
 Route::post('/submit-answer-guest', [AppController::class, 'forwardChainingGuest']);
+Route::get('/hasiltes', [HasilTesController::class, 'index'])->middleware('auth');
 
 // 📌 Resource Routes
 Route::resources([

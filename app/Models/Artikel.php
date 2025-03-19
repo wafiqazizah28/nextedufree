@@ -9,5 +9,6 @@ class Artikel extends Model
 {
     use HasFactory;
     protected $table = 'artikel';
+    
     protected $guarded = ['id'];
 }

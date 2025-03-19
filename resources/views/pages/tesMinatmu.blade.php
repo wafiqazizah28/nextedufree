@@ -147,7 +147,7 @@
             },
             success: (response) => {
                 if (response.status === 200) {
-                    window.location.replace("/dashboard");
+                    window.location.replace("/hasiltes");
                 } else {
                     alert("Gagal mengirim jawaban");
                 }

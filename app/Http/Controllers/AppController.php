@@ -11,6 +11,7 @@ use App\Models\Rule;
 use App\Models\Pertanyaan;
 use App\Models\Testimoni;
 use App\Models\User;
+use Illuminate\Support\Facades\Schema; // Tambahkan ini di atas
 use Illuminate\Http\Request;
 
 class AppController extends Controller
@@ -60,19 +61,28 @@ class AppController extends Controller
     }
     
     public function artikel()
-    {
-        $artikelList = Artikel::orderBy('jurusan_id');
-        $jurusanList = Jurusan::all();
-    
-        if (request('search')) {
-            $artikelList->where('name', 'like', '%' . request('search') . '%');
-        }
-    
-        return view('pages.artikelPage', [
-            'artikelList' => $artikelList->paginate(8)->withQueryString(),
-            'jurusanList' => $jurusanList
-        ]);
+{
+    $artikelList = Artikel::query(); // Query Builder
+    $jurusanList = Jurusan::all(); 
+
+    // Pastikan hanya mengurutkan berdasarkan kategori_id jika ada
+    if (Schema::hasColumn('artikel', 'kategori_id')) {
+        $artikelList->orderBy('kategori_id', 'asc');
     }
+
+    // Filter berdasarkan pencarian jika ada request
+    if (request('search')) {
+        $artikelList->where('name', 'like', '%' . request('search') . '%');
+    }
+
+    return view('pages.artikelPage', [
+        'artikelList' => $artikelList->paginate(perPage: 8)->withQueryString(),
+        'jurusanList' => $jurusanList
+    ]);
+}
+
+    
+    
     
     public function about()
     {
@@ -220,12 +230,8 @@ public function update(Request $request)
         
         return response()->json([
             'status' => 200,
-            'user_id' => $id,
-            'stats' => $stats,
-            'result' => $result,
-            'test' => $test,
-            'data' => $data
-        ], 200);
+            'redirect' => url('/hasiltes')
+        ]);
     }
     
 

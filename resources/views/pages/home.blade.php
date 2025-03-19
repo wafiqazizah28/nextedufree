@@ -1,6 +1,4 @@
-{{-- @dd($disease); --}}
-{{-- @dd($user); --}}
-
+ 
 @extends('layouts.app')
 
 @section('content')
@@ -281,8 +279,7 @@
 
             {{-- Card 3 - Perkantoran --}}
             <div class="flex justify-center" data-aos="fade-up">
-                <a href="#"
-                    class="bg-white w-[290px] h-[320px] rounded-lg shadow-sm hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
+                <a href="#" class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
                     <img class="w-full h-50 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek3.png') }}"
                         alt="Perkantoran">
                     <div class="p-4 flex justify-between items-center">
@@ -296,7 +293,6 @@
 
     </div>
 </section>
-
 
 <section id="fitur"
     class="pt-16 pb-20 lg:pt-24 lg:pb-28 bg-backgroundLight min-h-screen max-w-screen overflow-hidden pl-8">
@@ -390,75 +386,72 @@
                 @else
                 <div class="testimonial-container relative">
                     @foreach ($testimonis as $index => $testimoni)
-                        <div class="testimoni-item {{ $index === 0 ? 'testimoni-current' : ($index === 1 ? 'testimoni-next' : ($index === 2 ? 'testimoni-nextplus' : 'testimoni-prev')) }}"
-                            data-index="{{ $index }}">
-                            <div class="p-6 bg-white border border-gray-300 rounded-lg shadow-md">
-                                <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                                    "{{ $testimoni->testimoni }}"
-                                </p>
-                                <div class="flex items-center gap-4 mt-4">
-                                    <img src="{{ asset($testimoni->user->foto_profil ?? 'assets/img/default-profile.png') }}"
-                                        alt="{{ $testimoni->user->name ?? 'User Tidak Diketahui' }}" 
-                                        class="w-14 h-14 rounded-full object-cover">
-                                    <div>
-                                        <h4 class="text-lg font-semibold">
-                                            {{ $testimoni->user->name ?? 'User Tidak Diketahui' }}
-                                        </h4>
-                                        <p class="text-gray-600">
-                                            {{ $testimoni->user->asal_sekolah ?? 'Sekolah Tidak Diketahui' }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="testimoni-item {{ $index === 0 ? 'testimoni-current' : ($index === 1 ? 'testimoni-next' : 'testimoni-prev') }}" 
+                         data-index="{{ $index }}">
+                        <div class="p-6 bg-white border border-gray-300 rounded-lg shadow-md">
+                            <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                                "{{ $testimoni->testimoni }}"
+                            </p>
+                            <h4 class="text-lg font-semibold">
+                                {{ $testimoni->user->name ?? 'Anonymous' }}
+                            </h4>
                         </div>
+                    </div>
                     @endforeach
                 </div>
                 @endif
             </div>
         </div>
     </div>
-</section>
+    
+
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const testimonials = document.querySelectorAll(".testimoni-item");
-        let currentIndex = 0;
-        const totalItems = testimonials.length;
-        
-        if (totalItems === 0) return;
 
-        function updateTestimonials() {
-            testimonials.forEach((item, index) => {
-                // Reset semua kelas
-                item.classList.remove('testimoni-current', 'testimoni-next', 'testimoni-nextplus', 'testimoni-prev');
-                
-                // Hitung posisi relatif terhadap item saat ini
-                if (index === currentIndex) {
-                    item.classList.add('testimoni-current');
-                } else if (index === (currentIndex + 1) % totalItems) {
-                    item.classList.add('testimoni-next');
-                } else if (index === (currentIndex + 2) % totalItems) {
-                    item.classList.add('testimoni-nextplus');
-                } else {
-                    item.classList.add('testimoni-prev');
-                }
-            });
-        }
+document.addEventListener("DOMContentLoaded", function () {
+    let testimonials = document.querySelectorAll(".testimoni-item");
+    let currentIndex = 0;
 
-        document.getElementById("prevBtn").addEventListener("click", function () {
-            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-            updateTestimonials();
+    if (testimonials.length === 0) {
+        console.warn("Tidak ada testimoni tersedia.");
+        return;
+    }
+
+    function updateTestimonial(newIndex) {
+        testimonials.forEach((item, index) => {
+            item.classList.remove("testimoni-current", "testimoni-prev", "testimoni-next");
+
+            if (index === newIndex) {
+                item.classList.add("testimoni-current");
+            } else if (index === (newIndex - 1 + testimonials.length) % testimonials.length) {
+                item.classList.add("testimoni-prev");
+            } else if (index === (newIndex + 1) % testimonials.length) {
+                item.classList.add("testimoni-next");
+            } else {
+                item.classList.add("hidden"); // Sembunyikan elemen lain agar tidak bertumpuk
+            }
         });
 
-        document.getElementById("nextBtn").addEventListener("click", function () {
-            currentIndex = (currentIndex + 1) % totalItems;
-            updateTestimonials();
-        });
+        currentIndex = newIndex;
+    }
 
-        // Inisialisasi tampilan pertama
-        updateTestimonials();
+    document.getElementById("nextBtn").addEventListener("click", function () {
+        let nextIndex = (currentIndex + 1) % testimonials.length;
+        updateTestimonial(nextIndex);
     });
-</script>
 
+    document.getElementById("prevBtn").addEventListener("click", function () {
+        let prevIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+        updateTestimonial(prevIndex);
+    });
+
+    // Pastikan testimoni pertama tampil di awal
+    updateTestimonial(currentIndex);
+});
+
+</script>
+</section> 
+    
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     AOS.init({

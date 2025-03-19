@@ -178,45 +178,37 @@ html, body {
 
 .shadow-orange:hover {
     box-shadow: 0px 10px 25px rgba(254, 147, 94, 0.349);
-}
 
+}
+.testimonial-container {
+    position: relative;
+    height: 200px; /* Sesuaikan tinggi sesuai kebutuhan */
+    overflow: hidden;
+}
 
 .testimoni-item {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 50%;
     width: 100%;
-    transition: all 0.5s ease;
-    border-radius: 12px;
-    padding: 20px;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
 }
 
 .testimoni-current {
-    z-index: 30;
     opacity: 1;
-    transform: translateX(0) scale(1);
+    visibility: visible;
+    z-index: 10;
 }
 
+.testimoni-prev,
 .testimoni-next {
-    z-index: 20;
-    opacity: 0.7;
-    transform: translateX(40px) scale(0.9);
-}
-
-.testimoni-nextplus {
-    z-index: 10;
-    opacity: 0.4;
-    transform: translateX(100px) scale(0.8);
-}
-
-.testimoni-prev {
-    z-index: 10;
     opacity: 0;
-    transform: translateX(-100%) scale(0.9);
+    visibility: hidden;
 }
 
-.testimonial-container {
-    height: 350px;
-    position: relative;
-    overflow: visible;
+.hidden {
+    display: none;
 }
