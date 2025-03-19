@@ -13,26 +13,25 @@
             <a href="/jurusans">Back</a>
           </button>
         </div>
-        <form class="mt-5" method="post" action="/jurusans">
+        <form class="mt-5" method="post" action="/jurusans" enctype="multipart/form-data">
           @csrf
           <div class="w-full lg:mx-auto">
             <div class="mb-4 w-full px-4">
-              <label for="jurusans_code" class="text-base font-bold text-primary lg:text-xl">
-                jurusans Code
+              <label for="jurusan_code" class="text-base font-bold text-primary lg:text-xl">
+                Jurusan Code
               </label>
               <input type="text" id="jurusan_code" name="jurusan_code" value="{{ old('jurusan_code') }}"
               class="@error('jurusan_code') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
-          
               @error('jurusan_code')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
             <div class="mb-4 w-full px-4">
               <label for="jurusan" class="text-base font-bold text-primary lg:text-xl">
-                Jurusans
+                Jurusan
               </label>
-              <input type="text" id="jurusan " name="jurusan" value="{{ @old('jurusan') }}"
-                class="@error('jurusans') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
+              <input type="text" id="jurusan" name="jurusan" value="{{ old('jurusan') }}"
+                class="@error('jurusan') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
               @error('jurusan')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
@@ -41,8 +40,8 @@
               <label for="jenis" class="text-base font-bold text-primary lg:text-xl">
                 Jenis
               </label>
-              <input type="text" id="jenis " name="jenis" value="{{ @old('type') }}"
-                class="@error('type') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
+              <input type="text" id="jenis" name="jenis" value="{{ old('jenis') }}"
+                class="@error('jenis') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
               @error('jenis')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
@@ -51,9 +50,19 @@
               <label for="deskripsi" class="text-base font-bold text-primary lg:text-xl">
                 Deskripsi
               </label>
-              <textarea id="deskripsi " name="deskripsi"
-                class="@error('deskripsi') border-red-500 @else border-[#BBBBBB] @enderror h-[100px] w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500">{{ @old('description') }}</textarea>
+              <textarea id="deskripsi" name="deskripsi"
+                class="@error('deskripsi') border-red-500 @else border-[#BBBBBB] @enderror h-[100px] w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500">{{ old('deskripsi') }}</textarea>
               @error('deskripsi')
+                <p class="mt-2 text-red-500">{{ $message }}</p>
+              @enderror
+            </div>
+            <div class="mb-4 w-full px-4">
+              <label for="img" class="text-base font-bold text-primary lg:text-xl">
+                Upload Image
+              </label>
+              <input type="file" id="img" name="img"
+                class="@error('img') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
+              @error('img')
                 <p class="mt-2 text-red-500">{{ $message }}</p>
               @enderror
             </div>
@@ -65,14 +74,6 @@
             </div>
           </div>
         </form>
-
-      </div>
-      <div class="hidden w-full self-center md:block lg:w-1/3">
-        <div class="mt-10 lg:right-0">
-          <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-          <lottie-player src="https://assets5.lottiefiles.com/private_files/lf30_mvurfbs7.json" background="transparent"
-            speed="1" style="width: 300px; height: 300px;" loop autoplay class="mx-auto"></lottie-player>
-        </div>
       </div>
     </div>
   </div>

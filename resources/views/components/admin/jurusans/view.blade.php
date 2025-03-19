@@ -34,8 +34,10 @@
               <th class="border px-6 py-3">No</th>
               <th class="border px-6 py-3">Jurusan Code</th>
               <th class="border px-6 py-3">Jurusan</th>
-              <th class="border px-6 py-3">jenis</th>
+              <th class="border px-6 py-3">Jenis</th>
               <th class="border px-6 py-3">Deskripsi</th>
+              <th class="border px-6 py-3">Image</th>
+              <th class="border px-6 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -46,6 +48,13 @@
                 <td class="border px-6 py-2">{{ $jurusan->jurusan }}</td>
                 <td class="border px-6 py-2">{{ $jurusan->jenis ?? '-' }}</td>
                 <td class="border px-6 py-2 text-justify">{{ $jurusan->deskripsi ?? '-' }}</td>
+                <td class="border px-6 py-2">
+                  @if ($jurusan->img)
+                    <img src="{{ asset('storage/' . $jurusan->img) }}" alt="{{ $jurusan->jurusan }}" class="w-20 h-20 object-cover rounded">
+                  @else
+                    -
+                  @endif
+                </td>
                 <td class="border px-6 py-2">
                   <div class="flex justify-center items-center space-x-2">
                     <a class="text-yellow-400 hover:text-yellow-600" href="/jurusans/{{ $jurusan->id }}/edit">

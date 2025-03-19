@@ -93,7 +93,8 @@ class JurusanController extends Controller
         return view('pages.jurusanDetail', [
             'jurusan' => $jurusan,
             'saranPekerjaanList' => SaranPekerjaan::where('jurusan_id', $jurusan->id)->get(),
-            'artikelList' => Artikel::where('jurusan_id', $jurusan->id)->get()
+            'artikelList' => Artikel::where('jurusan_id', $jurusan->id)->get(),
+            'img' => $jurusan->img
         ]);
     }
     
@@ -107,7 +108,8 @@ class JurusanController extends Controller
             'jurusanInfo' => Jurusan::all(),
             'pertanyaanInfo' => Pertanyaan::all(),
             'artikelInfo' => Artikel::all(),
-            'userInfo' => User::all()
+            'userInfo' => User::all(),
+            'img' => $jurusan->img
         ]);
     }
     
@@ -135,9 +137,9 @@ class JurusanController extends Controller
         $jurusan->delete();
         return redirect('/jurusans')->with('success', 'Jurusan berhasil dihapus');
     }
+    
     public function getJurusanList()
     {
-        return response()->json(Jurusan::select('id', 'jurusan')->get());
+        return response()->json(Jurusan::select('id', 'jurusan', 'img')->get());
     }
-    
-}    
+}
