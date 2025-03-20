@@ -11,7 +11,7 @@ class SekolahController extends Controller
     public function index()
     {
         $sekolahs = Sekolah::with('jurusan')->get();
-        return view('components.admin.sekolah.index', compact('sekolahs'));
+        return view('components.admin.sekolah.index', compact('sekolah'));
     }
 
     public function create()

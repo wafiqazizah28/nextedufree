@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\DB;
 
 class PertanyaanController extends Controller
 {
+/*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * Apply the admin middleware to all methods in this controller.
+     * 
+     * This middleware will check if the user is an admin before allowing
+     * them to access any of the methods in this controller.
+     */
+
     public function __construct()
     {
         $this->middleware('admin');
