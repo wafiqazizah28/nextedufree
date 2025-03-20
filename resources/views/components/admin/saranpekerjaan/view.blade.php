@@ -3,7 +3,7 @@
 @section('content')
   <button
     class="btnnn mb-3 rounded-sm border-2 border-black bg-black py-3 px-5 text-white duration-300 ease-out hover:bg-white hover:text-black">
-    <a href="/saranpekerjaans/create">Add Saran Pekerjaan</a>
+    <a href="/saranpekerjaan/create">Add Saran Pekerjaan</a>
   </button>
   <div class="w-full lg:mx-auto">
     <div class="mb-10 w-full">
@@ -11,7 +11,7 @@
 
         <div class="flex items-center justify-between px-4">
           <h1 class="font-base mx-3 mt-3 mb-5 text-lg text-slate-800 lg:text-2xl">Saran Pekerjaan Table</h1>
-          <form action="/saranpekerjaans" method="get">
+          <form action="/saranpekerjaan" method="get">
             <div class="w-full self-center">
               <div class="flex">
                 <input type="text" id="search" name="search" placeholder="search for saran pekerjaan"
@@ -42,10 +42,10 @@
                   <td class="border px-6 py-2">{{ $saranpekerjaan->id }}</td>
                   <td class="border px-6 py-2 text-justify">{{ $saranpekerjaan->saran_pekerjaan }}</td>
                   <td class="flex justify-center border px-6 py-2">
-                    <a class="mx-2 text-yellow-400" href="/saranpekerjaans/{{ $saranpekerjaan->id }}/edit">
+                    <a class="mx-2 text-yellow-400" href="/saranpekerjaan/{{ $saranpekerjaan->id }}/edit">
                       Edit
                     </a>
-                    <form class="mx-2 text-red-400" action="/saranpekerjaans/{{ $saranpekerjaan->id }}" method="post">
+                    <form class="mx-2 text-red-400" action="/saranpekerjaan/{{ $saranpekerjaan->id }}" method="post">
                       @method('delete')
                       @csrf
                       <button onClick="return confirm('Kamu Yakin?')">Delete</button>

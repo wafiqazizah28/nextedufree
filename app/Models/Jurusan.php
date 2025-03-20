@@ -11,7 +11,10 @@ class Jurusan extends Model
     
     protected $table = 'jurusan'; // Sesuaikan dengan nama tabel di database
     protected $guarded = ['id'];
-
+    public function saranPekerjaan()
+    {
+        return $this->hasMany(SaranPekerjaan::class, 'jurusan_id');
+    }
 
 }
 

@@ -257,5 +257,23 @@ public function forwardChaining(Request $request, string $id)
         'redirect' => url('/hasiltes')
     ]);
 }
+public function hasilTes()
+{
+    $userId = auth()->id(); // Ambil ID user yang login
+    $hasilTes = HasilTes::where('user_id', $userId)->latest()->first(); // Ambil hasil tes terbaru
 
+    if (!$hasilTes) {
+        return view('hasil_tes', ['hasilTes' => null]); // Kalau belum ada hasil tes
+    }
+
+    $jurusan = Jurusan::where('nama_jurusan', $hasilTes->hasil)->first(); // Cocokkan hasil tes dengan jurusan
+
+    $saranPekerjaan = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get(); // Ambil pekerjaan dari jurusan
+
+    return view('hasil_tes', [
+        'hasilTes' => $hasilTes,
+        'jurusan' => $jurusan,
+        'saranPekerjaan' => $saranPekerjaan
+    ]);
+}
 }

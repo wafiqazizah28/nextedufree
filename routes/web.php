@@ -79,7 +79,7 @@ Route::get('/hasiltes', [HasilTesController::class, 'index'])->middleware('auth'
 Route::resources([
     'pertanyaan' => PertanyaanController::class,
     'jurusans' => JurusanController::class,
-    'saranpekerjaans' => SaranPekerjaanController::class,
+    'saranpekerjaan' => SaranPekerjaanController::class,
     'artikels' => ArtikelController::class,
     'users' => UserController::class,
     'testimoni' => TestimoniController::class,
@@ -95,5 +95,8 @@ Route::middleware('auth')->group(function () {
 
 // 📌 Pastikan route `/sekolah` tetap tersedia jika di luar admin
 Route::get('/sekolah', [SekolahController::class, 'index'])->name('sekolah');
+// 📌 Route untuk daftar saran pekerjaan
+Route::get('/saranpekerjaanList', [SaranPekerjaanController::class, 'index'])->name('saranpekerjaan.index');
 
-Route::get('/saranpekerjaanList', [SaranPekerjaanController::class, 'index']);
+// 📌 Gunakan Resource Controller untuk CRUD Saran Pekerjaan
+Route::resource('saranpekerjaan', SaranPekerjaanController::class);

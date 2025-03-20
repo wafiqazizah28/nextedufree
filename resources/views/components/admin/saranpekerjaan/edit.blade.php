@@ -10,10 +10,10 @@
             Edit <span class="text-secondary">Saran Pekerjaan</span>
           </h1>
           <button class="btnnn ml-5 rounded-sm border-2 border-black bg-black py-2 px-5 text-white duration-300 ease-out hover:bg-white hover:text-black">
-            <a href="/saranpekerjaans">Back</a>
+            <a href="/saranpekerjaan">Back</a>
           </button>
         </div>
-        <form class="mt-5" method="post" action="/saranpekerjaans/{{ $saranPekerjaan->id }}">
+        <form class="mt-5" method="post" action="/saranpekerjaan/{{ $saranPekerjaan->id }}">
           @method('put')
           @csrf
           <div class="w-full lg:mx-auto">

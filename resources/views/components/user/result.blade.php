@@ -17,7 +17,7 @@
             @foreach ($person as $per)
             <tr class="border-b hover:bg-gray-50">
               <td class="py-4 px-4">
-                <div class="inline-block border border-blue-400 border-dashed p-1 text-black">
+                <div class="inline-block p-1 text-black">
                   {{ date('l, d F Y', strtotime($per['created_at'])) }}
                 </div>
               </td>

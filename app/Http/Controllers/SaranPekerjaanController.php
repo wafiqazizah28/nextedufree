@@ -19,7 +19,7 @@ class SaranPekerjaanController extends Controller
     {
         $saranPekerjaanList = SaranPekerjaan::orderBy('jurusan_id', 'asc')->paginate(10);
 
-        return view('components.admin.saranpekerjaans.view', [
+        return view('components.admin.saranpekerjaan.view', [
             'saranPekerjaanList' => $saranPekerjaanList,
             'jurusanInfo' => Jurusan::all(),
             'pertanyaanInfo' => Pertanyaan::all(),
@@ -33,7 +33,7 @@ class SaranPekerjaanController extends Controller
      */
     public function create()
     {
-        return view('components.admin.saranpekerjaans.add', [
+        return view('components.admin.saranpekerjaan.add', [
             'jurusanInfo' => Jurusan::all(),
             'pertanyaanInfo' => Pertanyaan::all(),
             'artikelInfo' => Artikel::all(),
@@ -47,12 +47,15 @@ class SaranPekerjaanController extends Controller
     public function store(StoreSaranPekerjaanRequest $request)
     {
         $validatedData = $request->validate([
-            'jurusan_id' => 'required|exists:jurusans,id', // Perbaikan validasi tabel jurusans
-            'saranpekerjaan' => 'required|string|max:255'
+            'jurusan_id' => 'required|exists:jurusan,id',
+            'saran_pekerjaan' => 'required|string|max:255'
         ]);
-
-        SaranPekerjaan::create($validatedData);
-        return redirect('/saranpekerjaans')->with('success', 'Saran Pekerjaan berhasil ditambahkan');
+        
+        SaranPekerjaan::create([
+            'jurusan_id' => $validatedData['jurusan_id'],
+            'saran_pekerjaan' => $validatedData['saran_pekerjaan'] // Mapping ke kolom database
+        ]);
+        
     }
 
     /**
@@ -71,7 +74,7 @@ class SaranPekerjaanController extends Controller
      */
     public function edit(SaranPekerjaan $saranPekerjaan)
     {
-        return view('components.admin.saranpekerjaans.edit', [
+        return view('components.admin.saranpekerjaan.edit', [
             'saranPekerjaan' => $saranPekerjaan,
             'jurusanInfo' => Jurusan::all(),
             'pertanyaanInfo' => Pertanyaan::all(),
@@ -86,12 +89,13 @@ class SaranPekerjaanController extends Controller
     public function update(UpdateSaranPekerjaanRequest $request, SaranPekerjaan $saranPekerjaan)
     {
         $validatedData = $request->validate([
-            'jurusan_id' => 'required|exists:jurusans,id', 
-            'saranpekerjaan' => 'required|string|max:255',
+            'jurusan_id' => 'required|exists:jurusan,id',
+            'saranpekerjaan' => 'required|string|max:255' // Sesuaikan dengan name di form
         ]);
+        
 
         $saranPekerjaan->update($validatedData);
-        return redirect('/saranpekerjaans')->with('success', 'Saran Pekerjaan berhasil diubah');
+        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil diubah');
     }
 
     /**
@@ -100,6 +104,6 @@ class SaranPekerjaanController extends Controller
     public function destroy(SaranPekerjaan $saranPekerjaan)
     {
         $saranPekerjaan->delete();
-        return redirect('/saranpekerjaans')->with('success', 'Saran Pekerjaan berhasil dihapus');
+        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil dihapus');
     }
 }

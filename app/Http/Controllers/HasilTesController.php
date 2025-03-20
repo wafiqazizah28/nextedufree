@@ -19,6 +19,39 @@ class HasilTesController extends Controller
         'hasilTes' => $hasilTerbaru
     ]);
 }
+public function hasilTes()
+{
+    $userId = auth()->id(); // Ambil ID user yang login
+    $hasilTes = HasilTes::where('user_id', $userId)->latest()->first(); // Ambil hasil tes terbaru
+
+    if (!$hasilTes) {
+        return view('hasil_tes', [
+            'hasilTes' => null,
+            'jurusan' => null,
+            'saranPekerjaan' => collect([]) // Kirim array kosong agar tidak error di Blade
+        ]);
+    }
+
+    $jurusan = Jurusan::where('nama_jurusan', $hasilTes->hasil)->first(); // Cocokkan hasil tes dengan jurusan
+
+    if (!$jurusan) {
+        return view('hasil_tes', [
+            'hasilTes' => $hasilTes,
+            'jurusan' => null,
+            'saranPekerjaan' => collect([])
+        ]);
+    }
+
+    // Ambil pekerjaan sesuai jurusan
+    $saranPekerjaan = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get();
+
+    return view('hasil_tes', [
+        'hasilTes' => $hasilTes,
+        'jurusan' => $jurusan,
+        'saranPekerjaan' => $saranPekerjaan
+    ]);
+}
+
 
 
     /**
