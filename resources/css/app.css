@@ -212,3 +212,23 @@ html, body {
 .hidden {
     display: none;
 }
+.profile-container {
+    display: flex;
+    align-items: center;
+}
+
+.profile-photo {
+    width: 40px; /* Sesuaikan ukuran sesuai kebutuhan */
+    height: 40px; /* Sesuaikan ukuran sesuai kebutuhan */
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px; /* Jarak antara foto dan nama */
+    flex-shrink: 0; /* Mencegah foto profil menyusut */
+}
+
+.profile-name {
+    max-width: 100px; /* Sesuaikan lebar maksimum nama */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

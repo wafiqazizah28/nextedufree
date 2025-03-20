@@ -24,15 +24,16 @@
                 </p>
 
                 <div class="mb-6" data-aos="fade-up">
-                    <button type="button"
-                        class="flex items-center gap-2 text-purpleSecondarry hover:text-white border border-purpleSecondarry hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        Lihat potensimu
-                        <svg class="rtl:rotate-180 w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M1 5h12m0 0L9 1m4 4L9 9" />
-                        </svg>
-                    </button>
+                    <button type="button" onclick="window.location.href='/tesminatmu'"
+                    class="flex items-center gap-2 text-purpleSecondarry hover:text-white border border-purpleSecondarry hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
+                    Lihat Potensi
+                    <svg class="rtl:rotate-180 w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9" />
+                    </svg>
+                </button>
+                
                 </div>
             </div>
 
@@ -64,11 +65,11 @@
                     </div>
 
                     <div class="flex items-center">
-                        <button
-                            class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
-                            data-aos="">
-                            Tes minatmu
-                        </button>
+                        <button onclick="window.location.href='/tanyaJurpan/page'"
+                        class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors">
+                        Tanya Jurpan
+                    </button>
+                    
                     </div>
                 </div>
             </div>
@@ -172,7 +173,7 @@
         <!-- Kolom Kiri: Teks -->
         <div class="lg:col-span-4 pl-10" data-aos="fade-right" data-aos-duration="1000">
             <h1 class="text-4xl font-bold tracking-tight md:text-5xl whitespace-nowrap">
-                Apa itu <span>Jurusanku</span>?
+                Apa itu <span>nextEdu</span>?
             </h1>
             <p class="text-gray-600 md:text-lg my-6">
                 Sebuah website yang dirancang untuk membantu kamu menemukan jurusan yang paling sesuai dengan minat dan

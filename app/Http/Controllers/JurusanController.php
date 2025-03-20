@@ -10,6 +10,7 @@ use App\Models\SaranPekerjaan;
 use App\Models\Pertanyaan;
 use App\Models\User;
 use App\Models\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class JurusanController extends Controller
 {
@@ -25,15 +26,15 @@ class JurusanController extends Controller
     {
         $jurusanList = Jurusan::orderBy('jurusan_code', 'asc');
         $saranPekerjaanList = SaranPekerjaan::orderBy('jurusan_id', 'asc');
-    
+
         if (request('search')) {
             $jurusanList = $jurusanList->where('jurusan', 'like', '%' . request('search') . '%');
         }
-    
+
         if (request('searchSol')) {
             $saranPekerjaanList = $saranPekerjaanList->where('saranpekerjaan', 'like', '%' . request('searchSol') . '%');
         }
-    
+
         return view('components.admin.jurusans.view', [
             'jurusanList' => $jurusanList->paginate(10)->withQueryString(),
             'saranPekerjaanList' => $saranPekerjaanList->paginate(10)->withQueryString(),
@@ -43,7 +44,7 @@ class JurusanController extends Controller
             'userInfo' => User::all()
         ]);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -56,7 +57,7 @@ class JurusanController extends Controller
             'userInfo' => User::all()
         ]);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      */
@@ -67,12 +68,15 @@ class JurusanController extends Controller
             'jurusan' => 'required',
             'jenis' => 'required',
             'deskripsi' => 'required',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
-        $validatedData['img'] = 'https://source.unsplash.com/bkc-m0iZ4Sk';
-    
+
+        if ($request->hasFile('img')) {
+            $validatedData['img'] = $request->file('img')->store('jurusan_images', 'public');
+        }
+
         $jurusan = Jurusan::create($validatedData);
-        
+
         $pertanyaanList = Pertanyaan::all();
         foreach ($pertanyaanList as $pertanyaan) {
             Rule::create([
@@ -81,10 +85,10 @@ class JurusanController extends Controller
                 'rule_value' => 0
             ]);
         }
-    
+
         return redirect('/jurusans')->with('success', 'Jurusan berhasil ditambahkan');
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -97,7 +101,7 @@ class JurusanController extends Controller
             'img' => $jurusan->img
         ]);
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -112,7 +116,7 @@ class JurusanController extends Controller
             'img' => $jurusan->img
         ]);
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
@@ -123,21 +127,40 @@ class JurusanController extends Controller
             'jurusan' => 'required',
             'jenis' => 'required',
             'deskripsi' => 'required',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
+        if ($request->hasFile('img')) {
+            // Hapus gambar lama jika ada
+            if ($jurusan->img) {
+                Storage::disk('public')->delete($jurusan->img);
+            }
+            // Simpan gambar baru
+            $validatedData['img'] = $request->file('img')->store('jurusan_images', 'public');
+        }
+
         $jurusan->update($validatedData);
+
         return redirect('/jurusans')->with('success', 'Jurusan berhasil diubah');
     }
-    
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Jurusan $jurusan)
     {
+        // Hapus gambar jika ada
+        if ($jurusan->img) {
+            Storage::disk('public')->delete($jurusan->img);
+        }
+
         $jurusan->delete();
         return redirect('/jurusans')->with('success', 'Jurusan berhasil dihapus');
     }
-    
+
+    /**
+     * API: Get list of Jurusan.
+     */
     public function getJurusanList()
     {
         return response()->json(Jurusan::select('id', 'jurusan', 'img')->get());

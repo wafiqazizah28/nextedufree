@@ -17,7 +17,7 @@
                             class="text-black font-medium mx-4 lg:mx-8 flex py-2 text-base group-hover:text-purpleMain">Beranda</a>
                     </li>
                     <li class="group">
-                        <a href="/tesMinatmu"
+                        <a href="/tesminatmu"
                             class="text-black font-medium mx-4 lg:mx-8 flex py-2 text-base group-hover:text-purpleMain">Tes
                             Minatmu</a>
                     </li>

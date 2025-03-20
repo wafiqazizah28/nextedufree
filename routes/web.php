@@ -37,7 +37,7 @@ Route::post('/generate', [GenerativeAIController::class, 'generate']);
 
 // 📌 Halaman hasil tes (User yang sudah login dapat melihat sekolah berdasarkan hasil tes)
 Route::middleware('auth')->group(function () {
-    Route::get('/tesMinatmu', [AppController::class, 'hasilTes'])->name('hasilTes');
+    Route::get('/tesminatmu', [AppController::class, 'hasilTes'])->name('hasilTes');
     Route::get('/hasiltes', [AppController::class, 'hasilTes'])->name('hasilTes');
 });
 
