@@ -14,6 +14,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Schema; // Tambahkan ini di atas
 use Illuminate\Support\Facades\Log; // Import Log facade
 use Illuminate\Http\Request;
+use App\Models\Kategori;
 
 class AppController extends Controller
 {
@@ -62,28 +63,32 @@ class AppController extends Controller
     }
     
     public function artikel()
-{
-    $artikelList = Artikel::query(); // Query Builder
-    $jurusanList = Jurusan::all(); 
-
-    // Pastikan hanya mengurutkan berdasarkan kategori_id jika ada
-    if (Schema::hasColumn('artikel', 'kategori_id')) {
-        $artikelList->orderBy('kategori_id', 'asc');
+    {
+        $artikelList = Artikel::query();
+        $kategoriList = Kategori::all(); // Ambil semua kategori
+    
+        if (request('kategori')) {
+            $artikelList->where('kategori_id', request('kategori'));
+        }
+    
+        if (request('search')) {
+            $artikelList->where('judul', 'like', '%' . request('search') . '%');
+        }
+    
+        return view('pages.artikelPage', [
+            'artikelList' => $artikelList->paginate(8)->withQueryString(),
+            'kategoriList' => $kategoriList
+        ]);
+    }public function filterByKategori(Request $request)
+    {
+        $kategoriId = $request->kategori;
+        $artikelList = Artikel::where('kategori_id', $kategoriId)->get();
+        
+        return response()->json($artikelList);
     }
-
-    // Filter berdasarkan pencarian jika ada request
-    if (request('search')) {
-        $artikelList->where('name', 'like', '%' . request('search') . '%');
-    }
-
-    return view('pages.artikelPage', [
-        'artikelList' => $artikelList->paginate(perPage: 8)->withQueryString(),
-        'jurusanList' => $jurusanList
-    ]);
-}
-
     
     
+        
     
     public function about()
     {
@@ -257,23 +262,6 @@ public function forwardChaining(Request $request, string $id)
         'redirect' => url('/hasiltes')
     ]);
 }
-public function hasilTes()
-{
-    $userId = auth()->id(); // Ambil ID user yang login
-    $hasilTes = HasilTes::where('user_id', $userId)->latest()->first(); // Ambil hasil tes terbaru
+ 
 
-    if (!$hasilTes) {
-        return view('hasil_tes', ['hasilTes' => null]); // Kalau belum ada hasil tes
-    }
-
-    $jurusan = Jurusan::where('nama_jurusan', $hasilTes->hasil)->first(); // Cocokkan hasil tes dengan jurusan
-
-    $saranPekerjaan = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get(); // Ambil pekerjaan dari jurusan
-
-    return view('hasil_tes', [
-        'hasilTes' => $hasilTes,
-        'jurusan' => $jurusan,
-        'saranPekerjaan' => $saranPekerjaan
-    ]);
-}
 }

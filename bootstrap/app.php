@@ -15,7 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
             '/register',
             '/login',
             '/logout',
-            '/submit-answer'
+            '/submit-answer',
+            'auth/google/callback'
+
         ]);
 
         // Menambahkan middleware khusus

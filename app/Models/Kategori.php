@@ -8,13 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Kategori extends Model
 {
     use HasFactory;
-
-    protected $table = 'kategori_artikel'; // Ubah sesuai dengan nama tabel
+    
+    protected $table = 'kategori_artikel'; // Nama tabel sesuai database
+    protected $primaryKey = 'id';
+    public $timestamps = true; // Karena ada created_at dan updated_at
 
     protected $fillable = ['nama_kategori']; // Sesuaikan dengan kolom di tabel
-
-    public function artikel()
-    {
-        return $this->hasMany(Artikel::class, 'kategori_id');
-    }
 }

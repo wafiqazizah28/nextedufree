@@ -31,8 +31,8 @@
 
         {{-- Profesi yang Cocok --}}
         <h3 class="mt-10 text-lg font-semibold text-gray-700 text-center">Profesi yang cocok dengan jurusan ini:</h3>
-         
-         
+        
+\        
         </div>
 
     </div>

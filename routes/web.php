@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GenerativeAIController;
 use App\Http\Controllers\HasilTesController;
+use Laravel\Socialite\Facades\Socialite;
 
 // 📌 Halaman utama
 Route::get('/', [AppController::class, 'index']);
@@ -34,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/tanyaJurpan/page', [AppController::class, 'tanyaJurpan'])->middleware('auth');
 Route::get('/artikelPage', [AppController::class, 'artikel']);
 Route::post('/generate', [GenerativeAIController::class, 'generate']);
+
 
 // 📌 Halaman hasil tes (User yang sudah login dapat melihat sekolah berdasarkan hasil tes)
 Route::middleware('auth')->group(function () {
@@ -100,3 +102,6 @@ Route::get('/saranpekerjaanList', [SaranPekerjaanController::class, 'index'])->n
 
 // 📌 Gunakan Resource Controller untuk CRUD Saran Pekerjaan
 Route::resource('saranpekerjaan', SaranPekerjaanController::class);
+Route::get('/artikels/filter', [AppController::class, 'filterByKategori']);
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);

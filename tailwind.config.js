@@ -9,8 +9,7 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "16px",
-    },
+     },
     extend: {
       colors: {
         primary: "#4338CA",
@@ -25,8 +24,7 @@ export default {
        foocolor: "F7F8FC",
       },
       screens: {
-        "2xl": "1320px",
-      },
+       },
       fontFamily: {
         sans: ['Poppins', 'sans-serif'],
       },
