@@ -85,6 +85,8 @@ Route::resources([
     'artikels' => ArtikelController::class,
     'users' => UserController::class,
     'testimoni' => TestimoniController::class,
+    'sekolah' => SekolahController::class
+
 ]);
 
 // 📌 User authenticated routes
@@ -95,13 +97,33 @@ Route::middleware('auth')->group(function () {
     Route::get('/sekolah-hasil-tes', [SekolahController::class, 'showByHasilTes'])->name('sekolah.hasilTes');
 });
 
+Route::prefix('admin')->group(function () {
+    Route::resource('sekolahs', SekolahController::class)
+        ->names([
+            'index' => 'components.admin.sekolahs.index',
+            'create' => 'components.admin.sekolahs.create',
+            'store' => 'components.admin.sekolahs.store', 
+            'show' => 'components.admin.sekolahs.show',
+            'edit' => 'components.admin.sekolahs.edit',
+            'update' => 'components.admin.sekolahs.update', 
+            'destroy' => 'components.admin.sekolahs.destroy',
+        ]);
+});
+
 // 📌 Pastikan route `/sekolah` tetap tersedia jika di luar admin
-Route::get('/sekolah', [SekolahController::class, 'index'])->name('sekolah');
+Route::get('/sekolah', [SekolahController::class, 'index'])->name('sekolah.index');
+Route::put('/sekolah/{sekolah}', [SekolahController::class, 'update'])->name('sekolah.update');
 // 📌 Route untuk daftar saran pekerjaan
 Route::get('/saranpekerjaanList', [SaranPekerjaanController::class, 'index'])->name('saranpekerjaan.index');
 
 // 📌 Gunakan Resource Controller untuk CRUD Saran Pekerjaan
 Route::resource('saranpekerjaan', SaranPekerjaanController::class);
+<<<<<<< HEAD
 Route::get('/artikels/filter', [AppController::class, 'filterByKategori']);
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+=======
+
+Route::get('/saranpekerjaan', [SaranPekerjaanController::class, 'index'])
+    ->name('documents.admin.saranpekerjaan.index');
+>>>>>>> 995422f528f5cf0f569a65286405bf5f7063c259

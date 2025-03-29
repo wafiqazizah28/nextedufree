@@ -10,6 +10,7 @@ use App\Models\Artikel;
 use App\Models\Rule;
 use App\Models\Pertanyaan;
 use App\Models\Testimoni;
+use App\Models\Sekolah; // Tambahkan model Sekolah
 use App\Models\User;
 use Illuminate\Support\Facades\Schema; // Tambahkan ini di atas
 use Illuminate\Support\Facades\Log; // Import Log facade
@@ -264,4 +265,24 @@ public function forwardChaining(Request $request, string $id)
 }
  
 
+<<<<<<< HEAD
+=======
+    if (!$hasilTes) {
+        return view('hasil_tes', ['hasilTes' => null]); // Kalau belum ada hasil tes
+    }
+
+    $jurusan = Jurusan::where('nama_jurusan', $hasilTes->hasil)->first(); // Cocokkan hasil tes dengan jurusan
+
+    $saranPekerjaan = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get(); // Ambil pekerjaan dari jurusan
+          // Ambil sekolah berdasarkan jurusan hasil tes
+          $sekolah = Sekolah::where('jurusan_id', $jurusan->id)->get();
+
+    return view('hasil_tes', [
+        'hasilTes' => $hasilTes,
+        'jurusan' => $jurusan,
+        'saranPekerjaan' => $saranPekerjaan
+        
+    ]);
+}
+>>>>>>> 995422f528f5cf0f569a65286405bf5f7063c259
 }

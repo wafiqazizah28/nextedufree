@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class saranpekerjaaneeder extends Seeder
+class SaranPekerjaanSeeder extends Seeder
 {
     /**
      * Jalankan database seed.
