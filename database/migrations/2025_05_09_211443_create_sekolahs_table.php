@@ -11,7 +11,7 @@ return new class extends Migration {
             Schema::create('sekolahs', function (Blueprint $table) {
                 $table->id();
                 $table->string('nama');
-                $table->unsignedBigInteger('nama_jurusan_id');
+                $table->unsignedBigInteger('jurusan_id')->constrained('jurusan')->onDelete('cascade');;
                 $table->timestamps();
             });
         }

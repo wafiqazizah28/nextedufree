@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Sekolah extends Model
 {
     use HasFactory;
-    protected $guarded = ['id'];
+
+    protected $fillable = ['nama', 'jurusan_id']; // Fix: Pastikan sesuai dengan kolom di tabel
 
     public function jurusan()
     {
-        return $this->belongsTo(Jurusan::class, 'nama_jurusan_id');
+        return $this->belongsTo(Jurusan::class);
     }
 }
