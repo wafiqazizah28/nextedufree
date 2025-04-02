@@ -15,7 +15,7 @@ class HasilTesController extends Controller
 {
     $hasilTerbaru = HasilTes::where('user_id', auth()->id())->latest()->first();
 
-    return view('documents.admin.pages.hasilTes', [
+    return view('pages.hasilTes', [
         'hasilTes' => $hasilTerbaru
     ]);
 }

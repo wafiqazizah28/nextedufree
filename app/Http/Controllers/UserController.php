@@ -25,7 +25,7 @@ class UserController extends Controller
         $hasilTes = HasilTes::all();
         $usersQuery = User::orderBy('id'); // Query Builder
         $pertanyaanInfo = Pertanyaan::all();
-        $jurusansInfo = Jurusan::all();
+        $jurusanInfo = Jurusan::all();
         $artikelsInfo = Artikel::all();
 
         // Pencarian berdasarkan nama
@@ -40,7 +40,7 @@ class UserController extends Controller
             'hasilTes' => $hasilTes,
             'users' => $users,
             'pertanyaanInfo' => $pertanyaanInfo,
-            'jurusansInfo' => $jurusansInfo,
+            'jurusanInfo' => $jurusanInfo,
             'artikelsInfo' => $artikelsInfo,
             'usersInfo' => $usersInfo
         ]);

@@ -78,5 +78,45 @@
         {{ $artikelList->links() }}
       </div>
     </div>
+    
+    <!-- Tabel Kategori Artikel -->
+    <div class="mb-10 w-full">
+      <div class="w-full rounded-sm border border-[#BBBBBB] bg-white p-3">
+        <div class="flex items-center justify-between px-4">
+          <h1 class="font-base mx-3 mt-3 mb-5 text-lg text-slate-800 lg:text-2xl">Kategori Artikel Table</h1>
+        </div>
+
+        @if ($kategoriList->count())
+          <table class="mb-3 w-full rounded-xl border text-slate-800">
+            <thead class="text-slate-700">
+              <tr>
+                <th class="border bg-slate-50 px-6 py-3">ID</th>
+                <th class="border bg-slate-50 px-6 py-3">Nama Kategori</th>
+                <th class="border bg-slate-50 px-6 py-3">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($kategoriList as $kategori)
+                <tr class="px-6 py-3 text-center">
+                  <td class="border px-6 py-2">{{ $kategori->id }}</td>
+                  <td class="border px-6 py-2">{{ $kategori->nama_kategori }}</td>
+                 
+                  <td class="flex content-center justify-center border px-6 py-2">
+                    <a class="mx-2 text-yellow-400" href="/artikels/kategori/{{ $kategori->id }}/edit">Edit</a>
+                    <form class="mx-2 text-red-400" action="/artikels/kategori/{{ $kategori->id }}" method="post" onsubmit="return confirm('Kamu Yakin?')">
+                      @method('delete')
+                      @csrf
+                      <button type="submit">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        @else
+          <h1 class="mt-2 mb-4 border p-3 text-center text-lg font-light text-primary lg:text-2xl">Tidak ada Kategori.</h1>
+        @endif
+      </div>
+    </div>
   </div>
 @endsection

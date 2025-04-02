@@ -2,41 +2,54 @@
 
 @section('content')
 <section class="pt-14 pb-12 lg:pt-24 bg-white min-h-screen">
-    <div class="relative w-full min-h-[580px] flex flex-col justify-center items-center px-4 bg-no-repeat bg-cover bg-center"
-    style="background-image: url('{{ asset('assets/img/bannerTes.png') }}');">
+    <div class="relative w-full min-h-[580px] flex flex-col justify-center items-end pr-10 
+    px-4 bg-no-repeat bg-cover bg-center text-right" style="background-image: url('{{ asset('assets/img/bannerTes.png') }}');">
+    <h1 class="text-[2rem] sm:text-[2.5rem] lg:text-[3rem] text-white font-bold leading-tight mb-2">
+        Tes minatmu sekarang!       
+    </h1>
+    <h2 class="text-1xl sm:text-1xl lg:text-2xl text-white font-regular mt-0">
+        Tes ini disupervisi oleh guru BK     
+    </h2>
 </div>
 
-    <div class="mt-6 bg-white shadow-lg rounded-lg p-6">
+
+    <div class=" ">
         <div style="text-align: center;">
-            <h2 class="text-xl font-bold text-gray-700" style="font-size: 2rem;">Jawablah yang sesuai dengan dirimu!</h2>
-          </div>
-          <div class="mt-4 flex items-center">
+            <h2 class="text-xl font-bold text-gray-700" style="font-size: 2rem;">Jawablah yang sesuai dengan dirimu!
+            </h2>
+        </div>
+        <div class="mt-4 flex items-center">
             <span>Progres</span>
             <div class="w-full bg-gray-300 h-4 rounded-lg overflow-hidden ml-2">
-              <div id="progress-bar" class="h-full bg-purpleMain" style="width: 0%;"></div>
+                <div id="progress-bar" class="h-full bg-purpleMain" style="width: 0%;"></div>
             </div>
-          </div>
-          
-          <form id="quiz-form" class="mt-5 text-center">
+        </div>
+
+        <form id="quiz-form" class="mt-5 text-center">
             @foreach($pertanyaanList as $index => $pertanyaan)
             <div class="question-block mt-8" data-id="{{ $pertanyaan['id'] }}">
                 <p class="text-black font-medium text-left mx-auto pl-20" style="max-width: 600px;">
                     {{ $index + 1 }}. {{ $pertanyaan['pertanyaan'] }}
                 </p>
                 <div class="flex justify-center gap-4 mt-4">
-                    <button type="button" class="answer-btn w-24 px-6 py-2 rounded-md border border-purpleMain font-medium" data-value="0">Tidak</button>
-                    <button type="button" class="answer-btn w-24 px-6 py-2 rounded-md border border-purpleMain font-medium" data-value="1">Ya</button>
+                    <button type="button"
+                        class="answer-btn w-24 px-6 py-2 rounded-md border border-purpleMain font-medium"
+                        data-value="0">Tidak</button>
+                    <button type="button"
+                        class="answer-btn w-24 px-6 py-2 rounded-md border border-purpleMain font-medium"
+                        data-value="1">Ya</button>
                 </div>
             </div>
             @endforeach
-            
-            
+
+
             <!-- Tombol Selanjutnya -->
             <div class="flex justify-center mt-8">
-                <button type="button" id="submitButton" class="px-8 py-3 bg-purple-500 hover:bg-purple-700 text-white rounded-md font-medium w-full max-w-xs">Selanjutnya</button>
+                <button type="button" id="submitButton"
+                    class="px-8 py-3 bg-purple-500 hover:bg-purple-700 text-white rounded-md font-medium w-full max-w-xs">Selanjutnya</button>
             </div>
         </form>
-        
+
     </div>
     </div>
 </section>

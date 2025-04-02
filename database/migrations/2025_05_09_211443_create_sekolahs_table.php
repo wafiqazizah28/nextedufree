@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        if (!Schema::hasTable('sekolahs')) { // Cek apakah tabel sudah ada
-            Schema::create('sekolahs', function (Blueprint $table) {
+        if (!Schema::hasTable('sekolah')) { // Cek apakah tabel sudah ada
+            Schema::create('sekolah', function (Blueprint $table) {
                 $table->id();
                 $table->string('nama');
                 $table->unsignedBigInteger('jurusan_id')->constrained('jurusan')->onDelete('cascade');;
@@ -20,6 +20,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('sekolahs');
+        Schema::dropIfExists('sekolah');
     }
 };

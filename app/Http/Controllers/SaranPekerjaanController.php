@@ -17,7 +17,18 @@ class SaranPekerjaanController extends Controller
      */
     public function index()
     {
-        $saranPekerjaanList = SaranPekerjaan::orderBy('jurusan_id', 'asc')->paginate(10);
+        // Add search functionality
+        $search = request('search');
+        
+        $saranPekerjaanList = SaranPekerjaan::query()
+            ->when($search, function($query) use ($search) {
+                return $query->where('saran_pekerjaan', 'like', '%' . $search . '%')
+                    ->orWhereHas('jurusan', function($query) use ($search) {
+                        $query->where('jurusan', 'like', '%' . $search . '%');
+                    });
+            })
+            ->orderBy('jurusan_id', 'asc')
+            ->paginate(10);
 
         return view('components.admin.saranpekerjaan.view', [
             'saranPekerjaanList' => $saranPekerjaanList,
@@ -53,9 +64,10 @@ class SaranPekerjaanController extends Controller
         
         SaranPekerjaan::create([
             'jurusan_id' => $validatedData['jurusan_id'],
-            'saran_pekerjaan' => $validatedData['saran_pekerjaan'] // Mapping ke kolom database
+            'saran_pekerjaan' => $validatedData['saran_pekerjaan']
         ]);
         
+        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil ditambahkan');
     }
 
     /**
@@ -63,7 +75,7 @@ class SaranPekerjaanController extends Controller
      */
     public function show(SaranPekerjaan $saranPekerjaan)
     {
-        return view('pages.saranPekerjaanDetail', [
+        return view('components.admin.saranpekerjaan.pdf', [
             'saranPekerjaan' => $saranPekerjaan,
             'jurusan' => $saranPekerjaan->jurusan
         ]);
@@ -90,10 +102,9 @@ class SaranPekerjaanController extends Controller
     {
         $validatedData = $request->validate([
             'jurusan_id' => 'required|exists:jurusan,id',
-            'saranpekerjaan' => 'required|string|max:255' // Sesuaikan dengan name di form
+            'saran_pekerjaan' => 'required|string|max:255' // Changed from saranpekerjaan to saran_pekerjaan
         ]);
         
-
         $saranPekerjaan->update($validatedData);
         return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil diubah');
     }
@@ -106,4 +117,31 @@ class SaranPekerjaanController extends Controller
         $saranPekerjaan->delete();
         return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil dihapus');
     }
+
+    /**
+     * Export data to PDF.
+     */
+    public function exportPDF()
+    {
+        try {
+            // Ambil semua data saran pekerjaan
+            $saranPekerjaanList = SaranPekerjaan::orderBy('jurusan_id')->get();
+            $jurusanInfo = Jurusan::all();
+    
+            // Cek apakah data benar-benar ada
+            dd($saranPekerjaanList); // Hentikan eksekusi dan tampilkan data
+    
+            // Buat PDF
+            $pdf = \PDF::loadView('components.admin.saranpekerjaan.pdf', [
+                'saranPekerjaanList' => $saranPekerjaanList,
+                'jurusanInfo' => $jurusanInfo
+            ]);
+    
+            return $pdf->download('saran-pekerjaan-data.pdf');
+        } catch (\Exception $e) {
+            \Log::error('PDF Export Error: ' . $e->getMessage());
+            return redirect('/saranpekerjaan')->with('error', 'Gagal mengekspor PDF: ' . $e->getMessage());
+        }
+    }
+    
 }

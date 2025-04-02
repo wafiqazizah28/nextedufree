@@ -122,4 +122,5 @@ class ArtikelController extends Controller
         $artikel->delete();
         return redirect('/artikels')->with('success', 'Artikel berhasil dihapus');
     }
+    
 }

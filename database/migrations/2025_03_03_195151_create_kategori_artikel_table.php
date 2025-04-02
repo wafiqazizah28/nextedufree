@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->id();
             $table->string('judul', 255);
             $table->string('link_artikel', 255);
-            $table->foreignId('jurusan_id')->constrained('jurusans')->onDelete('cascade');
+            $table->foreignId('jurusan_id')->constrained('jurusan')->onDelete('cascade');
             $table->foreignId('kategori_id')->constrained('kategori_artikel')->onDelete('cascade');
             $table->timestamps();
         });

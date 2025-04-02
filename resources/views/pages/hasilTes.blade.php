@@ -13,6 +13,7 @@
                 <h2 class="text-xl font-bold text-purple-700 bg-purple-200 px-4 py-2 rounded-md inline-block">
                     {{ $hasilTes->hasil ?? 'Belum ada hasil tes' }}
                 </h2>
+                
                 <p class="mt-2 text-gray-600">
                     {{ $jurusan->deskripsi ?? 'Deskripsi tidak tersedia' }}
                 </p>

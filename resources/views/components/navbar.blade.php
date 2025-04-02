@@ -1,59 +1,74 @@
 <header class="absolute top-0 left-0 z-10 w-full bg-transparent">
-    <div class="container">
-        <div class="relative flex items-center justify-between">
+    <!-- Add Poppins font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        .font-poppins {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+    <div class="container max-w-6xl mx-auto">
+        <div class="relative flex items-center justify-between lg:py-2 py-1">
+            <!-- Logo for mobile view -->
+            <div class="lg:hidden flex items-center ml-8">
+                <a href="/">
+                    <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="Logo" class="w-28 sm:w-28">
+                </a>
+            </div>
+            
+
             <nav id="nav-menu"
-                class="absolute right-4 top-full hidden w-full max-w-[250px] rounded-lg bg-white py-5 shadow-lg lg:static lg:block lg:max-w-full lg:rounded-none lg:bg-transparent lg:shadow-none lg:ml-auto transition-all duration-300 ease-in-out">
-                <ul class="block lg:flex">
+                class="absolute right-4 top-full hidden w-full max-w-[250px] rounded-lg bg-white py-5 shadow-lg lg:static lg:block lg:max-w-full lg:rounded-none lg:bg-transparent lg:shadow-none lg:ml-auto lg:py-2 transition-all duration-300 ease-in-out">
+                <ul class="block lg:flex lg:items-center">
                     <li class="group">
-                        <div class="px-4 mt-[-8px]">
+                        <div class="px-4 lg:mt-0 mt-[-8px]">
                             <a href="/">
                                 <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="Logo"
-                                    class="w-28 lg:w-32 sm:w-24">
+                                    class="w-28 lg:w-28 sm:w-24">
                             </a>
                         </div>
                     </li>
                     <li class="group">
                         <a href="/"
-                            class="text-black font-medium mx-4 lg:mx-8 flex py-2 text-base group-hover:text-purpleMain">Beranda</a>
+                            class="text-black font-medium mx-4 lg:mx-6 flex py-2 text-base group-hover:text-purpleMain font-poppins">Beranda</a>
                     </li>
                     <li class="group">
                         <a href="/tesminatmu"
-                            class="text-black font-medium mx-4 lg:mx-8 flex py-2 text-base group-hover:text-purpleMain">Tes
+                            class="text-black font-medium mx-4 lg:mx-4 flex py-2 text-base group-hover:text-purpleMain">Tes
                             Minatmu</a>
                     </li>
                     <li class="group">
                         <a href="/tanyaJurpan"
-                            class="text-black font-medium mx-4 lg:mx-8 flex py-2 text-base group-hover:text-purpleMain">Edubot</a>
+                            class="text-black font-medium mx-4 lg:mx-4 flex py-2 text-base group-hover:text-purpleMain">Edubot</a>
                     </li>
                     <li class="group">
                         <a href="/artikelPage"
-                            class="text-black font-medium mx-4 lg:mx-8 flex py-2 text-base group-hover:text-purpleMain">Artikel</a>
+                            class="text-black font-medium mx-4 lg:mx-4 flex py-2 text-base group-hover:text-purpleMain">Artikel</a>
                     </li>
                     <li class="group">
                         @auth
                             <a href="/dashboard"
-                                class="text-black font-medium mx-4 lg:mx-8 flex py-2 text-base group-hover:text-purpleMain">Riwayat
+                                class="text-black font-medium mx-4 lg:mx-4 flex py-2 text-base group-hover:text-purpleMain">Riwayat
                                 Tes</a>
                         @endauth
                     </li>
                     <li class="lg:hidden block">
-                        <div class="flex flex-col">
+                        <div class="flex flex-col space-y-2 px-4 mt-2">
                             @if (auth()->user() !== null)
-                                <form action='/logout' method="post" class="px-8 py-2">
+                                <form action='/logout' method="post" class="w-full">
                                     @csrf
                                     <button
-                                        class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-800 transition">
+                                        class="w-full bg-purpleMain text-white font-bold py-2 rounded-lg hover:bg-purple-800 transition text-center">
                                         Logout
                                     </button>
                                 </form>
                             @else
                                 <a href="/login"
-                                    class="btnnn rounded-sm border-2 border-black bg-black py-2 px-5 text-white duration-300 ease-out hover:bg-white hover:text-black block mx-8 my-2">
-                                    Login
+                                class="w-full text-center bg-purpleMain text-white py-2 rounded-lg text-base font-semibold hover:bg-purple-800 transition">
+                                Login
                                 </a>
                                 <a href="/register"
-                                    class="btnnn rounded-sm border-2 border-black bg-black py-2 px-5 text-white duration-300 ease-out hover:bg-white hover:text-black block mx-8 my-2">
-                                    Register
+                                class="w-full text-center bg-purpleMain text-white py-2 rounded-lg text-base font-semibold hover:bg-purple-800 transition">
+                                Register
                                 </a>
                             @endif
                         </div>
@@ -61,8 +76,8 @@
                 </ul>
             </nav>
 
-            <div class="flex items-center lg:hidden ml-auto">
-                <button id="hamburger" name="hamburger" type="button" class="block">
+            <div class="flex items-center lg:hidden ml-auto mr-4">
+                <button id="hamburger" name="hamburger" type="button" class="block p-2">
                     <span class="hamburger-line origin-top-left transition duration-300 ease-in-out"></span>
                     <span class="hamburger-line transition duration-300 ease-in-out"></span>
                     <span class="hamburger-line origin-bottom-left transition duration-300 ease-in-out"></span>
@@ -98,7 +113,7 @@
                 @else
                     <div class="flex space-x-3">
                         <a href="/login"
-                            class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-800 transition">
+                            class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-800 transition font-poppins">
                             Login
                         </a>
                         <a href="/register"
