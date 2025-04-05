@@ -8,6 +8,7 @@
   @vite('resources/css/app.css')
 
   <!-- Favicon standar -->
+  
   <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicon_io/favicon-16x16.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon_io/favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('assets/favicon_io/favicon-48x48.png') }}">
@@ -121,95 +122,131 @@
       <img src="{{ asset('assets/img/imgRegister.svg') }}" alt="Login Illustration"
         class="w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg transform -translate-y-6">
     </div>
+
+
+<!-- Form Pendaftaran -->
+<div class="w-full lg:w-2/3 flex items-center justify-center bg-white lg:shadow-lg p-4 lg:p-6 mt-[-50px]">
+  <div class="w-full max-w-md">
+    <div class="text-center mt-12 mb-8 lg:mb-12">
+      <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="NextEdu Logo" class="h-10 lg:h-12 mx-auto">
+      <p class="text-gray-600 font-semibold mt-2">Buat akun Anda</p>
+    </div>
     
-
-    <!-- Form Pendaftaran -->
-    <div class="w-full lg:w-2/3 flex items-center justify-center bg-white lg:shadow-lg p-4 lg:p-6 mt-[-50px]">
-      <div class="w-full max-w-md">
-        <div class="text-center mt-4 mb-8 lg:mb-12">
-          <!-- Perbaiki margin logo -->
-          <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="NextEdu Logo" class="h-10 lg:h-12 mx-auto">
-          <p class="text-gray-600 font-semibold mt-1">Daftar ke akun Anda</p>
-        </div>
-
-        <div class="form-container-register">
-          <form action="/register" method="POST">
-            @csrf
-            <div class="grid-register">
-              <!-- Nama -->
-              <div>
-                <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama:</label>
-                <div class="input-box">
-                  <input type="text" id="nama" name="nama" value="{{ old('nama') }}" class="input-field-register"
-                    placeholder="Masukkan nama..">
-                </div>
-              </div>
-
-              <!-- Asal Sekolah -->
-              <div>
-                <label for="sekolah" class="block mb-2 text-sm font-medium text-gray-900">Asal Sekolah:</label>
-                <div class="input-box">
-                  <input type="text" id="sekolah" name="sekolah" value="{{ old('sekolah') }}"
-                    class="input-field-register" placeholder="Masukkan asal sekolah..">
-                </div>
-              </div>
-
-              <!-- Email -->
-              <div>
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email:</label>
-                <div class="input-box">
-                  <input type="email" id="email" name="email" value="{{ old('email') }}" class="input-field-register"
-                    placeholder="Masukkan email..">
-                </div>
-              </div>
-
-              <!-- No Handphone -->
-              <div>
-                <label for="nomer_hp" class="block mb-2 text-sm font-medium text-gray-900">No Handphone:</label>
-                <div class="input-box">
-                  <input type="text" id="nomer_hp" name="nomer_hp" value="{{ old('nomer_hp') }}"
-                    class="input-field-register" placeholder="Masukkan nomor HP..">
-                </div>
-              </div>
-
-              <!-- Password -->
-              <div>
-                <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password:</label>
-                <div class="input-box">
-                  <input type="password" id="password" name="password" class="input-field-register"
-                    placeholder="Masukkan password..">
-                </div>
-              </div>
-
-              <!-- Konfirmasi Password -->
-              <div>
-                <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900">Konfirmasi
-                  Password:</label>
-                  <div class="input-box">
-                    <input type="password" id="password_confirmation" name="password_confirmation"
-                    class="input-field-register" placeholder="Konfirmasi password..">
-                </div>
-              </div>
+    <div class="form-container-register">
+      <form action="/register" method="POST">
+        @csrf
+        <div class="grid-register">
+          <!-- Form fields unchanged -->
+          <!-- Nama -->
+          <div>
+            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama:</label>
+            <div class="input-box">
+              <input type="text" id="nama" name="nama" value="{{ old('nama') }}" class="input-field-register"
+                placeholder="Masukkan nama..">
+              @error('nama')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
             </div>
+          </div>
 
-            <!-- Tombol Sign Up -->
-         <div class="flex justify-end mt-8">
-    <button type="submit"
-            class="w-full sm:w-1/2 max-w-xs bg-purpleMain text-white py-3 rounded-lg transition hover:bg-purple-700">
-        Sign Up
-    </button>
-    
-</div>
-          
-          
-          
+          <!-- Asal Sekolah -->
+          <div>
+            <label for="sekolah" class="block mb-2 text-sm font-medium text-gray-900">Asal Sekolah:</label>
+            <div class="input-box">
+              <input type="text" id="sekolah" name="sekolah" value="{{ old('sekolah') }}"
+                class="input-field-register" placeholder="Masukkan asal sekolah..">
+              @error('sekolah')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+          </div>
 
-          </form>
+          <!-- Email -->
+          <div>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email:</label>
+            <div class="input-box">
+              <input type="email" id="email" name="email" value="{{ old('email') }}" class="input-field-register"
+                placeholder="Masukkan email..">
+              @error('email')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+          </div>
+
+          <!-- No Handphone -->
+          <div>
+            <label for="nomer_hp" class="block mb-2 text-sm font-medium text-gray-900">No Handphone:</label>
+            <div class="input-box">
+              <input type="text" id="nomer_hp" name="nomer_hp" value="{{ old('nomer_hp') }}"
+                class="input-field-register" placeholder="Masukkan nomor HP..">
+              @error('nomer_hp')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password:</label>
+            <div class="input-box">
+              <input type="password" id="password" name="password" class="input-field-register"
+                placeholder="Masukkan password..">
+              @error('password')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+          </div>
+
+          <!-- Konfirmasi Password -->
+          <div>
+            <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900">Konfirmasi
+              Password:</label>
+            <div class="input-box">
+              <input type="password" id="password_confirmation" name="password_confirmation"
+                class="input-field-register" placeholder="Konfirmasi password..">
+            </div>
+          </div>
         </div>
 
+        <!-- Both buttons container -->
+        <div class="mt-8 space-y-4 button-container max-w-sm mx-auto">
+          <!-- Tombol Sign Up - Fixed consistency in height and padding -->
+          <button type="submit" 
+            class="w-full bg-purpleMain text-white py-3 rounded-lg transition hover:bg-purple-700 h-12 flex items-center justify-center">
+            Sign Up
+          </button>
+          
+          <!-- Improved divider with equal lines -->
+          <div class="flex items-center justify-center my-4">
+            <div class="flex-grow h-px bg-gray-300"></div>
+            <span class="px-4 text-sm text-gray-500">Atau</span>
+            <div class="flex-grow h-px bg-gray-300"></div>
+          </div>
+          
+          <!-- Google Sign-up Button - Consistent height -->
+          <a href="{{ route('login.google') }}"
+            class="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-all h-12">
+            <img src="{{ asset('assets/icon/google-icon.svg') }}" alt="Google" class="w-5 h-5">
+            <span class="font-medium">Daftar dengan Google</span>
+          </a>
+          
+          <!-- Login Link for Existing Users -->
+          <div class="text-center mt-6 pb-4">
+            <p class="text-gray-600">
+              Sudah punya akun? 
+              <a href="/login" class="text-purpleMain font-medium hover:text-purple-800 transition">
+                Login di sini
+              </a>
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  </div>
 
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
 
 </html>

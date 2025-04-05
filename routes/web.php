@@ -15,8 +15,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GenerativeAIController;
 use App\Http\Controllers\HasilTesController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HasilTesShareController;
 use Laravel\Socialite\Facades\Socialite;
-
+use App\Http\Controllers\PasswordResetController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\EmailVerificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,6 +44,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'register']);
 });
 
+Route::get('/testhistory', [App\Http\Controllers\AppController::class, 'showTestHistory'])->name('testdetail');
+Route::get('/testdetail/{id}', [App\Http\Controllers\AppController::class, 'showDetail'])->name('testdetail.detail');
 Route::post('/login', [AuthController::class, 'authenticate']);
 Route::post('/register', [AuthController::class, 'store']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
@@ -73,7 +78,8 @@ Route::get('/tanyaJurpan', function () {
 
 Route::middleware('auth')->group(function () {
     // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'user']);
+    Route::get('/dashboard', [DashboardController::class, 'user'])->name('dashboard');
+
     
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -124,7 +130,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // PDF Export Routes (must be before resource routes to avoid conflicts)
 Route::get('/testimoni/export-pdf', [TestimoniController::class, 'exportPDF'])->name('testimoni.export-pdf');
 Route::get('/saranpekerjaan/export-pdf', [SaranPekerjaanController::class, 'exportPDF']);
-
 // Resource Controllers
 Route::resources([
     'pertanyaan' => PertanyaanController::class,
@@ -156,3 +161,47 @@ Route::prefix('admin')->group(function () {
 
 // Ensure public access to sekolah index
 Route::get('/sekolah', [SekolahController::class, 'index'])->name('sekolah.index');
+// Add this route to your web.php routes file
+
+// PDF Export route
+Route::get('/users/export-pdf', [UserController::class, 'exportPdf'])->name('users.export.pdf');
+
+
+
+// In routes/web.php
+
+// Tambahkan route berikut di routes/web.php
+
+// Route untuk mengunduh hasil tes sebagai PDF
+Route::get('/hasil-tes/{id}/download', [HasilTesController::class, 'downloadPDF'])->name('hasil-tes.download');
+
+// Route untuk melihat hasil tes
+Route::get('/hasil-tes/{id}', [HasilTesController::class, 'show'])->name('hasil-tes.show');
+Route::get('/hasil-tes/{hasilTes}/generate-share-image', [HasilTesShareController::class, 'generateShareImage']);
+// Password Reset Routes
+Route::get('/forgot-password', [PasswordResetController::class, 'showForgotForm'])
+    ->name('password.request');
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetCode'])
+    ->name('password.email');
+Route::get('/reset-password/code', [PasswordResetController::class, 'showCodeForm'])
+    ->name('password.code');
+Route::post('/reset-password/code', [PasswordResetController::class, 'verifyCode'])
+    ->name('password.code.verify');
+Route::get('/reset-password', [PasswordResetController::class, 'showResetForm'])
+    ->name('password.reset');
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])
+    ->name('password.update');
+Route::post('/reset-password/resend', [PasswordResetController::class, 'resendCode'])
+    ->name('password.code.resend');
+
+// Email Verification Routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/email/verify', [EmailVerificationController::class, 'sendVerificationCode'])
+        ->name('verification.notice');
+    Route::get('/email/verify/code', [EmailVerificationController::class, 'showVerificationForm'])
+        ->name('email.verify.code');
+    Route::post('/email/verify/code', [EmailVerificationController::class, 'verifyEmail'])
+        ->name('verification.verify');
+    Route::post('/email/verification-notification', [EmailVerificationController::class, 'resendVerificationCode'])
+        ->name('verification.resend');
+});

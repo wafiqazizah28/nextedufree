@@ -14,13 +14,12 @@
   <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/favicon_io/favicon-96x96.png') }}">
   <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/favicon_io/android-chrome-192x192.png') }}">
   <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('assets/favicon_io/android-chrome-512x512.png') }}">
-  <title>nextEdu</title>
+  <title>Reset Password - nextEdu</title>
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body class="bg-white min-h-screen">
 
   <!-- Navbar -->
@@ -54,67 +53,42 @@
       <li><a href="/tesminatmu" class="block py-1 text-black hover:text-purpleMain">Tes Minatmu</a></li>
       <li><a href="/tanyaJurpan" class="block py-1 text-black hover:text-purpleMain">Edubot</a></li>
       <li><a href="/artikelPage" class="block py-1 text-black hover:text-purpleMain">Artikel</a></li>
-      @auth
-      <li><a href="/dashboard" class="block py-1 text-black hover:text-purpleMain">Riwayat Tes</a></li>
-      <li>
-        <form action="/logout" method="post" class="block py-1">
-          @csrf
-          <button class="w-full text-left text-red-600 hover:text-red-800">Logout</button>
-        </form>
-      </li>
-      @endauth
     </ul>
-
-    <!-- Tombol Login & Signup -->
-    @guest
-    <div class="px-6 pb-8 w-full mt-8 space-y-8">
-      <!-- Tambah space-y-4 untuk jarak antar tombol -->
-      <a href="/login"
-        class="block w-full text-center bg-purpleMain text-white py-2 rounded-md text-base font-semibold shadow-md hover:bg-purple-700 transition">
-        Masuk
-      </a>
-      <a href="/register"
-        class="block w-full text-center border border-purpleMain text-purpleMain py-2 rounded-md text-base font-semibold shadow-md hover:bg-purpleMain hover:text-white transition">
-        Daftar
-      </a>
-    </div>
-
-    @endguest
   </nav>
 
   <!-- Script -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-  const hamburger = document.getElementById("hamburger");
-  const navMenu = document.getElementById("nav-menu");
-  const navbar = document.getElementById("navbar");
-  const lines = hamburger.querySelectorAll(".hamburger-line");
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("nav-menu");
+      const navbar = document.getElementById("navbar");
+      const lines = hamburger.querySelectorAll(".hamburger-line");
 
 
-  // Toggle menu
-  hamburger.addEventListener("click", function () {
-        navMenu.classList.toggle("hidden");
-        navMenu.classList.toggle("flex");
+      // Toggle menu
+      hamburger.addEventListener("click", function () {
+            navMenu.classList.toggle("hidden");
+            navMenu.classList.toggle("flex");
 
-        // Ubah bentuk hamburger jadi "X"
-        lines[0].classList.toggle("rotate-45");
-        lines[0].classList.toggle("translate-y-2.5");
+            // Ubah bentuk hamburger jadi "X"
+            lines[0].classList.toggle("rotate-45");
+            lines[0].classList.toggle("translate-y-2.5");
 
-        lines[1].classList.toggle("opacity-0");
+            lines[1].classList.toggle("opacity-0");
 
-        lines[2].classList.toggle("-rotate-45");
-        lines[2].classList.toggle("-translate-y-2.5");
+            lines[2].classList.toggle("-rotate-45");
+            lines[2].classList.toggle("-translate-y-2.5");
+        });
+
+      // Tambah shadow saat discroll
+      window.addEventListener("scroll", function () {
+          if (window.scrollY > 50) {
+              navbar.classList.add("shadow-md", "bg-white");
+          } else {
+              navbar.classList.remove("shadow-md", "bg-white");
+          }
+      });
     });
-
-  // Tambah shadow saat discroll
-  window.addEventListener("scroll", function () {
-      if (window.scrollY > 50) {
-          navbar.classList.add("shadow-md", "bg-white");
-      } else {
-          navbar.classList.remove("shadow-md", "bg-white");
-      }
-  });
-});
   </script>
 
   <div class="flex flex-col lg:flex-row-reverse w-full h-screen ">
@@ -124,41 +98,40 @@
         class="w-full max-w-xs lg:max-w-md transform -translate-y-6">
     </div>
 
-    <!-- Form Login -->
+    <!-- Form Reset Password -->
     <div class="w-full lg:w-2/3 flex items-center justify-center bg-white lg:shadow-lg p-4 lg:p-6">
       <div class="w-full max-w-md">
         <div class="text-center mt-4 mb-8 lg:mb-12">
-          <!-- Perbaiki margin logo -->
           <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="NextEdu Logo" class="h-10 lg:h-12 mx-auto">
-          <p class="text-gray-600 font-semibold mt-1">Masuk ke akun Anda</p>
+          <p class="text-gray-600 font-semibold mt-1">Reset Password</p>
         </div>
 
-        <form action="/login" method="POST">
-          @csrf
-          <div class="grid grid-cols-1 gap-y-3">
-            <!-- Email -->
-            <div class="form-group">
-              <label class="label" for="email">Email</label>
-              <div class="rectangle">
-                <input type="email" id="email" name="email" value="{{ old('email') }}" class="input-field"
-                  placeholder="Masukkan email..">
-                <div class="icon-container">
-                  <div class="icon email-icon"></div>
-                </div>
-              </div>
-              @error('email')
-              <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-              @enderror
-            </div>
+        @if (session('success'))
+          <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg">
+            {{ session('success') }}
+          </div>
+        @endif
 
-            <!-- Password -->
+        @if (session('error'))
+          <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+            {{ session('error') }}
+          </div>
+        @endif
+
+        <form action="{{ route('password.update') }}" method="POST">
+          @csrf
+          <input type="hidden" name="token" value="{{ $token }}">
+          <input type="hidden" name="email" value="{{ $email }}">
+          
+          <div class="grid grid-cols-1 gap-y-3">
+            <!-- Password Baru -->
             <div class="form-group">
-              <label class="label" for="password">Password</label>
+              <label class="label" for="password">Password Baru</label>
               <div class="rectangle">
                 <input type="password" id="password" name="password" class="input-field"
-                  placeholder="Masukkan password..">
+                    placeholder="Masukkan password baru..">
                 <div class="icon-container">
-                  <div class="icon lock-icon"></div>
+                    <div class="icon lock-icon"></div>
                 </div>
               </div>
               @error('password')
@@ -166,33 +139,24 @@
               @enderror
             </div>
 
-            <!-- Lupa Password -->
-            <div class="flex justify-end items-center -mt-1 -left-20">
-              <!-- In your login page, change this link: -->
-              <a href="{{ route('password.request') }}" class="forgot-password">Lupa password?</a>
+            <!-- Konfirmasi Password -->
+            <div class="form-group">
+              <label class="label" for="password_confirmation">Konfirmasi Password</label>
+              <div class="rectangle">
+                <input type="password" id="password_confirmation" name="password_confirmation" class="input-field"
+                    placeholder="Konfirmasi password baru..">
+                <div class="icon-container">
+                    <div class="icon lock-icon"></div>
+                </div>
+              </div>
             </div>
 
-            <!-- Tombol Login -->
+            <!-- Tombol Reset Password -->
             <button type="submit"
               class="w-full text-white py-2.5 lg:py-3 rounded-lg mt-6 lg:mt-8 transition bg-[#493D9E] hover:bg-purple-700">
-              Login
+              Reset Password
             </button>
-            <div class="flex-row">
-              <div class="line"></div>
-              <span class="atau">Atau</span>
-              <div class="line-6"></div>
-            </div>
-
-            <!-- Daftar -->
-            <a href="/register"
-              class="w-full border border-[#493D9E] text-[#493D9E] py-2.5 lg:py-3 rounded-lg text-base lg:text-lg font-semibold text-center block hover:bg-[#493D9E] hover:text-white transition duration-300">
-              Register
-            </a>
-
-            <!-- Login dengan Media Sosial -->
-            <div class="text-center mt-4 text-gray-500 text-sm">
-              Atau, login melalui <a href="{{ route('login.google') }}" class="text-purpleMain font-semibold">Google</a>
-            </div>
+          </div>
         </form>
       </div>
     </div>

@@ -9,6 +9,8 @@ use App\Models\Jurusan;
 use App\Models\Artikel;
 use App\Models\Pertanyaan;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SaranPekerjaanController extends Controller
 {
@@ -55,17 +57,27 @@ class SaranPekerjaanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSaranPekerjaanRequest $request)
+    public function store(Request $request)
     {
         $validatedData = $request->validate([
             'jurusan_id' => 'required|exists:jurusan,id',
-            'saran_pekerjaan' => 'required|string|max:255'
+            'saran_pekerjaan' => 'required|string|max:255',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
-        SaranPekerjaan::create([
+        $data = [
             'jurusan_id' => $validatedData['jurusan_id'],
             'saran_pekerjaan' => $validatedData['saran_pekerjaan']
-        ]);
+        ];
+        
+        // Upload gambar jika ada
+        if ($request->hasFile('gambar')) {
+            $gambar = $request->file('gambar');
+            $gambarPath = $gambar->store('public/saran-pekerjaan');
+            $data['gambar'] = str_replace('public/', '', $gambarPath);
+        }
+        
+        SaranPekerjaan::create($data);
         
         return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil ditambahkan');
     }
@@ -75,7 +87,7 @@ class SaranPekerjaanController extends Controller
      */
     public function show(SaranPekerjaan $saranPekerjaan)
     {
-        return view('components.admin.saranpekerjaan.pdf', [
+        return view('components.admin.saranpekerjaan.show', [
             'saranPekerjaan' => $saranPekerjaan,
             'jurusan' => $saranPekerjaan->jurusan
         ]);
@@ -84,8 +96,10 @@ class SaranPekerjaanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SaranPekerjaan $saranPekerjaan)
+    public function edit($id)
     {
+        $saranPekerjaan = SaranPekerjaan::findOrFail($id);
+    
         return view('components.admin.saranpekerjaan.edit', [
             'saranPekerjaan' => $saranPekerjaan,
             'jurusanInfo' => Jurusan::all(),
@@ -98,26 +112,46 @@ class SaranPekerjaanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSaranPekerjaanRequest $request, SaranPekerjaan $saranPekerjaan)
-    {
-        $validatedData = $request->validate([
-            'jurusan_id' => 'required|exists:jurusan,id',
-            'saran_pekerjaan' => 'required|string|max:255' // Changed from saranpekerjaan to saran_pekerjaan
-        ]);
+   /**
+ * Update the specified resource in storage.
+ */
+public function update(Request $request, $id)
+{
+    // Temukan model
+    $saranPekerjaan = SaranPekerjaan::findOrFail($id);
+    
+    // Validasi input
+    $validatedData = $request->validate([
+        'jurusan_id' => 'required|exists:jurusan,id',
+        'saran_pekerjaan' => 'required|string|max:255',
+        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+    ]);
+    
+    // Update data
+    $saranPekerjaan->jurusan_id = $validatedData['jurusan_id'];
+    $saranPekerjaan->saran_pekerjaan = $validatedData['saran_pekerjaan'];
+    
+    // Handle file upload jika ada
+    if ($request->hasFile('gambar')) {
+        // Hapus gambar lama jika ada
+        if ($saranPekerjaan->gambar) {
+            Storage::delete('public/' . $saranPekerjaan->gambar);
+        }
         
-        $saranPekerjaan->update($validatedData);
-        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil diubah');
+        // Simpan gambar baru
+        $imagePath = $request->file('gambar')->store('saran-pekerjaan', 'public');
+        $saranPekerjaan->gambar = $imagePath;
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SaranPekerjaan $saranPekerjaan)
-    {
-        $saranPekerjaan->delete();
-        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil dihapus');
-    }
-
+    
+    // Tambahkan debugging
+    // dd($saranPekerjaan, $request->all(), 'About to save');
+    
+    // Simpan perubahan
+    $saranPekerjaan->save();
+    
+    // Redirect dengan pesan sukses
+    return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil diupdate');
+}
     /**
      * Export data to PDF.
      */
@@ -127,9 +161,6 @@ class SaranPekerjaanController extends Controller
             // Ambil semua data saran pekerjaan
             $saranPekerjaanList = SaranPekerjaan::orderBy('jurusan_id')->get();
             $jurusanInfo = Jurusan::all();
-    
-            // Cek apakah data benar-benar ada
-            dd($saranPekerjaanList); // Hentikan eksekusi dan tampilkan data
     
             // Buat PDF
             $pdf = \PDF::loadView('components.admin.saranpekerjaan.pdf', [
@@ -143,5 +174,4 @@ class SaranPekerjaanController extends Controller
             return redirect('/saranpekerjaan')->with('error', 'Gagal mengekspor PDF: ' . $e->getMessage());
         }
     }
-    
 }

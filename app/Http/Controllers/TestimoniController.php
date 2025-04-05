@@ -47,7 +47,6 @@ class TestimoniController extends Controller
     public function create()
     {
         // If you need a form to create testimonials
-        return view('components.admin.testimoni.create');
     }
 
     /**
@@ -57,20 +56,31 @@ class TestimoniController extends Controller
     {
         $request->validate([
             'testimoni' => 'required|string',
-            'foto_profil' => 'nullable|image|max:2048',
+            'jurusan_id' => 'required|exists:jurusan,id',
+            'asal_sekolah' => 'nullable|string|max:255',
         ]);
-
-        $fotoPath = $request->file('foto_profil') 
-            ? $request->file('foto_profil')->store('profile_photos', 'public') 
-            : null;
-
+    
+        // Get user's school if they're logged in
+        $Sekolah = null;
+        if (Auth::check()) {
+            $Sekolah = Auth::user()->sekolah;
+        }
+    
+        // Create the testimoni record
         Testimoni::create([
-            'user_id' => Auth::id(),
-            'jurusan_id' => Auth::user()->jurusan_id, // Changed from nama_jurusan_id to jurusan_id
+            'user_id' => Auth::id() ?? 1, // Use 1 as fallback if not logged in
+            'jurusan_id' => $request->jurusan_id,
             'testimoni' => $request->testimoni,
-            // Removed asal_sekolah and foto_profil fields as they belong to the User model
+            'asal_sekolah' => $request->sekolah ?? $Sekolah, // Use provided value or user's value
         ]);
-
+    
+        // If user is logged in, update their asal_sekolah field if provided
+        if (Auth::check() && $request->filled('asal_sekolah')) {
+            $user = Auth::user();
+            $user->sekolah = $request->sekolah;
+            $user->save();
+        }
+    
         return redirect()->back()->with('success', 'Testimoni berhasil dikirim');
     }
 

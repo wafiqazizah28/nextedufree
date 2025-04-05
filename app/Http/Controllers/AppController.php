@@ -64,7 +64,7 @@ class AppController extends Controller
         $saranPekerjaan = SaranPekerjaan::all(); // Ganti dari "solutions"
         $artikelList = Artikel::all(); // Ganti dari "medicines"
 
-        return view('pages.tesminatmu', [
+        return view('pages.tesMinatmu', [
             "pertanyaanList" => $pertanyaanList,
             "jurusanList" => $jurusanList,
             "saranPekerjaan" => $saranPekerjaan,
@@ -99,8 +99,12 @@ class AppController extends Controller
 
         return response()->json($artikelList);
     }
-
-    public function artikel()
+    public function showDetail($id)
+    {
+        $testDetail = HasilTes::with('user')->findOrFail($id);
+        return view('pages.testdetail', compact('testDetail'));
+    }
+       public function artikel()
     {
         $artikelList = Artikel::query();
         $kategoriList = Kategori::all(); // Get all categories

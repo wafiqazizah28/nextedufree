@@ -9,16 +9,20 @@ class SaranPekerjaan extends Model
 {
     use HasFactory;
     
-    protected $table = 'saran_pekerjaan'; // Make sure this matches your actual table name
+    // Pastikan nama tabelnya benar
+    protected $table = 'saran_pekerjaan';
     
+    // Pastikan kolom yang bisa diisi (fillable) termasuk saran_pekerjaan
     protected $fillable = [
         'jurusan_id',
-        'saran_pekerjaan'
+        'saran_pekerjaan',
+        'gambar'
     ];
-    
-    // Relationship with Jurusan model
+    // Di model SaranPekerjaan
+protected $primaryKey = 'id'; // Pastikan ini benar sesuai dengan kolom di tabel
+    // Relasi ke Jurusan
     public function jurusan()
     {
-        return $this->belongsTo(Jurusan::class, 'jurusan_id');
+        return $this->belongsTo(Jurusan::class);
     }
 }

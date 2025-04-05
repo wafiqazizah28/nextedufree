@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Testimoni extends Model
 {
+    public $timestamps = false;
+
     use HasFactory;
 
     protected $table = 'testimonis';
-    protected $fillable = ['user_id', 'jurusan_id', 'asal_sekolah', 'testimoni', 'foto_profil'];
+    protected $fillable = ['user_id', 'jurusan_id', 'asal_sekolah', 'testimoni'];
 
     // Relasi ke User
     public function user()
