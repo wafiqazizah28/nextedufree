@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="pt-10 pb-12 lg:pt-16 bg-white min-h-screen">
+<section class="bg-white min-h-screen">
     <!-- Hero Banner Background -->
     <div class="relative w-full min-h-[400px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[580px] flex flex-col justify-center items-center px-4 sm:px-6 md:px-9 bg-no-repeat bg-cover bg-center"
         style="background-image: url('{{ asset('assets/img/banner2.png') }}');">

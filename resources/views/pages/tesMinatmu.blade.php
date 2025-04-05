@@ -1,16 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="pt-14 pb-12 lg:pt-24 bg-white min-h-screen">
-    <div class="relative w-full min-h-[580px] flex flex-col justify-center items-end pr-10 
-    px-4 bg-no-repeat bg-cover bg-center text-right" style="background-image: url('{{ asset('assets/img/bannerTes.png') }}');">
-    <h1 class="text-[2rem] sm:text-[2.5rem] lg:text-[3rem] text-white font-bold leading-tight mb-2">
-        Tes minatmu sekarang!       
-    </h1>
-    <h2 class="text-1xl sm:text-1xl lg:text-2xl text-white font-regular mt-0">
-        Tes ini disupervisi oleh guru BK     
-    </h2>
+<section class=" bg-white min-h-screen">
+    <div class="relative bg-cover bg-center h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80  shadow-md"
+    style="background-image: url('{{ asset('assets/img/bannerTes.png') }}');">
+    
+    @if(auth()->check())
+    <div class="absolute top-4 right-10 sm:top-6 sm:right-16">
+        <h1 class="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold drop-shadow-lg">
+            Hai, {{ auth()->user()->nama }} 👋
+        </h1>
+    </div>
+    
+    @endif
 </div>
+
 
 
     <div class=" ">

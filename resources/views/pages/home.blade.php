@@ -5,71 +5,81 @@
 
 <section id="Home" class="pt-16 pb-16 lg:pt-24 lg:pb-20 bg-backgroundLight min-h-screen max-w-screen overflow-hidden">
     <div class="container mx-auto px-4">
+        <!-- Hero Section -->
         <div class="flex flex-wrap items-center">
-            <div class="w-full self-center px-4 lg:w-1/2">
-                <div class="flex flex-col">
+            <!-- Text Content - Full width on mobile, half on desktop -->
+            <div class="w-full self-center px-4 lg:w-1/2 mb-8 lg:mb-0">
+                <div class="flex flex-col  md:pl-4">
                     <div class="flex space-x-2">
-                        <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white" data-aos="fade-up">
-                            Temukan</h1>
-                    </div>
-                    <div class="flex space-x-2">
-                        <h1 id="typing-text" class="text-5xl lg:text-6xl font-bold text-purpleMain" data-aos="fade-up">
+                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white" data-aos="fade-up">
+                            Temukan
                         </h1>
-                        <h1 class="text-5xl lg:text-6xl font-bold text-gray-900" data-aos="fade-up">Sekarang</h1>
+                    </div>
+                    <div class="flex space-x-2">
+                        <h1 id="typing-text" class="text-3xl md:text-4xl lg:text-5xl font-bold text-purpleMain" data-aos="fade-up">
+                        </h1>
+                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900" data-aos="fade-up">
+                            Sekarang
+                        </h1>
                     </div>
                 </div>
-
-                <p class="mt-4 mb-4 max-w-md text-slate-500" data-aos="fade-up">
-                    Temukan informasi lengkap seputar jurusan yang sesuai dengan minat dan bakatmu.
-                </p>
-
-                <div class="mb-6" data-aos="fade-up">
-                    <button type="button" onclick="window.location.href='/tesminatmu'"
-                    class="flex items-center gap-2 text-purpleSecondarry hover:text-white border border-purpleSecondarry hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                    Lihat Potensi
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </button>
                 
+
+                <p class="mt-6 mb-4 ml-2 max-w-md text-slate-500" data-aos="fade-up">
+                    Temukan informasi lengkap seputar jurusan yang sesuai dengan minat dan bakatmu.
+                  </p>
+                  
+
+                  <div class="mb-6 mt-4 ml-2" data-aos="fade-up">
+                    <button type="button" onclick="window.location.href='/tesminatmu'"
+                        class="flex items-center gap-2 text-purpleSecondarry hover:text-white border border-purpleSecondarry hover:bg-purpleHover focus:ring-4 focus:outline-none focus:ring-purple-200 font-medium rounded-lg text-base px-6 py-3 text-center">
+                        Lihat Potensi
+                        <svg class="rtl:rotate-180 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </button>
                 </div>
+                
+                
             </div>
 
-            <!-- Bagian Gambar -->
-            <div class="w-full lg:w-1/2 flex justify-center lg:justify-end lg:pl-32">
-                <img src="/assets/img/hero.svg" class="float-animation max-w-[420px] h-auto" alt="gambar1"
+            <!-- Hero Image - Full width on mobile, half on desktop -->
+            <div class="w-full lg:w-1/2 flex justify-center lg:justify-end px-4 lg:pr-20 lg:pl-32">
+                <img src="/assets/img/hero.svg" class="float-animation max-w-full lg:max-w-[420px] h-auto" alt="gambar1"
                     data-aos="zoom-in">
             </div>
-
         </div>
 
-        <!-- Feature Boxes -->
-        <div class="container mx-auto mt-6">
+        <!-- Feature Boxes - Centered on all screens -->
+        <div class="container mx-auto mt-7 px-4">
             <div class="flex flex-wrap justify-center gap-3">
-                <div class="flex flex-wrap justify-center items-stretch gap-3 bg-white rounded-lg p-3 shadow-md">
-                    <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
-                        <h3 class="text-sm font-semibold text-gray-900 mb-1">Minat</h3>
-                        <p class="text-xxs text-gray-500 text-center">Hal yang kamu senangi</p>
-                    </div>
+                <div class="flex flex-wrap justify-center items-stretch gap-3 bg-white rounded-lg p-3 shadow-md w-full md:w-auto">
+                    <!-- Mobile: Stack vertically, Desktop: All in one row -->
+                    <div class="flex flex-col lg:flex-row justify-center items-center gap-4 w-full">
+                        <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
+                            <h3 class="text-sm font-semibold text-gray-900 mb-1">Minat</h3>
+                            <p class="text-xxs text-gray-500 text-center">Hal yang kamu senangi</p>
+                        </div>
 
-                    <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
-                        <h3 class="text-sm font-semibold text-gray-900 mb-1">Bakat</h3>
-                        <p class="text-xxs text-gray-500 text-center">Skills yang kamu miliki</p>
-                    </div>
+                        <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
+                            <h3 class="text-sm font-semibold text-gray-900 mb-1">Bakat</h3>
+                            <p class="text-xxs text-gray-500 text-center">Skills yang kamu miliki</p>
+                        </div>
 
-                    <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
-                        <h3 class="text-sm font-semibold text-gray-900 mb-1">Hasil</h3>
-                        <p class="text-xxs text-gray-500 text-center">Lihat Hasilnya</p>
-                    </div>
-
-                    <div class="flex items-center">
-                        <button onclick="window.location.href='/tanyaJurpan/page'"
-                        class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors">
-                        Tanya Jurpan
-                    </button>
-                    
+                        <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
+                            <h3 class="text-sm font-semibold text-gray-900 mb-1">Hasil</h3>
+                            <p class="text-xxs text-gray-500 text-center">Lihat Hasilnya</p>
+                        </div>
+                        
+                        <!-- Button integrated in the same row for desktop -->
+                        <div class="flex items-center justify-center w-full lg:w-auto mt-4 lg:mt-0">
+                            <button onclick="window.location.href='/tanyaJurpan/page'"
+                            class="w-full lg:w-auto bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purpleHover transition-colors">
+                            Tanya Jurpan
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -109,55 +119,55 @@
 </script>
 
 <section id="tutorial"
-    class="pt-16 pb-20 lg:pt-24 lg:pb-28 bg-backgroundPrimary h-w-screen max-w-screen overflow-hidden">
-    <div class="container">
+    class="pt-12 pb-16 lg:pt-24 lg:pb-28 bg-backgroundPrimary h-w-screen max-w-screen overflow-hidden">
+    <div class="container px-4 mx-auto">
         <!-- Header Section -->
-        <div class="text-center mb-12" data-aos="fade-up">
-            <h2 class="text-5xl font-black mb-4">Hal yang perlu <span class="text-purpleMain">dilakukan</span></h2>
-            <p class="text-gray-600 max-w-2xl text-2xl mx-auto">
+        <div class="text-center mb-8 lg:mb-12" data-aos="fade-up">
+            <h2 class="text-3xl lg:text-5xl font-black mb-3 lg:mb-4">Hal yang perlu <span class="text-purpleMain">dilakukan</span></h2>
+            <p class="text-gray-600 max-w-2xl text-lg lg:text-2xl mx-auto">
                 Kami memastikan Anda menemukan jurusan yang tepat dengan perencanaan matang dan sesuai dengan kebutuhan
                 Anda.
             </p>
         </div>
 
         <!-- Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6 max-w-6xl mx-auto">
 
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-purpleMain transition-all duration-300 
+            <div class="bg-white p-5 lg:p-6 rounded-lg shadow-sm border border-purpleMain transition-all duration-300 
             hover:bg-gradient-to-b hover:from-white hover:to-[#FDE3D7] hover:text-black group" data-aos="fade-right">
-                <div class="mb-4">
+                <div class="mb-3 lg:mb-4">
                     <img src="{{ asset('assets/icon/tutorial1.svg') }}" alt="Daftar Account"
-                        class="w-10 h-10 text-[#FA7436]">
+                        class="w-8 h-8 lg:w-10 lg:h-10 text-[#FA7436]">
                 </div>
-                <h3 class="text-xl font-semibold mb-2 text-black">Daftar Account</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-black">Daftar Account</h3>
+                <p class="text-sm lg:text-base text-gray-600 mb-4">
                     Daftar akunmu untuk mendapatkan hasil jurusanmu
                 </p>
             </div>
             <!-- Card 2 -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-[#338DFF] transition-all duration-500 
+            <div class="bg-white p-5 lg:p-6 rounded-lg shadow-sm border border-[#338DFF] transition-all duration-500 
         hover:bg-gradient-to-b hover:from-white hover:via-[#F0F8FF] hover:via-80% hover:to-[#E6F2FF] hover:text-black group"
                 data-aos="fade-up">
-                <div class="mb-4">
+                <div class="mb-3 lg:mb-4">
                     <img src="{{ asset('assets/icon/tutorial2.svg') }}" alt="Pembayaran"
-                        class="w-10 h-10 text-[#338DFF]">
+                        class="w-8 h-8 lg:w-10 lg:h-10 text-[#338DFF]">
                 </div>
-                <h3 class="text-xl font-semibold mb-2 text-[#338DFF]">Pembayaran</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-[#338DFF]">Pembayaran</h3>
+                <p class="text-sm lg:text-base text-gray-600 mb-4">
                     Pembayaran dengan mudah agar kamu bisa melakukan tes minatmu
                 </p>
             </div>
 
             <!-- Card 3 -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-[#F4B400] transition-all duration-500 
+            <div class="bg-white p-5 lg:p-6 rounded-lg shadow-sm border border-[#F4B400] transition-all duration-500 
         hover:bg-gradient-to-b hover:from-white hover:via-[#FEF4E6] hover:via-80% hover:to-[#FDE7C5] hover:text-black group"
                 data-aos="fade-left">
-                <div class="mb-4">
+                <div class="mb-3 lg:mb-4">
                     <img src="{{ asset('assets/icon/tutorial3.svg') }}" alt="Lihat Hasil"
-                        class="w-10 h-10 text-[#F4B400]">
+                        class="w-8 h-8 lg:w-10 lg:h-10 text-[#F4B400]">
                 </div>
-                <h3 class="text-xl font-semibold mb-2 text-[#F4B400]">Lihat Hasil</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-[#F4B400]">Lihat Hasil</h3>
+                <p class="text-sm lg:text-base text-gray-600 mb-4">
                     Setelah itu kamu bisa menyaksikan hasil dari tes minatmu
                 </p>
             </div>

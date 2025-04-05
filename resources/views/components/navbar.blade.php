@@ -1,9 +1,34 @@
-<header class="absolute top-0 left-0 z-10 w-full bg-transparent">
+<!-- Simpan file ini sebagai components/navbar.blade.php -->
+
+<header id="navbar" class="fixed top-0 left-0 z-10 w-full bg-white transition-all duration-300">
     <!-- Add Poppins font -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
         .font-poppins {
             font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Style untuk hamburger menu */
+        .hamburger-line {
+            @apply my-2 block h-[2px] w-[30px] bg-dark;
+        }
+        
+        .hamburger-active > span:nth-child(1) {
+            @apply rotate-45;
+        }
+        
+        .hamburger-active > span:nth-child(2) {
+            @apply scale-0;
+        }
+        
+        .hamburger-active > span:nth-child(3) {
+            @apply -rotate-45;
+        }
+        
+        /* Style untuk navbar saat scroll */
+        .navbar-fixed {
+            @apply fixed z-[9999] bg-white bg-opacity-80 backdrop-blur-sm;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
     </style>
     <div class="container max-w-6xl mx-auto">
@@ -168,3 +193,35 @@
         </div>
     </div>
 </header>
+
+<!-- Tambahkan script ini di bagian bawah file atau di app.js -->
+<script>
+    // Fungsi untuk mengatur navbar fixed saat scrolling
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        const fixedNav = navbar.offsetTop;
+        
+        if (window.pageYOffset > fixedNav) {
+            navbar.classList.add('navbar-fixed');
+        } else {
+            navbar.classList.remove('navbar-fixed');
+        }
+    });
+    
+    // Fungsi hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    
+    hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('hamburger-active');
+        navMenu.classList.toggle('hidden');
+    });
+    
+    // Klik di luar hamburger untuk menutup menu
+    window.addEventListener('click', function(e) {
+        if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.add('hidden');
+            hamburger.classList.remove('hamburger-active');
+        }
+    });
+</script>

@@ -76,8 +76,7 @@
                                 @endif
                             </div>
                             <div class="p-4">
-                                <h4 class="text-lg font-semibold text-purple-700">{{ $saran->pekerjaan ?? 'Tidak ada judul' }}</h4>
-                                @if(isset($jurusan) && $jurusan)
+                                <h4 class="text-lg font-semibold text-purple-700">{{ $saran->saran_pekerjaan ?? 'Tidak ada judul' }}</h4>                                @if(isset($jurusan) && $jurusan)
                                 <div class="mt-2 flex items-center text-sm text-gray-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 

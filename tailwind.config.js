@@ -22,6 +22,8 @@ export default {
         graySecondary: "#EEEEEE",
         hitam: "#000000",
        foocolor: "F7F8FC",
+       blackUnder: "#222222",
+       purpleHover: "#5041BC",
       },
       screens: {
        },

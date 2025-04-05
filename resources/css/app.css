@@ -423,8 +423,7 @@ html, body {
     display: flex;
     justify-content: flex-start; /* Geser ke kiri */
     align-items: center;
-    padding-right: 80%; /* Sesuaikan sesuai kebutuhan */
-    width: 100%;
+     width: 100%;
   }
   
   
@@ -444,7 +443,7 @@ html, body {
   /* Kontainer untuk label dan input */
   .input-box {
     width: 100%;
-    height: 48px;
+    height: 45px;
     min-width: 300px; /* Perbesar lebar minimal */
     max-width: 500px; /* Batasi agar tidak terlalu panjang di layar besar */
     background: #eeeeee;

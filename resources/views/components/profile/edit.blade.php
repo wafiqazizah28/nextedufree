@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="bg-backgroundLight min-h-screen flex items-center justify-center py-24 md:py-32">
+<section class="bg-backgroundLight min-h-screen flex items-center justify-center">
     
     <div class="container mx-auto px-4">
 
