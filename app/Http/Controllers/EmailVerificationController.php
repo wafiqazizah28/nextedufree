@@ -68,7 +68,7 @@ class EmailVerificationController extends Controller
         
         // Update the code in the database
         $user->verification_code = $code;
-        $user->verification_code_expires_at = now()->addHour();
+        $user->reset_code_expires_at = now()->addMinutes(3);
         $user->save();
         
         // Send the email with the code

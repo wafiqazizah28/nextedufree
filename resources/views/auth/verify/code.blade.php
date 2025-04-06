@@ -145,7 +145,7 @@
           </div>
 
           <div class="flex justify-between items-center mb-6">
-            <span class="timer">Kode Kadaluarsa <span id="countdown">01:00:00</span></span>
+            <span class="timer">Kode Kadaluarsa <span id="countdown">03:00</span></span>
             
             <button type="button" id="resendBtn" class="text-[#493D9E] hover:text-purple-700 text-sm font-medium">
               Kirim Ulang
@@ -190,23 +190,19 @@
       });
       
       // Set up countdown timer - 1 hour
-      let timeLeft = 3600; // 1 hour in seconds
+      let timeLeft = 180; // 3 minutes in seconds
       const countdownEl = document.getElementById('countdown');
       
       const timer = setInterval(() => {
-        const hours = Math.floor(timeLeft / 3600);
-        const minutes = Math.floor((timeLeft % 3600) / 60);
-        const seconds = timeLeft % 60;
+        const minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
         
-        const formattedHours = String(hours).padStart(2, '0');
-        const formattedMinutes = String(minutes).padStart(2, '0');
-        const formattedSeconds = String(seconds).padStart(2, '0');
-        
-        countdownEl.innerHTML = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+        countdownEl.innerHTML = `${minutes}:${seconds}`;
         
         if (timeLeft <= 0) {
           clearInterval(timer);
-          countdownEl.innerHTML = "00:00:00";
+          countdownEl.innerHTML = "00:00";
         }
         timeLeft--;
       }, 1000);

@@ -47,7 +47,7 @@ class AuthController extends Controller
             $request->session()->regenerate(); // Hindari session fixation attack
 
             // Tentukan redirect berdasarkan peran user
-            $redirectLink = Auth::user()->is_admin ? '/adminDashboard' : '/dashboard';
+            $redirectLink = Auth::user()->is_admin ? '/adminDashboard' : '/admminDashboard';
 
             return redirect()->intended($redirectLink)->with('success', 'Logged in successfully as ' . Auth::user()->nama);
         }
@@ -65,11 +65,11 @@ class AuthController extends Controller
             'nama' => 'required|string|max:255',
             'sekolah' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'nomer_hp' => 'required|string|max:15|unique:users,nomer_hp',
+            'nomer_hp' => 'required|regex:/^[0-9]+$/|min:10|max:15|unique:users,nomer_hp',
             'password' => 'required|min:6|max:10|confirmed'
         ], [
             'email.unique' => 'Email ini sudah digunakan oleh pengguna lain.',
-            'nomer_hp.unique' => 'Nomor HP ini sudah digunakan oleh pengguna lain.',
+            'nomer_hp.unique' => 'Nomor HP harus angka dan belum terdaftar.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'password.min' => 'Password minimal 6 karakter.',
             'password.max' => 'Password maksimal 10 karakter.'
@@ -83,7 +83,7 @@ class AuthController extends Controller
             // Generate verification code
             $code = rand(1000, 9999);
             $validatedData['verification_code'] = $code;
-            $validatedData['verification_code_expires_at'] = now()->addHour();
+            $validatedData['verification_code_expires_at'] = now()->addMinute();
             
             // Simpan user ke database
             $user = User::create($validatedData);

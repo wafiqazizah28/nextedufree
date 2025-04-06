@@ -30,6 +30,24 @@
             @apply fixed z-[9999] bg-white bg-opacity-80 backdrop-blur-sm;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
+        /* Style untuk avatar dan dropdown */
+        .avatar-dropdown {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .avatar-dropdown:hover .dropdown-menu {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu {
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
     </style>
     <div class="container max-w-6xl mx-auto">
         <div class="relative flex items-center justify-between lg:py-2 py-1">
@@ -112,27 +130,37 @@
                 </button>
             </div>
 
-            <div class="ml-auto flex items-center px-4 lg:flex hidden space-x-3">
+            <!-- Updated User Avatar Section -->
+            <div class="ml-auto flex items-center px-4 lg:flex hidden">
                 @if (auth()->user() !== null)
-                    <div class="relative group">
-                        <button class="flex items-center space-x-2 focus:outline-none">
+                    <div class="avatar-dropdown relative">
+                        <button class="flex items-center space-x-3 focus:outline-none py-1 px-2 rounded-lg hover:bg-gray-100 transition-all max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
                             @if(auth()->user()->foto)
                                 <img src="{{ asset('storage/' . auth()->user()->foto) }}" alt="Foto Profil"
-                                    class="w-10 h-10 rounded-full object-cover border-2 border-gray-300">
+                                    class="w-10 h-10 rounded-full object-cover  shadow-sm">
                             @else
                                 <div
-                                    class="w-10 h-10 bg-gray-300 flex items-center justify-center rounded-full text-sm font-bold">
+                                    class="w-10 h-10 bg-purple-100 flex items-center justify-center rounded-full text-sm font-bold text-purpleMain border-2 border-purple-200 shadow-sm">
                                     {{ strtoupper(substr(auth()->user()->nama, 0, 1)) }}
                                 </div>
                             @endif
-                            <span class="text-black font-medium">{{ auth()->user()->nama }}</span>
+                        
+                            <div class="flex flex-col items-start truncate">
+                                <span class="text-gray-800 font-medium text-sm font-poppins truncate">{{ auth()->user()->nama }}</span>
+                            </div>
+                        
+                            <!-- Dropdown arrow icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
                         </button>
+                        
 
                         <!-- Improved dropdown menu styling -->
-                        <div class="absolute right-0 mt-2 w-52 bg-white rounded-lg shadow-lg overflow-hidden invisible group-hover:visible transition-all duration-300 opacity-0 group-hover:opacity-100 transform group-hover:translate-y-0 translate-y-1 z-50">
+                        <div class="dropdown-menu absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg overflow-hidden z-50">
                             <div class="py-3 px-4 bg-purple-50 border-b border-gray-200">
                                 <p class="text-sm font-medium text-gray-700">Selamat datang</p>
-                                <p class="text-sm font-bold text-gray-900">{{ auth()->user()->nama }}</p>
+                                <p class="text-sm font-bold text-gray-900 truncate">{{ auth()->user()->nama }}</p>
                             </div>
                             <div class="py-1">
                                 <a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purpleMain">

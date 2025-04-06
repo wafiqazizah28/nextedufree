@@ -16,17 +16,45 @@
             
             <div class="w-full max-w-md mt-2 sm:mt-3">
                 <form id="search-form" action="/artikel" method="get" 
-                    class="search-form flex items-center bg-white bg-opacity-90 rounded-lg px-4 py-2 shadow-lg">
+                    class="search-form flex items-center bg-white bg-opacity-90 rounded-lg px-4 py-2 shadow-lg"
+                    onsubmit="return validateSearchForm()">
                     <button type="submit" class="search-icon text-gray-600 mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </button>
-                    <input id="search-input" type="text" name="search" placeholder="Ingin mencari tahu info sekolah dan artikel lainnya?" 
-                        class="search-input w-full bg-transparent border-none focus:outline-none text-xs sm:text-sm">
+                    <input id="search-input" type="text" name="search" 
+                        placeholder="Ingin mencari tahu info sekolah dan artikel lainnya?" 
+                        class="search-input w-full bg-transparent border-none focus:outline-none text-xs sm:text-sm"
+                        pattern="[A-Za-z0-9\s]+" 
+                        title="Hanya huruf, angka, dan spasi yang diperbolehkan"
+                        maxlength="100">
                 </form>
             </div>
+            
             <script>
+            function validateSearchForm() {
+                const searchInput = document.getElementById('search-input');
+                const searchValue = searchInput.value.trim();
+                
+                // Validasi input: hanya izinkan alfanumerik dan spasi
+                const regex = /^[A-Za-z0-9\s]+$/;
+                
+                if (!regex.test(searchValue)) {
+                    alert('Pencarian hanya boleh berisi huruf, angka, dan spasi.');
+                    return false;
+                }
+                
+                // Sanitasi input
+                searchInput.value = searchValue
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+                
+                return true;
+            }
+            
                 document.getElementById("search-form").addEventListener("submit", function(event) {
                     event.preventDefault(); // Mencegah reload halaman
                     

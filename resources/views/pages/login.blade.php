@@ -174,25 +174,28 @@
 
             <!-- Tombol Login -->
             <button type="submit"
-              class="w-full text-white py-2.5 lg:py-3 rounded-lg mt-6 lg:mt-8 transition bg-[#493D9E] hover:bg-purple-700">
-              Login
+              class="w-full text-white py-2.5 lg:py-3 rounded-lg mt-6 lg:mt-8 transition bg-[#493D9E] hover:bg-purpleHover font-semibold">
+              Masuk
             </button>
+
             <div class="flex-row">
               <div class="line"></div>
               <span class="atau">Atau</span>
               <div class="line-6"></div>
             </div>
 
-            <!-- Daftar -->
-            <a href="/register"
-              class="w-full border border-[#493D9E] text-[#493D9E] py-2.5 lg:py-3 rounded-lg text-base lg:text-lg font-semibold text-center block hover:bg-[#493D9E] hover:text-white transition duration-300">
-              Register
+            <!-- Tombol Login dengan Google (diubah dari tombol Register) -->
+            <a href="{{ route('login.google') }}"
+            class="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-all h-12">
+            <img src="{{ asset('assets/icon/google-icon.svg') }}" alt="Google" class="w-5 h-5">
+            <span class="font-medium">Daftar dengan Google</span>
             </a>
 
-            <!-- Login dengan Media Sosial -->
+            <!-- Link Pengalihan ke Register -->
             <div class="text-center mt-4 text-gray-500 text-sm">
-              Atau, login melalui <a href="{{ route('login.google') }}" class="text-purpleMain font-semibold">Google</a>
+              Belum punya akun? <a href="/register" class="text-purpleMain font-semibold">Daftar di sini</a>
             </div>
+
         </form>
       </div>
     </div>

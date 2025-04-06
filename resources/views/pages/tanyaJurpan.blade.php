@@ -205,33 +205,35 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="bg-backgroundPrimary min-h-screen">
     @include('components.navbar')
-    <div class="pt-16 pb-20 lg:pt-24 lg:pb-28 bg-backgroundPrimary min-h-screen">
-        <div class="container mx-auto text-center py-20 relative transition-all duration-500">
+    
+    <!-- Added more padding-top to avoid navbar overlap -->
+    <div class="pt-16 pb-24 lg:pt-24 lg:pb-28 bg-backgroundPrimary">
+        <div class="container mx-auto text-center py-8 sm:py-12 md:py-16 relative transition-all duration-500">
             <!-- Welcome container that will move up -->
             <div id="welcome-container">
-                <img id="mascot-img" src="/assets/img/jurpan.svg" alt="Maskot" class="mx-auto w-32 h-32">
+                <img id="mascot-img" src="/assets/img/jurpan.svg" alt="Maskot" class="mx-auto w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
                 <div id="welcome-text">
-                    <h2 class="text-2xl font-semibold mt-4">Hai, {{ Auth::user()->nama }}!</h2>
-                    <p class="text-lg text-gray-600">Mau nanya apa?</p>
+                    <h2 class="text-xl sm:text-2xl font-semibold mt-4">Hai, {{ Auth::user()->nama }}!</h2>
+                    <p class="text-base sm:text-lg text-gray-600">Mau nanya apa?</p>
                 </div>
             </div>
 
-            <!-- Chat container that will appear -->
+            <!-- Chat container that will appear with fixed height and scroll -->
             <div id="chat-container">
-                <!-- Chat box with no border -->
-                <div id="chat-box" class="p-5 w-full max-w-6xl mx-auto h-96 overflow-y-auto">
+                <!-- Chat box with scrollable content -->
+                <div id="chat-box" class="p-10 w-full max-w-6xl mx-auto h-[600px] overflow-y-auto">
                     <!-- Chat messages will be added here -->
                 </div>
             </div>
         </div>
 
-        <!-- Textarea full width -->
-        <div class="fixed bottom-4 left-4 right-4 sm:left-24 sm:right-24">
-            <div class="container mx-auto px-4 py-4">
+        <!-- Textarea with responsive margins, removed fixed position to prevent overlap issues -->
+        <div class="fixed bottom-8 left-0 right-0 px-4 sm:px-6 md:px-8 z-10">
+            <div class="container mx-auto max-w-6xl bg-white rounded-lg shadow-md">
                 <div class="relative">
-                    <textarea id="prompt" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-purple-500 
+                    <textarea id="prompt" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-purple-500 
                         focus:ring focus:ring-purple-200 focus:outline-none resize-none align-text-top" 
                         placeholder="Tanyakan sesuatu..." rows="1" style="overflow: hidden; line-height: 1.5;"></textarea>
 
