@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Jurusan;
+use App\Models\SaranPekerjaan;
 use App\Models\HasilTes;
 use App\Http\Requests\StoreHasilTesRequest;
 use App\Http\Requests\UpdateHasilTesRequest; // Ensure this class exists in the specified namespace
@@ -15,7 +16,7 @@ class HasilTesController extends Controller
 {
     $hasilTerbaru = HasilTes::where('user_id', auth()->id())->latest()->first();
 
-    return view('documents.admin.pages.hasilTes', [
+    return view('component.admin.hasiltes', [
         'hasilTes' => $hasilTerbaru
     ]);
 }
