@@ -19,10 +19,12 @@ class UpdatePertanyaanrequest extends FormRequest
    *
    * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
    */
-  public function rules(): array
-  {
+ // App\Http\Requests\UpdatePertanyaanRequest.php
+public function rules()
+{
     return [
-      //
+        'pertanyaan_code' => 'required|string|max:255',
+        'pertanyaan' => 'required|string'
     ];
-  }
+}
 }

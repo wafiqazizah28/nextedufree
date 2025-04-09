@@ -1,105 +1,130 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Jurusan;
 use App\Models\SaranPekerjaan;
 use App\Models\HasilTes;
+use App\Models\Sekolah;
 use App\Http\Requests\StoreHasilTesRequest;
-use App\Http\Requests\UpdateHasilTesRequest; // Ensure this class exists in the specified namespace
+use App\Http\Requests\UpdateHasilTesRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HasilTesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
-{
-    $hasilTerbaru = HasilTes::where('user_id', auth()->id())->latest()->first();
+    {
+        // Ambil semua hasil tes beserta data user-nya (nama, email, dll)
+        $hasilTests = HasilTes::with('user')->latest()->get();
 
-    return view('component.admin.hasiltes', [
-        'hasilTes' => $hasilTerbaru
-    ]);
-}
-public function hasilTes()
-{
-    $userId = auth()->id(); // Ambil ID user yang login
-    $hasilTes = HasilTes::where('user_id', $userId)->latest()->first(); // Ambil hasil tes terbaru
+        return view('components.admin.hasiltes.hasiltes', compact('hasilTests'));
+    }
 
-    if (!$hasilTes) {
-        return view('hasil_tes', [
-            'hasilTes' => null,
-            'jurusan' => null,
-            'saranPekerjaan' => collect([]) // Kirim array kosong agar tidak error di Blade
+    public function hasilTes()
+    {
+        $userId = auth()->id();
+        $hasilTerbaru = HasilTes::where('user_id', $userId)->latest()->first();
+
+        $jurusanList = [];
+        $jurusan = null;
+        $saranPekerjaanList = [];
+        $sekolahList = [];
+
+        if ($hasilTerbaru) {
+            $jurusanList = Jurusan::all();
+
+            foreach ($jurusanList as $j) {
+                if (strtolower($j->jurusan) == strtolower($hasilTerbaru->hasil)) {
+                    $jurusan = $j;
+                    break;
+                }
+            }
+
+            if ($jurusan) {
+                $saranPekerjaanList = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get();
+                $sekolahList = Sekolah::where('jurusan_id', $jurusan->id)->orderBy('nama', 'asc')->get();
+            }
+        }
+
+        return view('pages.hasilTes', [
+            'hasilTes' => $hasilTerbaru,
+            'jurusan' => $jurusan,
+            'jurusanList' => $jurusanList,
+            'saranPekerjaanList' => $saranPekerjaanList,
+            'sekolahList' => $sekolahList
         ]);
     }
 
-    $jurusan = Jurusan::where('nama_jurusan', $hasilTes->hasil)->first(); // Cocokkan hasil tes dengan jurusan
+    public function show($id)
+    {
+        $hasilTes = HasilTes::findOrFail($id);
 
-    if (!$jurusan) {
-        return view('hasil_tes', [
+        if (auth()->id() !== $hasilTes->user_id && !auth()->user()->isAdmin()) {
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses ke hasil tes ini.');
+        }
+
+        $jurusanList = Jurusan::all();
+        $jurusan = null;
+
+        foreach ($jurusanList as $j) {
+            if (strtolower($j->jurusan) == strtolower($hasilTes->hasil)) {
+                $jurusan = $j;
+                break;
+            }
+        }
+
+        $saranPekerjaanList = [];
+        $sekolahList = [];
+
+        if ($jurusan) {
+            $saranPekerjaanList = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get();
+            $sekolahList = Sekolah::where('jurusan_id', $jurusan->id)->orderBy('nama', 'asc')->get();
+        }
+
+        return view('hasil-tes.show', [
             'hasilTes' => $hasilTes,
-            'jurusan' => null,
-            'saranPekerjaan' => collect([])
+            'jurusan' => $jurusan,
+            'jurusanList' => $jurusanList,
+            'saranPekerjaanList' => $saranPekerjaanList,
+            'sekolahList' => $sekolahList
         ]);
     }
 
-    // Ambil pekerjaan sesuai jurusan
-    $saranPekerjaan = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get();
-
-    return view('hasil_tes', [
-        'hasilTes' => $hasilTes,
-        'jurusan' => $jurusan,
-        'saranPekerjaan' => $saranPekerjaan
-    ]);
-}
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function downloadPDF($id)
     {
-        //
-    }
+        $hasilTes = HasilTes::findOrFail($id);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreHasilTesRequest $request)
-    {
-        //
-    }
+        if (auth()->id() !== $hasilTes->user_id && !auth()->user()->isAdmin()) {
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses ke hasil tes ini.');
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(HasilTes $hasilTes)
-    {
-        //
-    }
+        $jurusanList = Jurusan::all();
+        $jurusan = null;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(HasilTes $hasilTes)
-    {
-        //
-    }
+        foreach ($jurusanList as $j) {
+            if (strtolower($j->jurusan) == strtolower($hasilTes->hasil)) {
+                $jurusan = $j;
+                break;
+            }
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateHasilTesRequest $request, HasilTes $hasilTes)
-    {
-        //
-    }
+        $saranPekerjaanList = [];
+        $sekolahList = [];
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(HasilTes $hasilTes)
-    {
-        //
+        if ($jurusan) {
+            $saranPekerjaanList = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get();
+            $sekolahList = Sekolah::where('jurusan_id', $jurusan->id)->orderBy('nama', 'asc')->get();
+        }
+
+        $pdf = PDF::loadView('components.user.download', [
+            'hasilTes' => $hasilTes,
+            'jurusan' => $jurusan,
+            'saranPekerjaanList' => $saranPekerjaanList,
+            'sekolahList' => $sekolahList,
+            'user' => auth()->user(),
+        ]);
+
+        $fileName = 'hasil-tes-' . strtolower(str_replace(' ', '-', $hasilTes->hasil)) . '.pdf';
+        return $pdf->download($fileName);
     }
 }

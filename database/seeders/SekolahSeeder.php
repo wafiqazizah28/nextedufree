@@ -1,7 +1,6 @@
 <?php
 
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use App\Models\Sekolah;
 use App\Models\Jurusan;
@@ -15,12 +14,12 @@ class SekolahSeeder extends Seeder
 
         // Pastikan ada jurusan sebelum memasukkan sekolah
         if (empty($jurusanIds)) {
-            $this->command->warn("Tidak ada data di tabel jurusans. Jalankan JurusanSeeder dulu!");
+            $this->command->warn("Tidak ada data di tabel jurusan. Jalankan jurusaneeder dulu!");
             return;
         }
 
         // Data contoh sekolah
-        $sekolahs = [
+        $sekolah = [
             ['nama' => 'SMK Negeri 1 Jakarta', 'jurusan_id' => $jurusanIds[array_rand($jurusanIds)]],
             ['nama' => 'SMK Negeri 2 Bandung', 'jurusan_id' => $jurusanIds[array_rand($jurusanIds)]],
             ['nama' => 'SMK Negeri 3 Surabaya', 'jurusan_id' => $jurusanIds[array_rand($jurusanIds)]],
@@ -29,6 +28,6 @@ class SekolahSeeder extends Seeder
         ];
 
         // Masukkan ke database
-        Sekolah::insert($sekolahs);
+        Sekolah::insert($sekolah);
     }
 }

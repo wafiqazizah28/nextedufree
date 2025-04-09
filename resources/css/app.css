@@ -38,6 +38,11 @@ body {
     backdrop-filter: blur(5px);
     box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.2);
 }
+.profile-edit-container {
+    position: relative;
+    z-index: 1; /* Lower than navbar */
+    margin-top: 2rem;
+}
 
 .hamburger-line {
     @apply w-[30px] h-[2px] my-2 block bg-primary;
@@ -231,4 +236,290 @@ html, body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+/* Styling umum untuk input */
+.rectangle {
+    position: relative;
+    width: 100%;
+    max-width: 429px;
+    height: 50px;
+    margin: 10px 0;
+    background: #eeeeee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+
+/* Styling untuk ikon dalam input */
+.icon-container {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: 0;
+    background: #493d9e;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling untuk ikon email dan password */
+.icon {
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.email-icon {
+    background-image: url('https://static.codia.ai/custom_image/2025-03-29/022641/email-icon.svg');
+}
+
+.lock-icon {
+    background-image: url('https://static.codia.ai/custom_image/2025-03-29/022641/lock-icon.svg');
+}
+
+/* Styling untuk input teks */
+.input-field {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    color: #555;
+    outline: none;
+}
+
+/* Styling untuk label */
+.label {
+    display: block;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000;
+    margin-bottom: 5px;
+}
+.flex-row {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Tengah otomatis */
+    width: 100%;
+    max-width: 429px; /* Sesuai dengan lebar tombol */
+    margin: 37px auto 0; /* Tengah otomatis */
+    gap: 12px; /* Jarak antar elemen */
+}
+
+.atau {
+    color: #c2c2c2;
+    font-family: Poppins, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.line, .line-6 {
+    flex: 1; /* Supaya garis menyesuaikan panjang */
+    height: 1px;
+    background: #c2c2c2;
+}
+/* Menyesuaikan jarak antar elemen */
+.grid.grid-cols-1.gap-y-6 {
+    gap: 16px; /* Mengurangi jarak antar elemen */
+}
+
+/* Menurunkan logo agar tidak terlalu ke atas */
+.text-center.-mt-6.lg:-mt-14.mb-8.lg:mb-14 {
+    margin-top: -20px; /* Sesuaikan margin */
+    margin-bottom: 32px; /* Kurangi jarak bawah */
+}
+
+/* Menyesuaikan posisi "Atau" agar lebih dekat dengan tombol login */
+.flex-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 16px auto; /* Kurangi jarak atas */
+    gap: 8px; /* Jarak antar elemen */
+}
+
+.atau {
+    font-size: 14px;
+    color: #7a7a7a;
+}
+
+.line,
+.line-6 {
+    flex: 1;
+    height: 1px;
+    background: #c2c2c2;
+}
+
+/* Pastikan bagian login dengan Google tetap menyatu */
+.text-center.mt-4.text-gray-500.text-sm {
+    margin-top: 2px; /* Dekatkan dengan elemen di atasnya */
+}
+.lg\:shadow-lg {
+    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.3) !important; /* Pertebal shadow */
+    border-left: 8px solid rgba(0, 0, 0, 0.2) !important; /* Tambahkan garis pemisah */
+}
+.forgot-password {
+    display: block;
+    position: relative;
+    height: 21px;
+    color: #1e2772;
+    font-family: Poppins, var(--default-font-family);
+    font-size: 14.13616943359375px;
+    font-weight: 400;
+    line-height: 21px;
+    text-align: left;
+    text-decoration: underline;
+    white-space: nowrap;
+    z-index: 14;
+    left: -20px; /* Menambahkan properti left untuk menggeser ke kiri */
+}
+
+
+.grid-register {
+    display: grid;
+    grid-template-columns: 1fr; /* Default: 1 kolom untuk mobile */
+    gap: 14px 24px; /* Jarak antara elemen (vertikal 14px, horizontal 24px) */
+    margin-left: 0; /* Default posisi normal */
+}
+
+/* Untuk layar lebih besar dari 1024px (lg di Tailwind) */
+@media (min-width: 1024px) {
+    .grid-register {
+        grid-template-columns: repeat(2, 1fr); /* 2 kolom seimbang */
+        margin-left: -30px; /* Geser lebih ke kiri */
+    }
+}
+
+.form-container-register {
+    display: flex;
+    justify-content: flex-start; /* Biar lebih ke kiri */
+    margin-left: 0; /* Default posisi normal */
+}
+
+/* Untuk layar lebih besar dari 1024px */
+@media (min-width: 1024px) {
+    .form-container-register {
+        margin-left: -40px; /* Geser lebih ke kiri */
+    }
+}
+.btn-container {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%; /* Pastikan tombol selebar form di mobile */
+}
+
+@media (min-width: 640px) { /* sm breakpoint (untuk layar kecil ke atas) */
+    .btn-container {
+        width: auto; /* Biarkan ukuran tombol menyesuaikan */
+    }
+}
+/* Styling untuk form registrasi */
+.form-container-register {
+    display: flex;
+    justify-content: flex-start; /* Geser ke kiri */
+    align-items: center;
+     width: 100%;
+  }
+  
+  
+  /* Grid layout untuk form dengan 2 kolom pada layar besar */
+  .grid-register {
+    justify-content: flex-start;
+  }
+  
+  
+  @media (min-width: 640px) {
+    .grid-register {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem 1.5rem;
+    }
+  }
+  
+  /* Kontainer untuk label dan input */
+  .input-box {
+    width: 100%;
+    height: 45px;
+    min-width: 300px; /* Perbesar lebar minimal */
+    max-width: 500px; /* Batasi agar tidak terlalu panjang di layar besar */
+    background: #eeeeee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    margin-top: 0.25rem;
+  }
+  
+  
+  /* Input field transparan di dalam rectangle */
+  .input-field-register {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    color: #555;
+    outline: none;
+  }
+  
+  /* Fokus pada input */
+  .input-field-register:focus {
+    color: #000;
+  }
+  
+  /* Placeholder styling */
+  .input-field-register::placeholder {
+    color: #999;
+    opacity: 0.8;
+  }
+  
+  /* Label styling */
+  .form-container-register label {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  /* Responsive button */
+  @media (max-width: 639px) {
+    .form-container-register button[type="submit"] {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  #mobile-nav-menu {
+    position: fixed;
+    bottom: env(safe-area-inset-bottom, 0);
+    left: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+}
+
+
+#mobile-nav-menu ul {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+#mobile-nav-menu li a {
+    color: gray;
+    transition: color 0.3s;
+}
+
+#mobile-nav-menu li a:hover {
+    color: blue;
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Jurusan;
 use Carbon\Carbon;
 
-class JurusanSeeder extends Seeder
+class jurusanSeeder extends Seeder
 {
     /**
      * Jalankan database seed.

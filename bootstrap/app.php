@@ -15,7 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
             '/register',
             '/login',
             '/logout',
-            '/submit-answer'
+            '/submit-answer',
+            'auth/google/callback'
+
         ]);
 
         // Menambahkan middleware khusus
@@ -31,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'signed' => \App\Http\Middleware\ValidateSignature::class,
             'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+            
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

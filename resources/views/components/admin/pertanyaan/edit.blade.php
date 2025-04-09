@@ -1,59 +1,52 @@
 @extends('pages.adminDashboard')
 
 @section('content')
-  <div class="w-full self-center px-4">
-    <div class="flex flex-wrap">
-      <div class="self-center lg:w-2/3">
-        <div class="space-beetween flex">
-          <h1 class="text-2xl font-bold text-primary lg:text-3xl">
-            Edit <span class="text-secondary">pertanyaan</span>
-          </h1>
-          <button
-            class="btnnn ml-5 rounded-sm border-2 border-black bg-black py-2 px-5 text-white duration-300 ease-out hover:bg-white hover:text-black">
-            <a href="/pertanyaan">Back</a>
-          </button>
-        </div>
-        <form class="mt-5" method="post" action="/pertanyaan/{{ $pertanyaan['id'] }}">
-          @method('put')
-          @csrf
-          <div class="w-full lg:mx-auto">
-            <div class="mb-4 w-full px-4">
-              <label for="pertanyaan_code" class="text-base font-bold text-primary lg:text-xl">
-                pertanyaan Code
-              </label>
-              <input type="text" id="pertanyaan_code" name="pertanyaan_code"
-                value="{{ @old('pertanyaan_code', $pertanyaan['pertanyaan_code']) }}"
-                class="@error('pertanyaan_code') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
-              @error('pertanyaan_code')
-                <p class="mt-2 text-red-500">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="mb-4 w-full px-4">
-              <label for="pertanyaan" class="text-base font-bold text-primary lg:text-xl">
-                pertanyaan
-              </label>
-              <input type="text" id="pertanyaan " name="pertanyaan" value="{{ @old('pertanyaan', $pertanyaan['pertanyaan']) }}"
-                class="@error('pertanyaan') border-red-500 @else border-[#BBBBBB] @enderror w-full rounded-sm border bg-white p-3 focus:outline-none focus:ring focus:ring-blue-500" />
-              @error('pertanyaan')
-                <p class="mt-2 text-red-500">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="mt-10 w-full px-4">
-              <button type="submit"
-                class="btnn w-full rounded-sm border-2 border-black bg-black py-3 px-8 text-white duration-300 ease-out hover:bg-white hover:text-black focus:outline-none focus:ring focus:ring-blue-500">
-                Edit pertanyaan
-              </button>
-            </div>
-          </div>
-        </form>
+<div class="w-full bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+  <div class="p-6">
+    <h1 class="text-2xl font-semibold text-purpleMain mb-6">Edit Pertanyaan</h1>
+    
+    <form action="{{ route('pertanyaan.update', $pertanyaan->id) }}" method="POST">
+      @csrf
+      @method('PUT')
+      
+      <div class="mb-4">
+        <label for="pertanyaan_code" class="block text-gray-700 text-sm font-medium mb-2">Kode Pertanyaan</label>
+        <input 
+          type="text" 
+          id="pertanyaan_code" 
+          name="pertanyaan_code" 
+          value="{{ old('pertanyaan_code', $pertanyaan->pertanyaan_code) }}"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purpleMain"
+          required
+        >
+        @error('pertanyaan_code')
+          <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+        @enderror
       </div>
-      <div class="hidden w-full self-center md:block lg:w-1/3">
-        <div class="mt-10 lg:right-0">
-          <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-          <lottie-player src="https://assets5.lottiefiles.com/private_files/lf30_krkiex3w.json" background="transparent"
-            speed="1" style="width: 300px; height: 300px;" loop autoplay class="mx-auto"></lottie-player>
-        </div>
+      
+      <div class="mb-6">
+        <label for="pertanyaan" class="block text-gray-700 text-sm font-medium mb-2">Pertanyaan</label>
+        <textarea
+          id="pertanyaan"
+          name="pertanyaan"
+          rows="4"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purpleMain"
+          required
+        >{{ old('pertanyaan', $pertanyaan->pertanyaan) }}</textarea>
+        @error('pertanyaan')
+          <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+        @enderror
       </div>
-    </div>
+      
+      <div class="flex items-center justify-between">
+        <a href="{{ route('pertanyaan.index') }}" class="rounded-lg bg-gray-300 py-2 px-4 text-gray-700 hover:bg-gray-400 transition-all duration-300">
+          Batal
+        </a>
+        <button type="submit" class="rounded-lg bg-purpleMain py-2 px-4 text-white hover:bg-purple-800 transition-all duration-300">
+          Simpan Perubahan
+        </button>
+      </div>
+    </form>
   </div>
+</div>
 @endsection

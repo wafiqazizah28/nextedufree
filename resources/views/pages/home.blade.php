@@ -5,71 +5,77 @@
 
 <section id="Home" class="pt-16 pb-16 lg:pt-24 lg:pb-20 bg-backgroundLight min-h-screen max-w-screen overflow-hidden">
     <div class="container mx-auto px-4">
+        <!-- Hero Section -->
         <div class="flex flex-wrap items-center">
-            <div class="w-full self-center px-4 lg:w-1/2">
+            <!-- Text Content - Full width on mobile, half on desktop -->
+            <div class="w-full self-center px-4 lg:w-1/2 mb-8 lg:mb-0">
                 <div class="flex flex-col">
-                    <div class="flex space-x-2">
-                        <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white" data-aos="fade-up">
-                            Temukan</h1>
+                    <div>
+                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white" data-aos="fade-up">
+                            Temukan
+                        </h1>
                     </div>
                     <div class="flex space-x-2">
-                        <h1 id="typing-text" class="text-5xl lg:text-6xl font-bold text-purpleMain" data-aos="fade-up">
+                        <h1 id="typing-text" class="text-3xl md:text-4xl lg:text-5xl font-bold text-purpleMain" data-aos="fade-up">
                         </h1>
-                        <h1 class="text-5xl lg:text-6xl font-bold text-gray-900" data-aos="fade-up">Sekarang</h1>
+                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900" data-aos="fade-up">
+                            Sekarang
+                        </h1>
                     </div>
                 </div>
-
-                <p class="mt-4 mb-4 max-w-md text-slate-500" data-aos="fade-up">
+                
+                <p class="mt-6 mb-4 text-slate-500" data-aos="fade-up">
                     Temukan informasi lengkap seputar jurusan yang sesuai dengan minat dan bakatmu.
                 </p>
-
-                <div class="mb-6" data-aos="fade-up">
+                  
+                <div class="mb-6 mt-4" data-aos="fade-up">
                     <button type="button" onclick="window.location.href='/tesminatmu'"
-                    class="flex items-center gap-2 text-purpleSecondarry hover:text-white border border-purpleSecondarry hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                    Lihat Potensi
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </button>
-                
+                        class="flex items-center gap-2 text-purpleSecondarry hover:text-white border border-purpleSecondarry hover:bg-purpleHover focus:ring-4 focus:outline-none focus:ring-purple-200 font-medium rounded-lg text-base px-6 py-3 text-center">
+                        Lihat Potensi
+                        <svg class="rtl:rotate-180 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
-            <!-- Bagian Gambar -->
-            <div class="w-full lg:w-1/2 flex justify-center lg:justify-end lg:pl-32">
-                <img src="/assets/img/hero.svg" class="float-animation max-w-[420px] h-auto" alt="gambar1"
+            <!-- Hero Image - Full width on mobile, half on desktop -->
+            <div class="w-full lg:w-1/2 flex justify-center lg:justify-end px-4 lg:pr-20 lg:pl-32">
+                <img src="/assets/img/hero.svg" class="float-animation max-w-full lg:max-w-[420px] h-auto" alt="gambar1"
                     data-aos="zoom-in">
             </div>
-
         </div>
 
-        <!-- Feature Boxes -->
-        <div class="container mx-auto mt-6">
+        <!-- Feature Boxes - Centered on all screens -->
+        <div class="container mx-auto mt-7 px-4">
             <div class="flex flex-wrap justify-center gap-3">
-                <div class="flex flex-wrap justify-center items-stretch gap-3 bg-white rounded-lg p-3 shadow-md">
-                    <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
-                        <h3 class="text-sm font-semibold text-gray-900 mb-1">Minat</h3>
-                        <p class="text-xxs text-gray-500 text-center">Hal yang kamu senangi</p>
-                    </div>
+                <div class="flex flex-wrap justify-center items-stretch gap-3 bg-white rounded-lg p-3 shadow-md w-full md:w-auto">
+                    <!-- Mobile: Stack vertically, Desktop: All in one row -->
+                    <div class="flex flex-col lg:flex-row justify-center items-center gap-4 w-full">
+                        <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
+                            <h3 class="text-sm font-semibold text-gray-900 mb-1">Minat</h3>
+                            <p class="text-xxs text-gray-500 text-center">Hal yang kamu senangi</p>
+                        </div>
 
-                    <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
-                        <h3 class="text-sm font-semibold text-gray-900 mb-1">Bakat</h3>
-                        <p class="text-xxs text-gray-500 text-center">Skills yang kamu miliki</p>
-                    </div>
+                        <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
+                            <h3 class="text-sm font-semibold text-gray-900 mb-1">Bakat</h3>
+                            <p class="text-xxs text-gray-500 text-center">Skills yang kamu miliki</p>
+                        </div>
 
-                    <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
-                        <h3 class="text-sm font-semibold text-gray-900 mb-1">Hasil</h3>
-                        <p class="text-xxs text-gray-500 text-center">Lihat Hasilnya</p>
-                    </div>
-
-                    <div class="flex items-center">
-                        <button onclick="window.location.href='/tanyaJurpan/page'"
-                        class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors">
-                        Tanya Jurpan
-                    </button>
-                    
+                        <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
+                            <h3 class="text-sm font-semibold text-gray-900 mb-1">Hasil</h3>
+                            <p class="text-xxs text-gray-500 text-center">Lihat Hasilnya</p>
+                        </div>
+                        
+                        <!-- Button integrated in the same row for desktop -->
+                        <div class="flex items-center justify-center w-full lg:w-auto mt-4 lg:mt-0">
+                            <button onclick="window.location.href='/tanyaJurpan/page'"
+                            class="w-full lg:w-auto bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purpleHover transition-colors">
+                            Tanya Jurpan
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -109,55 +115,55 @@
 </script>
 
 <section id="tutorial"
-    class="pt-16 pb-20 lg:pt-24 lg:pb-28 bg-backgroundPrimary h-w-screen max-w-screen overflow-hidden">
-    <div class="container">
+    class="pt-12 pb-16 lg:pt-24 lg:pb-28 bg-backgroundPrimary h-w-screen max-w-screen overflow-hidden">
+    <div class="container px-4 mx-auto">
         <!-- Header Section -->
-        <div class="text-center mb-12" data-aos="fade-up">
-            <h2 class="text-5xl font-black mb-4">Hal yang perlu <span class="text-purpleMain">dilakukan</span></h2>
-            <p class="text-gray-600 max-w-2xl text-2xl mx-auto">
+        <div class="text-center mb-8 lg:mb-12" data-aos="fade-up">
+            <h2 class="text-3xl lg:text-5xl font-black mb-3 lg:mb-4">Hal yang perlu <span class="text-purpleMain">dilakukan</span></h2>
+            <p class="text-gray-600 max-w-2xl text-lg lg:text-2xl mx-auto">
                 Kami memastikan Anda menemukan jurusan yang tepat dengan perencanaan matang dan sesuai dengan kebutuhan
                 Anda.
             </p>
         </div>
 
         <!-- Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6 max-w-6xl mx-auto">
 
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-purpleMain transition-all duration-300 
+            <div class="bg-white p-5 lg:p-6 rounded-lg shadow-sm border border-purpleMain transition-all duration-300 
             hover:bg-gradient-to-b hover:from-white hover:to-[#FDE3D7] hover:text-black group" data-aos="fade-right">
-                <div class="mb-4">
+                <div class="mb-3 lg:mb-4">
                     <img src="{{ asset('assets/icon/tutorial1.svg') }}" alt="Daftar Account"
-                        class="w-10 h-10 text-[#FA7436]">
+                        class="w-8 h-8 lg:w-10 lg:h-10 text-[#FA7436]">
                 </div>
-                <h3 class="text-xl font-semibold mb-2 text-black">Daftar Account</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-black">Daftar Account</h3>
+                <p class="text-sm lg:text-base text-gray-600 mb-4">
                     Daftar akunmu untuk mendapatkan hasil jurusanmu
                 </p>
             </div>
             <!-- Card 2 -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-[#338DFF] transition-all duration-500 
+            <div class="bg-white p-5 lg:p-6 rounded-lg shadow-sm border border-[#338DFF] transition-all duration-500 
         hover:bg-gradient-to-b hover:from-white hover:via-[#F0F8FF] hover:via-80% hover:to-[#E6F2FF] hover:text-black group"
                 data-aos="fade-up">
-                <div class="mb-4">
+                <div class="mb-3 lg:mb-4">
                     <img src="{{ asset('assets/icon/tutorial2.svg') }}" alt="Pembayaran"
-                        class="w-10 h-10 text-[#338DFF]">
+                        class="w-8 h-8 lg:w-10 lg:h-10 text-[#338DFF]">
                 </div>
-                <h3 class="text-xl font-semibold mb-2 text-[#338DFF]">Pembayaran</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-[#338DFF]">Pembayaran</h3>
+                <p class="text-sm lg:text-base text-gray-600 mb-4">
                     Pembayaran dengan mudah agar kamu bisa melakukan tes minatmu
                 </p>
             </div>
 
             <!-- Card 3 -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-[#F4B400] transition-all duration-500 
+            <div class="bg-white p-5 lg:p-6 rounded-lg shadow-sm border border-[#F4B400] transition-all duration-500 
         hover:bg-gradient-to-b hover:from-white hover:via-[#FEF4E6] hover:via-80% hover:to-[#FDE7C5] hover:text-black group"
                 data-aos="fade-left">
-                <div class="mb-4">
+                <div class="mb-3 lg:mb-4">
                     <img src="{{ asset('assets/icon/tutorial3.svg') }}" alt="Lihat Hasil"
-                        class="w-10 h-10 text-[#F4B400]">
+                        class="w-8 h-8 lg:w-10 lg:h-10 text-[#F4B400]">
                 </div>
-                <h3 class="text-xl font-semibold mb-2 text-[#F4B400]">Lihat Hasil</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-[#F4B400]">Lihat Hasil</h3>
+                <p class="text-sm lg:text-base text-gray-600 mb-4">
                     Setelah itu kamu bisa menyaksikan hasil dari tes minatmu
                 </p>
             </div>
@@ -167,38 +173,39 @@
 </section>
 
 <section id="tentang"
-    class="pt-16 pb-20 lg:pt-20 lg:pb-28 bg-backgroundLight min-h-screen max-w-screen overflow-hidden">
+    class="pt-10 pb-32 lg:pt-20 lg:pb-28 bg-backgroundLight min-h-screen max-w-screen overflow-hidden">
     <div class="container grid lg:grid-cols-10 gap-8">
 
         <!-- Kolom Kiri: Teks -->
-        <div class="lg:col-span-4 pl-10" data-aos="fade-right" data-aos-duration="1000">
-            <h1 class="text-4xl font-bold tracking-tight md:text-5xl whitespace-nowrap">
+        <div class="lg:col-span-4 px-4 lg:pl-10" data-aos="fade-right" data-aos-duration="1000">
+            <h1 class="text-3xl lg:text-4xl font-bold tracking-tight md:text-5xl">
                 Apa itu <span>nextEdu</span>?
             </h1>
-            <p class="text-gray-600 md:text-lg my-6">
+            <p class="text-gray-600 text-base md:text-lg my-4 lg:my-6">
                 Sebuah website yang dirancang untuk membantu kamu menemukan jurusan yang paling sesuai dengan minat dan
                 bakatmu menggunakan sistem pakar. Sistem ini menggabungkan pengetahuan dari para ahli di bidang
                 pendidikan dan algoritma canggih untuk memberikan rekomendasi jurusan yang paling tepat.
             </p>
             <a href="#"
-                class="inline-flex items-center px-5 py-3 text-base font-medium text-white rounded-lg bg-purpleMain hover:bg-purple-700 focus:ring-4 focus:ring-purple-300">
+                class="inline-flex items-center px-4 py-2 lg:px-5 lg:py-3 text-sm lg:text-base font-medium text-white rounded-lg bg-purpleMain hover:bg-purple-700 focus:ring-4 focus:ring-purple-300">
                 Selengkapnya
             </a>
         </div>
 
         <!-- Kolom Kanan: Maskot & Floating Cards -->
-        <div class="lg:col-span-5 flex justify-center items-center relative" data-aos="fade-left"
+        <div class="lg:col-span-5 flex justify-center items-center relative mt-16 mb-24 lg:mt-0 lg:mb-0" data-aos="fade-left"
             data-aos-duration="1000">
 
             <!-- Maskot -->
             <img src="{{ asset('assets/img/jurpan-home.svg') }}" alt="Jurusanku Owl Mascot"
-                class="w-[270px] md:w-[320px] lg:w-[300px] z-10 relative" data-aos="zoom-in" data-aos-duration="1200">
+                class="w-[220px] md:w-[280px] lg:w-[300px] z-10 relative" data-aos="zoom-in" data-aos-duration="1200">
 
             <!-- Floating Cards -->
-            <div class="floating-card absolute top-[80%] left-12 bg-white p-3 rounded-lg shadow-lg w-[140px] z-20"
+            <!-- Card 1 -->
+            <div class="floating-card absolute top-[80%] left-2 lg:left-12 bg-white p-2 lg:p-3 rounded-lg shadow-lg w-[120px] lg:w-[140px] z-20"
                 data-aos="fade-up" data-aos-delay="200">
                 <h4 class="text-xs font-semibold mb-1">Penilaian Terbaik</h4>
-                <div class="flex gap-1 text-sm">
+                <div class="flex gap-1 text-xs lg:text-sm">
                     <span>😍</span>
                     <span>😊</span>
                     <span>😄</span>
@@ -207,18 +214,20 @@
                 </div>
             </div>
 
-            <div class="floating-card absolute top-[100%] right-[-20px] transform -translate-y-1/3 translate-x-14 bg-white p-4 rounded-lg shadow-lg w-[250px] whitespace-normal z-20"
+            <!-- Card 2 -->
+            <div class="floating-card absolute top-[100%] right-2 lg:right-[-20px] transform -translate-y-1/2 translate-x-0 lg:translate-x-14 bg-white p-3 lg:p-4 rounded-lg shadow-lg w-[180px] lg:w-[250px] whitespace-normal z-20"
                 data-aos="fade-up" data-aos-delay="400">
-                <h3 class="text-lg font-bold text-purpleMain mb-1">95%</h3>
-                <p class="text-gray-600 text-sm font-semibold">Masukan Positif</p>
+                <h3 class="text-base lg:text-lg font-bold text-purpleMain mb-1">95%</h3>
+                <p class="text-gray-600 text-xs lg:text-sm font-semibold">Masukan Positif</p>
                 <p class="text-xs text-gray-500">Pemberian masukan positif membawa dampak baik untuk perkembangan
                     website ini.</p>
             </div>
 
-            <div class="floating-card absolute top-0 right-[-80px] translate-x-4 -translate-y-2 bg-white p-4 rounded-lg shadow-lg w-auto max-w-[260px] z-20"
+            <!-- Card 3 -->
+            <div class="floating-card absolute top-0 right-0 lg:right-[-80px] translate-x-0 lg:translate-x-4 -translate-y-10 sm:-translate-y-2 bg-white p-3 lg:p-4 rounded-lg shadow-lg w-[160px] sm:w-auto max-w-[200px] lg:max-w-[260px] z-20"
                 data-aos="fade-down" data-aos-delay="600">
-                <h3 class="text-lg font-bold text-purpleMain mb-1">30,000+</h3>
-                <p class="text-gray-600 text-sm font-semibold">Total Pengguna</p>
+                <h3 class="text-base lg:text-lg font-bold text-purpleMain mb-1">30,000+</h3>
+                <p class="text-gray-600 text-xs lg:text-sm font-semibold">Total Pengguna</p>
                 <p class="text-xs text-gray-500">Total penggunaan Jurusanku sebagai penentu masa depan mereka.</p>
             </div>
 
@@ -359,8 +368,7 @@
         </div>
     </div>
 </section>
-
-<section id="testimoni" class="pt-20 pb-24 lg:pt-28 lg:pb-32 bg-backgroundLight h-auto max-w-screen overflow-hidden">
+<section id="testimoni" class="pt-20 pb-24 lg:pt-28 lg:pb-32 bg-backgroundLight">
     <div class="container mx-auto px-6">
         <div class="grid lg:grid-cols-2 gap-14 items-center">
             <!-- Left Section -->
@@ -381,22 +389,41 @@
             </div>
 
             <!-- Testimonial Cards Section -->
-            <div class="relative w-full max-w-lg">
+            <div class="relative w-full shadow-lg rounded-lg">
                 @if ($testimonis->isEmpty())
                     <p class="text-red-500">Tidak ada testimoni yang tersedia.</p>
                 @else
-                <div class="testimonial-container relative">
+                <div id="testimonialContainer" class="relative overflow-hidden">
                     @foreach ($testimonis as $index => $testimoni)
-                    <div class="testimoni-item {{ $index === 0 ? 'testimoni-current' : ($index === 1 ? 'testimoni-next' : 'testimoni-prev') }}" 
+                    <div class="testimonial-item absolute w-full transition-all duration-500" 
+                         style="{{ $index === 0 ? 'opacity: 1; transform: translateX(0);' : 'opacity: 0; transform: translateX(100%);' }}"
                          data-index="{{ $index }}">
-                        <div class="p-6 bg-white border border-gray-300 rounded-lg shadow-md">
-                            <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                                "{{ $testimoni->testimoni }}"
-                            </p>
-                            <h4 class="text-lg font-semibold">
-                                {{ $testimoni->user->name ?? 'Anonymous' }}
-                            </h4>
+                        <!-- Main testimonial card -->
+                        <div class="p-6 bg-white rounded-lg shadow-lg">
+                            <div class="mb-4">
+                                <svg class="w-8 h-8 text-purpleMain opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                                </svg>
+                            </div>
+                            
+                            <!-- Testimonial Content -->
+                            <div class="text-lg text-gray-700 leading-relaxed mb-6">
+                                {{ $testimoni->testimoni }}
+                            </div>
+                            
+                            <!-- User Info - Anonymous Only -->
+                            <div class="flex items-center">
+                                
+                                <div>
+                                    <h4 class="text-lg font-semibold">
+                                        Anonymous
+                                    </h4>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <!-- Shadow card for next testimonial -->
+                        <div class="absolute top-2 left-2 -z-10 w-full h-full bg-gray-200 rounded-lg shadow-md"></div>
                     </div>
                     @endforeach
                 </div>
@@ -404,52 +431,103 @@
             </div>
         </div>
     </div>
-    
-
 
 <script>
-
-document.addEventListener("DOMContentLoaded", function () {
-    let testimonials = document.querySelectorAll(".testimoni-item");
+document.addEventListener("DOMContentLoaded", function() {
+    // Get all testimonial items
+    const testimonials = document.querySelectorAll('.testimonial-item');
+    const container = document.getElementById('testimonialContainer');
     let currentIndex = 0;
-
+    
     if (testimonials.length === 0) {
-        console.warn("Tidak ada testimoni tersedia.");
+        console.warn("No testimonials available");
         return;
     }
-
-    function updateTestimonial(newIndex) {
-        testimonials.forEach((item, index) => {
-            item.classList.remove("testimoni-current", "testimoni-prev", "testimoni-next");
-
-            if (index === newIndex) {
-                item.classList.add("testimoni-current");
-            } else if (index === (newIndex - 1 + testimonials.length) % testimonials.length) {
-                item.classList.add("testimoni-prev");
-            } else if (index === (newIndex + 1) % testimonials.length) {
-                item.classList.add("testimoni-next");
-            } else {
-                item.classList.add("hidden"); // Sembunyikan elemen lain agar tidak bertumpuk
-            }
+    
+    // Set container height based on current testimonial
+    function updateContainerHeight() {
+        // Make all testimonials visible temporarily to get their true height
+        testimonials.forEach(item => {
+            const originalDisplay = item.style.display;
+            const originalPosition = item.style.position;
+            const originalVisibility = item.style.visibility;
+            
+            item.style.position = 'static';
+            item.style.visibility = 'hidden';
+            item.style.display = 'block';
+            
+            // After measurements, restore
+            setTimeout(() => {
+                item.style.position = originalPosition;
+                item.style.visibility = originalVisibility;
+                item.style.display = originalDisplay;
+            }, 0);
         });
-
-        currentIndex = newIndex;
+        
+        // Set height to active testimonial
+        const activeTestimonial = testimonials[currentIndex];
+        if (activeTestimonial) {
+            container.style.height = activeTestimonial.offsetHeight + 'px';
+        }
     }
-
-    document.getElementById("nextBtn").addEventListener("click", function () {
-        let nextIndex = (currentIndex + 1) % testimonials.length;
-        updateTestimonial(nextIndex);
+    
+    // Initialize heights
+    setTimeout(updateContainerHeight, 100);
+    
+    // Function to show testimonial at specific index
+    function showTestimonial(index) {
+        if (index < 0 || index >= testimonials.length) {
+            console.error("Invalid testimonial index");
+            return;
+        }
+        
+        // Hide current testimonial
+        testimonials[currentIndex].style.opacity = '0';
+        testimonials[currentIndex].style.transform = 'translateX(-100%)';
+        
+        // Show new testimonial
+        testimonials[index].style.opacity = '1';
+        testimonials[index].style.transform = 'translateX(0)';
+        
+        // Update current index
+        currentIndex = index;
+        
+        // Update container height
+        setTimeout(updateContainerHeight, 300);
+    }
+    
+    // Event listeners for navigation buttons
+    document.getElementById("nextBtn").addEventListener("click", function() {
+        const nextIndex = (currentIndex + 1) % testimonials.length;
+        showTestimonial(nextIndex);
     });
-
-    document.getElementById("prevBtn").addEventListener("click", function () {
-        let prevIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
-        updateTestimonial(prevIndex);
+    
+    document.getElementById("prevBtn").addEventListener("click", function() {
+        const prevIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+        showTestimonial(prevIndex);
     });
-
-    // Pastikan testimoni pertama tampil di awal
-    updateTestimonial(currentIndex);
+    
+    // Handle window resize
+    window.addEventListener('resize', updateContainerHeight);
+    
+    // Auto-play
+    let interval = setInterval(() => {
+        const nextIndex = (currentIndex + 1) % testimonials.length;
+        showTestimonial(nextIndex);
+    }, 6000);
+    
+    // Pause auto-play on hover
+    container.addEventListener('mouseenter', () => {
+        clearInterval(interval);
+    });
+    
+    container.addEventListener('mouseleave', () => {
+        interval = setInterval(() => {
+            const nextIndex = (currentIndex + 1) % testimonials.length;
+            showTestimonial(nextIndex);
+        }, 6000);
+    });
 });
-
 </script>
 </section> 
     

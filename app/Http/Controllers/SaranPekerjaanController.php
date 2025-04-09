@@ -9,6 +9,8 @@ use App\Models\Jurusan;
 use App\Models\Artikel;
 use App\Models\Pertanyaan;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SaranPekerjaanController extends Controller
 {
@@ -17,7 +19,18 @@ class SaranPekerjaanController extends Controller
      */
     public function index()
     {
-        $saranPekerjaanList = SaranPekerjaan::orderBy('jurusan_id', 'asc')->paginate(10);
+        // Add search functionality
+        $search = request('search');
+        
+        $saranPekerjaanList = SaranPekerjaan::query()
+            ->when($search, function($query) use ($search) {
+                return $query->where('saran_pekerjaan', 'like', '%' . $search . '%')
+                    ->orWhereHas('jurusan', function($query) use ($search) {
+                        $query->where('jurusan', 'like', '%' . $search . '%');
+                    });
+            })
+            ->orderBy('jurusan_id', 'asc')
+            ->paginate(10);
 
         return view('components.admin.saranpekerjaan.view', [
             'saranPekerjaanList' => $saranPekerjaanList,
@@ -44,18 +57,29 @@ class SaranPekerjaanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSaranPekerjaanRequest $request)
+    public function store(Request $request)
     {
         $validatedData = $request->validate([
             'jurusan_id' => 'required|exists:jurusan,id',
-            'saran_pekerjaan' => 'required|string|max:255'
+            'saran_pekerjaan' => 'required|string|max:255',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
-        SaranPekerjaan::create([
+        $data = [
             'jurusan_id' => $validatedData['jurusan_id'],
-            'saran_pekerjaan' => $validatedData['saran_pekerjaan'] // Mapping ke kolom database
-        ]);
+            'saran_pekerjaan' => $validatedData['saran_pekerjaan']
+        ];
         
+        // Upload gambar jika ada
+        if ($request->hasFile('gambar')) {
+            $gambar = $request->file('gambar');
+            $gambarPath = $gambar->store('public/saran-pekerjaan');
+            $data['gambar'] = str_replace('public/', '', $gambarPath);
+        }
+        
+        SaranPekerjaan::create($data);
+        
+        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil ditambahkan');
     }
 
     /**
@@ -63,7 +87,7 @@ class SaranPekerjaanController extends Controller
      */
     public function show(SaranPekerjaan $saranPekerjaan)
     {
-        return view('pages.saranPekerjaanDetail', [
+        return view('components.admin.saranpekerjaan.show', [
             'saranPekerjaan' => $saranPekerjaan,
             'jurusan' => $saranPekerjaan->jurusan
         ]);
@@ -72,8 +96,10 @@ class SaranPekerjaanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SaranPekerjaan $saranPekerjaan)
+    public function edit($id)
     {
+        $saranPekerjaan = SaranPekerjaan::findOrFail($id);
+    
         return view('components.admin.saranpekerjaan.edit', [
             'saranPekerjaan' => $saranPekerjaan,
             'jurusanInfo' => Jurusan::all(),
@@ -86,24 +112,66 @@ class SaranPekerjaanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSaranPekerjaanRequest $request, SaranPekerjaan $saranPekerjaan)
-    {
-        $validatedData = $request->validate([
-            'jurusan_id' => 'required|exists:jurusan,id',
-            'saranpekerjaan' => 'required|string|max:255' // Sesuaikan dengan name di form
-        ]);
+   /**
+ * Update the specified resource in storage.
+ */
+public function update(Request $request, $id)
+{
+    // Temukan model
+    $saranPekerjaan = SaranPekerjaan::findOrFail($id);
+    
+    // Validasi input
+    $validatedData = $request->validate([
+        'jurusan_id' => 'required|exists:jurusan,id',
+        'saran_pekerjaan' => 'required|string|max:255',
+        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+    ]);
+    
+    // Update data
+    $saranPekerjaan->jurusan_id = $validatedData['jurusan_id'];
+    $saranPekerjaan->saran_pekerjaan = $validatedData['saran_pekerjaan'];
+    
+    // Handle file upload jika ada
+    if ($request->hasFile('gambar')) {
+        // Hapus gambar lama jika ada
+        if ($saranPekerjaan->gambar) {
+            Storage::delete('public/' . $saranPekerjaan->gambar);
+        }
         
-
-        $saranPekerjaan->update($validatedData);
-        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil diubah');
+        // Simpan gambar baru
+        $imagePath = $request->file('gambar')->store('saran-pekerjaan', 'public');
+        $saranPekerjaan->gambar = $imagePath;
     }
-
+    
+    // Tambahkan debugging
+    // dd($saranPekerjaan, $request->all(), 'About to save');
+    
+    // Simpan perubahan
+    $saranPekerjaan->save();
+    
+    // Redirect dengan pesan sukses
+    return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil diupdate');
+}
     /**
-     * Remove the specified resource from storage.
+     * Export data to PDF.
      */
-    public function destroy(SaranPekerjaan $saranPekerjaan)
+    public function exportPDF()
     {
-        $saranPekerjaan->delete();
-        return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil dihapus');
+        try {
+            // Ambil semua data saran pekerjaan
+            $saranPekerjaanList = SaranPekerjaan::orderBy('jurusan_id')->get();
+            $jurusanInfo = Jurusan::all();
+    
+            // Buat PDF
+            $pdf = \PDF::loadView('components.admin.saranpekerjaan.pdf', [
+                'saranPekerjaanList' => $saranPekerjaanList,
+                'jurusanInfo' => $jurusanInfo
+            ]);
+    
+            return $pdf->download('saran-pekerjaan-data.pdf');
+        } catch (\Exception $e) {
+            \Log::error('PDF Export Error: ' . $e->getMessage());
+            return redirect('/saranpekerjaan')->with('error', 'Gagal mengekspor PDF: ' . $e->getMessage());
+        }
     }
 }

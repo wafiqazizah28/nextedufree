@@ -9,8 +9,7 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "16px",
-    },
+     },
     extend: {
       colors: {
         primary: "#4338CA",
@@ -23,10 +22,11 @@ export default {
         graySecondary: "#EEEEEE",
         hitam: "#000000",
        foocolor: "F7F8FC",
+       blackUnder: "#222222",
+       purpleHover: "#5041BC",
       },
       screens: {
-        "2xl": "1320px",
-      },
+       },
       fontFamily: {
         sans: ['Poppins', 'sans-serif'],
       },

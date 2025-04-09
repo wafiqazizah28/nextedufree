@@ -28,6 +28,8 @@ class ProfileController extends Controller
             'nama' => 'required|string|max:255',
             'sekolah' => 'nullable|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Pastikan file gambar valid
+            'nomer_hp' => 'nullable|string|max:20', // Make sure this rule exists
+
         ]);
     
         // Update Foto Jika Ada
@@ -45,6 +47,7 @@ class ProfileController extends Controller
         // Update Data Lain
         $user->nama = $request->nama;
         $user->sekolah = $request->sekolah;
+        $user->nomer_hp = $request->nomer_hp;
         $user->save();
     
         return redirect()->route('profile.show')->with('success', 'Profil berhasil diperbarui!');

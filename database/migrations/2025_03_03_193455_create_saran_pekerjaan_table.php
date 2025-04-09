@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('jurusan_id')->constrained('jurusan')->onDelete('cascade')->onUpdate('cascade');
             $table->string('saran_pekerjaan');
+            $table->string('gambar')->nullable(); // Kolom untuk menyimpan path gambar
         });
     }
 

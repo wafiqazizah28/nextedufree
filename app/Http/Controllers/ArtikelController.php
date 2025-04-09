@@ -17,19 +17,25 @@ class ArtikelController extends Controller
     /**
      * Menampilkan daftar artikel.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $kategoriList = Kategori::all(); // Ambil semua kategori
         $artikelList = Artikel::query();
-
-        if (request('search')) {
-            $artikelList->where('judul', 'like', '%' . request('search') . '%');
+    
+        if ($request->has('kategori')) {
+            $artikelList->where('kategori_id', $request->kategori);
         }
-
+    
+        if ($request->has('search')) {
+            $artikelList->where('judul', 'like', '%' . $request->search . '%');
+        }
+    
         return view('components.admin.artikels.view', [
             'artikelList' => $artikelList->paginate(10)->withQueryString(),
+            'kategoriList' => $kategoriList
         ]);
     }
-
+    
     /**
      * Menampilkan form tambah artikel.
      */
@@ -116,4 +122,5 @@ class ArtikelController extends Controller
         $artikel->delete();
         return redirect('/artikels')->with('success', 'Artikel berhasil dihapus');
     }
+    
 }

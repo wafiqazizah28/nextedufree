@@ -8,6 +8,7 @@ use App\Models\Artikel;
 use App\Models\Pertanyaan;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
@@ -25,22 +26,26 @@ class UserController extends Controller
         $hasilTes = HasilTes::all();
         $usersQuery = User::orderBy('id'); // Query Builder
         $pertanyaanInfo = Pertanyaan::all();
-        $jurusansInfo = Jurusan::all();
+        $jurusanInfo = Jurusan::all();
         $artikelsInfo = Artikel::all();
 
         // Pencarian berdasarkan nama
         if (request('search')) {
-            $usersQuery->where('name', 'like', '%' . request('search') . '%');
+            $search = request('search');
+            $users = User::where('nama', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->paginate(10);
+        } else {
+            $users = $usersQuery->paginate(15)->withQueryString(); // Pagination
         }
-
-        $users = $usersQuery->paginate(15)->withQueryString(); // Pagination
+        
         $usersInfo = User::all(); // Data tambahan jika diperlukan
 
         return view('components.admin.users.view', [
             'hasilTes' => $hasilTes,
             'users' => $users,
             'pertanyaanInfo' => $pertanyaanInfo,
-            'jurusansInfo' => $jurusansInfo,
+            'jurusanInfo' => $jurusanInfo,
             'artikelsInfo' => $artikelsInfo,
             'usersInfo' => $usersInfo
         ]);
@@ -60,13 +65,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
         User::create([
-            'name' => $request->name,
+            'nama' => $request->nama,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
@@ -100,12 +105,12 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'email' => "required|email|unique:users,email,{$id}",
         ]);
 
         $user->update([
-            'name' => $request->name,
+            'nama' => $request->nama,
             'email' => $request->email,
         ]);
 
@@ -122,4 +127,16 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
     }
+    public function exportPdf()
+{
+    $users = User::all();
+    
+    // You need to install a PDF package like dompdf
+    // composer require barryvdh/laravel-dompdf
+    
+    $pdf = PDF::loadView('components.admin.users.pdf', compact('users'));
+    
+    return $pdf->download('daftar-pengguna.pdf');
+}
+
 }

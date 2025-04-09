@@ -16,7 +16,7 @@ class Jurusan extends Model
         return $this->hasMany(SaranPekerjaan::class, 'jurusan_id');
     }
 
-    public function sekolahs()
+    public function sekolah()
     {
         return $this->hasMany(Sekolah::class);
     }

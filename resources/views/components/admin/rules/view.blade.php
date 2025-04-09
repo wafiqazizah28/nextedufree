@@ -4,32 +4,40 @@
 <div class="w-full lg:mx-auto">
   <div class="w-full rounded-sm border border-[#BBBBBB] bg-white p-3">
     <div class="flex items-center justify-between px-4">
-      <h1 class="font-base mx-3 mt-3 mb-5 text-lg text-slate-800 lg:text-2xl">Rule Base Table</h1>
+      <h1 class="font-base mx-3 mt-3 mb-5 text-lg text-slate-800 lg:text-2xl">Data Tabel</h1>
+      <button class="bg-indigo-700 text-white py-2 px-4 rounded-md hover:bg-indigo-800">Tambah Data</button>
     </div>
 
     <div class="overflow-x-auto">
       @if (count($jurusanRelations ?? []))
-        <table class="w-full min-w-max table-auto border-collapse border text-slate-800">
-          <thead class="bg-slate-50 text-slate-700">
-            <tr>
-              <th class="border px-4 py-3">No</th>
-              <th class="border px-4 py-3">Jurusans</th>
+        <table class="w-full min-w-max table-auto">
+          <thead>
+            <tr class="bg-indigo-700 text-white">
+              <th class="px-4 py-3 text-center">Kode Jurusan</th>
+              <th class="px-4 py-3 text-left">Nama Jurusan</th>
               @foreach ($pertanyaanInfo as $pertanyaan)
-                <th class="border px-4 py-3 text-center">{{ $pertanyaan['pertanyaan_code'] }}</th>
+                <th class="px-4 py-3 text-center">{{ $pertanyaan['pertanyaan_code'] }}</th>
               @endforeach
-              <th class="border px-4 py-3">Action</th>
+              <th class="px-4 py-3 text-center">Aksi</th>
             </tr>
           </thead>
           <tbody>
             @foreach ($jurusanRelations as $jurusan)
-              <tr class="text-center">
-                <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                <td class="border px-4 py-2 text-left">{{ $jurusan['name'] }}</td>
+              <tr class="border-b border-[#E5E7EB]">
+                <td class="px-4 py-3 text-center">{{ $jurusan['id'] }}</td>
+                <td class="px-4 py-3 text-left">{{ $jurusan['name'] }}</td>
                 @foreach ($jurusan['rules'] as $rule)
-                  <td class="border px-4 py-2 text-center">{{ $rule ? '✓' : '-' }}</td>
+                  <td class="px-4 py-3 text-center">{{ $rule ? '✓' : '-' }}</td>
                 @endforeach
-                <td class="border px-4 py-2">
-                  <a class="text-yellow-400 hover:text-yellow-500" href="/rules/{{ $jurusan['id'] }}/edit">Edit</a>
+                <td class="px-4 py-3">
+                  <div class="flex justify-center space-x-2">
+                    <a href="/rules/{{ $jurusan['id'] }}/edit">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </a>
+                    
+                  </div>
                 </td>
               </tr>
             @endforeach
@@ -43,5 +51,4 @@
     </div>
   </div>
 </div>
-
 @endsection

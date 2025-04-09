@@ -11,12 +11,13 @@ use App\Models\Pertanyaan;
 use App\Models\User;
 use App\Models\Rule;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class JurusanController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->except('show');
+        $this->middleware('admin')->except(['show', 'getJurusanList']);
     }
 
     /**
@@ -35,8 +36,8 @@ class JurusanController extends Controller
             $saranPekerjaanList = $saranPekerjaanList->where('saranpekerjaan', 'like', '%' . request('searchSol') . '%');
         }
 
-        return view('components.admin.jurusans.view', [
-            'jurusanList' => $jurusanList->paginate(10)->withQueryString(),
+        return view('components.admin.jurusan.view', [
+            'jurusanList' => $jurusanList->paginate(5)->withQueryString(),
             'saranPekerjaanList' => $saranPekerjaanList->paginate(10)->withQueryString(),
             'jurusanInfo' => Jurusan::all(),
             'pertanyaanInfo' => Pertanyaan::all(),
@@ -50,7 +51,7 @@ class JurusanController extends Controller
      */
     public function create()
     {
-        return view('components.admin.jurusans.add', [
+        return view('components.admin.jurusan.add', [
             'jurusanInfo' => Jurusan::all(),
             'pertanyaanInfo' => Pertanyaan::all(),
             'artikelInfo' => Artikel::all(),
@@ -63,6 +64,22 @@ class JurusanController extends Controller
      */
     public function store(StoreJurusanRequest $request)
     {
+        // Check for existing jurusan_code or jurusan
+        $existingByCode = Jurusan::where('jurusan_code', $request->jurusan_code)->first();
+        $existingByName = Jurusan::where('jurusan', $request->jurusan)->first();
+        
+        if ($existingByCode) {
+            return back()
+                ->withInput()
+                ->withErrors(['jurusan_code' => 'Kode jurusan sudah digunakan.']);
+        }
+        
+        if ($existingByName) {
+            return back()
+                ->withInput()
+                ->withErrors(['jurusan' => 'Nama jurusan sudah ada.']);
+        }
+        
         $validatedData = $request->validate([
             'jurusan_code' => 'required',
             'jurusan' => 'required',
@@ -70,13 +87,13 @@ class JurusanController extends Controller
             'deskripsi' => 'required',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
         if ($request->hasFile('img')) {
             $validatedData['img'] = $request->file('img')->store('jurusan_images', 'public');
         }
-
+    
         $jurusan = Jurusan::create($validatedData);
-
+    
         $pertanyaanList = Pertanyaan::all();
         foreach ($pertanyaanList as $pertanyaan) {
             Rule::create([
@@ -85,8 +102,8 @@ class JurusanController extends Controller
                 'rule_value' => 0
             ]);
         }
-
-        return redirect('/jurusans')->with('success', 'Jurusan berhasil ditambahkan');
+    
+        return redirect('/jurusan')->with('success', 'Jurusan berhasil ditambahkan');
     }
 
     /**
@@ -107,7 +124,7 @@ class JurusanController extends Controller
      */
     public function edit(Jurusan $jurusan)
     {
-        return view('components.admin.jurusans.edit', [
+        return view('components.admin.jurusan.edit', [
             'jurusan' => $jurusan,
             'jurusanInfo' => Jurusan::all(),
             'pertanyaanInfo' => Pertanyaan::all(),
@@ -141,7 +158,7 @@ class JurusanController extends Controller
 
         $jurusan->update($validatedData);
 
-        return redirect('/jurusans')->with('success', 'Jurusan berhasil diubah');
+        return redirect('/jurusan')->with('success', 'Jurusan berhasil diubah');
     }
 
     /**
@@ -155,7 +172,7 @@ class JurusanController extends Controller
         }
 
         $jurusan->delete();
-        return redirect('/jurusans')->with('success', 'Jurusan berhasil dihapus');
+        return redirect('/jurusan')->with('success', 'Jurusan berhasil dihapus');
     }
 
     /**
@@ -164,5 +181,25 @@ class JurusanController extends Controller
     public function getJurusanList()
     {
         return response()->json(Jurusan::select('id', 'jurusan', 'img')->get());
+    }
+    
+    /**
+     * Export all jurusan data to PDF.
+     */
+    public function exportPDF()
+    {
+        // Get all jurusan data without pagination
+        $allJurusanData = Jurusan::orderBy('jurusan_code', 'asc')->get();
+        
+        // Load the PDF view
+        $pdf = PDF::loadView('components.admin.jurusan.pdf-export', [
+            'jurusanList' => $allJurusanData
+        ]);
+        
+        // Set paper size and orientation
+        $pdf->setPaper('a4', 'landscape');
+        
+        // Download the PDF file
+        return $pdf->download('jurusan-list.pdf');
     }
 }
