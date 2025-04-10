@@ -58,7 +58,7 @@ Route::post('/generate', [GenerativeAIController::class, 'generate']);
 Route::middleware('auth')->group(function () {
     Route::get('/tesminatmu', [AppController::class, 'hasilTes'])->name('hasilTes');
     Route::get('/hasiltes', [AppController::class, 'hasilTes'])->name('hasilTes');
-    Route::get('/admin/hasiltes', [HasilTesController::class, 'index'])->name('components.admin.hasiltes');
+    Route::get('/admin/hasiltess', [HasilTesController::class, 'index'])->name('components.admin.hasiltes');
 });
 
 // 📌 Authentication
