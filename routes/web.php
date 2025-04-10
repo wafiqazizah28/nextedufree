@@ -43,6 +43,26 @@ Route::get('/tanyaJurpan', function () {
         ? redirect('/tanyaJurpan/page') 
         : redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
 });
+<<<<<<< HEAD
+=======
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update'); // ✅ HARUS PUT
+});
+
+// Middleware auth memastikan hanya user yang login bisa mengakses
+Route::get('/tanyaJurpan/page', [AppController::class, 'tanyaJurpan'])->middleware('auth');
+Route::get('/artikelPage', [AppController::class, 'artikel']);
+Route::post('/generate', [GenerativeAIController::class, 'generate']);
+
+// 📌 Halaman hasil tes (User yang sudah login dapat melihat sekolah berdasarkan hasil tes)
+Route::middleware('auth')->group(function () {
+    Route::get('/tesminatmu', [AppController::class, 'hasilTes'])->name('hasilTes');
+    Route::get('/hasiltes', [AppController::class, 'hasilTes'])->name('hasilTes');
+    Route::get('/admin/hasiltess', [HasilTesController::class, 'index'])->name('components.admin.hasiltes');
+});
+>>>>>>> 49fdef723f6197367f0e6ad656fcfc73cf31c525
 
 // 📌 Authentication
 
