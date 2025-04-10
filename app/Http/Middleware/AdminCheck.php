@@ -16,8 +16,13 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user() && Auth::user()->is_admin == 1)
-            return $next($request);
-        return redirect('/');
+        // Cek apakah user login dan memiliki hak admin
+        if (!Auth::check() || Auth::user()->is_admin != 1) {
+            // Redirect ke login dengan pesan error
+            return redirect()->route('login')
+                ->with('error', 'Anda tidak memiliki akses ke halaman tersebut.');
+        }
+
+        return $next($request);
     }
 }

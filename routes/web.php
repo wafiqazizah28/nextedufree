@@ -43,23 +43,6 @@ Route::get('/tanyaJurpan', function () {
         ? redirect('/tanyaJurpan/page') 
         : redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
 });
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update'); // ✅ HARUS PUT
-});
-
-// Middleware auth memastikan hanya user yang login bisa mengakses
-Route::get('/tanyaJurpan/page', [AppController::class, 'tanyaJurpan'])->middleware('auth');
-Route::get('/artikelPage', [AppController::class, 'artikel']);
-Route::post('/generate', [GenerativeAIController::class, 'generate']);
-
-// 📌 Halaman hasil tes (User yang sudah login dapat melihat sekolah berdasarkan hasil tes)
-Route::middleware('auth')->group(function () {
-    Route::get('/tesminatmu', [AppController::class, 'hasilTes'])->name('hasilTes');
-    Route::get('/hasiltes', [AppController::class, 'hasilTes'])->name('hasilTes');
-    Route::get('/admin/hasiltes', [HasilTesController::class, 'index'])->name('components.admin.hasiltes');
-});
 
 // 📌 Authentication
 
@@ -67,12 +50,11 @@ Route::middleware('auth')->group(function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'store']);
 });
 
-Route::get('/testhistory', [App\Http\Controllers\AppController::class, 'showTestHistory'])->name('testdetail');
-Route::get('/testdetail/{id}', [App\Http\Controllers\AppController::class, 'showDetail'])->name('testdetail.detail');
+// Modified login route to check for email verification
 Route::post('/login', [AuthController::class, 'authenticate']);
-Route::post('/register', [AuthController::class, 'store']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 
 // Google OAuth
@@ -90,21 +72,28 @@ Route::post('/submit-answer-guest', [AppController::class, 'forwardChainingGuest
 // AI Generation
 Route::post('/generate', [GenerativeAIController::class, 'generate']);
 
-// Redirect to login if not authenticated
-Route::get('/tanyaJurpan', function () {
-    return Auth::check() 
-        ? redirect('/tanyaJurpan/page') 
-        : redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
-});
+// Email Verification Routes - moved outside of auth middleware for accessibility
+Route::get('/email/verify', [EmailVerificationController::class, 'sendVerificationCode'])
+    ->middleware('auth')
+    ->name('verification.notice');
+Route::get('/email/verify/code', [EmailVerificationController::class, 'showVerificationForm'])
+    ->middleware('auth')
+    ->name('email.verify.code');
+Route::post('/email/verify/code', [EmailVerificationController::class, 'verifyEmail'])
+    ->middleware('auth')
+    ->name('verification.verify');
+Route::post('/email/verification-notification', [EmailVerificationController::class, 'resendVerificationCode'])
+    ->middleware('auth')
+    ->name('verification.resend');
 
 // ===========================
-// 📌 Authenticated User Routes
+// 📌 Authenticated and Verified User Routes
 // ===========================
 
-Route::middleware('auth')->group(function () {
+// All routes that require both authentication and email verification
+Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'user'])->name('dashboard');
-
     
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -126,13 +115,16 @@ Route::middleware('auth')->group(function () {
     
     // Testimoni
     Route::post('/testimoni/store', [TestimoniController::class, 'store'])->name('user.testimoni.store');
+    
+    // Test Detail
+    Route::get('/testdetail/{id}', [App\Http\Controllers\AppController::class, 'showDetail'])->name('testdetail.detail');
 });
 
 // ===========================
 // 📌 Admin Routes
 // ===========================
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     // Admin Dashboard
     Route::get('/adminDashboard', [DashboardController::class, 'admin']);
     
@@ -146,6 +138,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     
     // PDF Exports
     Route::get('/jurusan/export-pdf', [JurusanController::class, 'exportPDF']);
+    Route::get('/admin/hasil-tes', [HasilTesController::class, 'index'])->name('components.admin.hasiltes');
 });
 
 // ===========================
@@ -191,16 +184,13 @@ Route::get('/sekolah', [SekolahController::class, 'index'])->name('sekolah.index
 // PDF Export route
 Route::get('/users/export-pdf', [UserController::class, 'exportPdf'])->name('users.export.pdf');
 
-
-
- 
-
 // Route untuk mengunduh hasil tes sebagai PDF
 Route::get('/hasil-tes/{id}/download', [HasilTesController::class, 'downloadPDF'])->name('hasil-tes.download');
 
 // Route untuk melihat hasil tes
-Route::get('/hasil-tes/{id}', [HasilTesController::class, 'show'])->name('hasil-tes.show');
-Route::get('/hasil-tes/{hasilTes}/generate-share-image', [HasilTesShareController::class, 'generateShareImage']);
+Route::get('/hasiltes/{id}', [HasilTesController::class, 'show'])->name('hasil-tes.show');
+Route::get('/hasiltes/{hasilTes}/generate-share-image', [HasilTesShareController::class, 'generateShareImage']);
+
 // Password Reset Routes
 Route::get('/forgot-password', [PasswordResetController::class, 'showForgotForm'])
     ->name('password.request');
@@ -216,15 +206,3 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
     ->name('password.update');
 Route::post('/reset-password/resend', [PasswordResetController::class, 'resendCode'])
     ->name('password.code.resend');
-
-// Email Verification Routes
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/email/verify', [EmailVerificationController::class, 'sendVerificationCode'])
-        ->name('verification.notice');
-    Route::get('/email/verify/code', [EmailVerificationController::class, 'showVerificationForm'])
-        ->name('email.verify.code');
-    Route::post('/email/verify/code', [EmailVerificationController::class, 'verifyEmail'])
-        ->name('verification.verify');
-    Route::post('/email/verification-notification', [EmailVerificationController::class, 'resendVerificationCode'])
-        ->name('verification.resend');
-});

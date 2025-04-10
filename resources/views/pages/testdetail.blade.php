@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="pt-28 pb-24 lg:pt-36 lg:pb-20 bg-backgroundPrimary">
+<section class="pt-8 pb-4 lg:pt-6 lg:pb-20 bg-backgroundPrimary">
     <div class="container">
         <div class="flex flex-col items-center text-center mb-6">
             <div class="w-full self-center px-4">

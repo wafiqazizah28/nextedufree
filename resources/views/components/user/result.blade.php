@@ -34,13 +34,13 @@
                     {{ $per['hasil'] ?? 'Belum ada hasil' }}
                 </span>
               </td>
-              <td class="py-4 px-4">
+              <td class="py-4 px-4"> 
                 <a href="{{ route('testdetail.detail', $per->id) }}" 
-                  class="text-purpleMain hover:text-blue-800 transition duration-300 flex items-center" 
-                  onclick="event.preventDefault(); window.location.href='{{ route('testdetail.detail', $per->id) }}';">
-                  Lihat
-               </a>
+                   class="text-purpleMain hover:text-blue-800 transition duration-300 flex items-center">
+                   Lihat
+                </a>
               </td>
+              
             </tr>
             @endforeach
           </tbody>

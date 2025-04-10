@@ -29,7 +29,8 @@ class AppController extends Controller
             'forwardChaining', 
             'forwardChainingGuest',
             'filterByKategori',  // Tambahkan ini
-            'search'             // Tambahkan ini
+            'search',
+            'testdetail'             // Tambahkan ini
         ]);
     }
 
