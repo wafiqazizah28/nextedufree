@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 success: (response) => {
                     if (response.status === 200) {
-                        window.location.replace("/hasiltes");
+                        window.location.replace("/hasil-tes");
                     } else {
                         alert("Gagal mengirim jawaban");
                     }

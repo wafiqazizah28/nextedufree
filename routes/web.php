@@ -193,9 +193,7 @@ Route::get('/users/export-pdf', [UserController::class, 'exportPdf'])->name('use
 
 
 
-// In routes/web.php
-
-// Tambahkan route berikut di routes/web.php
+ 
 
 // Route untuk mengunduh hasil tes sebagai PDF
 Route::get('/hasil-tes/{id}/download', [HasilTesController::class, 'downloadPDF'])->name('hasil-tes.download');

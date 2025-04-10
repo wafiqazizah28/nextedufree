@@ -8,7 +8,7 @@
         <div
             class="bg-white shadow-md rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 border border-purpleMain">
             <!-- Gambar jurusan -->
-            <img src="{{ asset('storage/' . ($jurusan->gambar ?? 'default.jpg')) }}" alt="Foto Jurusan"
+            <img src="{{ asset('storage/' . ($jurusan->img ?? 'default.jpg')) }}" alt="Foto Jurusan"
                 class="w-36 h-36 rounded-lg object-cover border-2 border-purpleMain shadow-sm">
 
             <!-- Konten jurusan -->

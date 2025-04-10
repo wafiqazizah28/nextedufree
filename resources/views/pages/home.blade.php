@@ -1,4 +1,3 @@
- 
 @extends('layouts.app')
 
 @section('content')
@@ -11,23 +10,25 @@
             <div class="w-full self-center px-4 lg:w-1/2 mb-8 lg:mb-0">
                 <div class="flex flex-col">
                     <div>
-                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white" data-aos="fade-up">
+                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900" data-aos="fade-up">
                             Temukan
                         </h1>
                     </div>
                     <div class="flex space-x-2">
-                        <h1 id="typing-text" class="text-3xl md:text-4xl lg:text-5xl font-bold text-purpleMain" data-aos="fade-up">
+                        <h1 id="typing-text" class="text-3xl md:text-4xl lg:text-5xl font-bold text-purpleMain"
+                            data-aos="fade-up">
                         </h1>
                         <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900" data-aos="fade-up">
                             Sekarang
                         </h1>
                     </div>
                 </div>
-                
-                <p class="mt-6 mb-4 text-slate-500" data-aos="fade-up">
+                <p class="mt-6 mb-4 text-slate-400 text-lg leading-relaxed max-w-xl mx-auto text-left text-textsecondary"
+                    data-aos="fade-up">
                     Temukan informasi lengkap seputar jurusan yang sesuai dengan minat dan bakatmu.
                 </p>
-                  
+
+
                 <div class="mb-6 mt-4" data-aos="fade-up">
                     <button type="button" onclick="window.location.href='/tesminatmu'"
                         class="flex items-center gap-2 text-purpleSecondarry hover:text-white border border-purpleSecondarry hover:bg-purpleHover focus:ring-4 focus:outline-none focus:ring-purple-200 font-medium rounded-lg text-base px-6 py-3 text-center">
@@ -51,7 +52,8 @@
         <!-- Feature Boxes - Centered on all screens -->
         <div class="container mx-auto mt-7 px-4">
             <div class="flex flex-wrap justify-center gap-3">
-                <div class="flex flex-wrap justify-center items-stretch gap-3 bg-white rounded-lg p-3 shadow-md w-full md:w-auto">
+                <div
+                    class="flex flex-wrap justify-center items-stretch gap-3 bg-white rounded-lg p-3 shadow-md w-full md:w-auto">
                     <!-- Mobile: Stack vertically, Desktop: All in one row -->
                     <div class="flex flex-col lg:flex-row justify-center items-center gap-4 w-full">
                         <div class="flex flex-col items-center p-2 min-w-[75px]" data-aos="fade-up">
@@ -68,12 +70,12 @@
                             <h3 class="text-sm font-semibold text-gray-900 mb-1">Hasil</h3>
                             <p class="text-xxs text-gray-500 text-center">Lihat Hasilnya</p>
                         </div>
-                        
+
                         <!-- Button integrated in the same row for desktop -->
                         <div class="flex items-center justify-center w-full lg:w-auto mt-4 lg:mt-0">
                             <button onclick="window.location.href='/tanyaJurpan/page'"
-                            class="w-full lg:w-auto bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purpleHover transition-colors">
-                            Tanya Jurpan
+                                class="w-full lg:w-auto bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purpleHover transition-colors">
+                                Tanya Jurpan
                             </button>
                         </div>
                     </div>
@@ -119,7 +121,8 @@
     <div class="container px-4 mx-auto">
         <!-- Header Section -->
         <div class="text-center mb-8 lg:mb-12" data-aos="fade-up">
-            <h2 class="text-3xl lg:text-5xl font-black mb-3 lg:mb-4">Hal yang perlu <span class="text-purpleMain">dilakukan</span></h2>
+            <h2 class="text-3xl lg:text-5xl font-black mb-3 lg:mb-4">Hal yang perlu <span
+                    class="text-purpleMain">dilakukan</span></h2>
             <p class="text-gray-600 max-w-2xl text-lg lg:text-2xl mx-auto">
                 Kami memastikan Anda menemukan jurusan yang tepat dengan perencanaan matang dan sesuai dengan kebutuhan
                 Anda.
@@ -135,7 +138,7 @@
                     <img src="{{ asset('assets/icon/tutorial1.svg') }}" alt="Daftar Account"
                         class="w-8 h-8 lg:w-10 lg:h-10 text-[#FA7436]">
                 </div>
-                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-black">Daftar Account</h3>
+                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-[#FA7436]">Daftar Account</h3>
                 <p class="text-sm lg:text-base text-gray-600 mb-4">
                     Daftar akunmu untuk mendapatkan hasil jurusanmu
                 </p>
@@ -145,13 +148,12 @@
         hover:bg-gradient-to-b hover:from-white hover:via-[#F0F8FF] hover:via-80% hover:to-[#E6F2FF] hover:text-black group"
                 data-aos="fade-up">
                 <div class="mb-3 lg:mb-4">
-                    <img src="{{ asset('assets/icon/tutorial2.svg') }}" alt="Pembayaran"
+                    <img src="{{ asset('assets/icon/tutorial2.svg') }}" alt="tes"
                         class="w-8 h-8 lg:w-10 lg:h-10 text-[#338DFF]">
                 </div>
-                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-[#338DFF]">Pembayaran</h3>
+                <h3 class="text-lg lg:text-xl font-semibold mb-2 text-[#338DFF]">Tes Minat</h3>
                 <p class="text-sm lg:text-base text-gray-600 mb-4">
-                    Pembayaran dengan mudah agar kamu bisa melakukan tes minatmu
-                </p>
+                    Lakukan Tes minatmu untuk mengetahui jurusan yang tepat.                </p>
             </div>
 
             <!-- Card 3 -->
@@ -186,15 +188,15 @@
                 bakatmu menggunakan sistem pakar. Sistem ini menggabungkan pengetahuan dari para ahli di bidang
                 pendidikan dan algoritma canggih untuk memberikan rekomendasi jurusan yang paling tepat.
             </p>
-            <a href="#"
-                class="inline-flex items-center px-4 py-2 lg:px-5 lg:py-3 text-sm lg:text-base font-medium text-white rounded-lg bg-purpleMain hover:bg-purple-700 focus:ring-4 focus:ring-purple-300">
+            <a href="https://www.instagram.com/nextedu.id/?igsh=OTY5Y2d4dzA5YW5t"
+                class="inline-flex items-center px-4 py-2 lg:px-5 lg:py-3 text-sm lg:text-base font-medium text-white rounded-lg bg-purpleMain hover:bg-purpleHover focus:ring-4 focus:ring-purple-300">
                 Selengkapnya
             </a>
         </div>
 
         <!-- Kolom Kanan: Maskot & Floating Cards -->
-        <div class="lg:col-span-5 flex justify-center items-center relative mt-16 mb-24 lg:mt-0 lg:mb-0" data-aos="fade-left"
-            data-aos-duration="1000">
+        <div class="lg:col-span-5 flex justify-center items-center relative mt-16 mb-24 lg:mt-0 lg:mb-0"
+            data-aos="fade-left" data-aos-duration="1000">
 
             <!-- Maskot -->
             <img src="{{ asset('assets/img/jurpan-home.svg') }}" alt="Jurusanku Owl Mascot"
@@ -263,7 +265,8 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 lg:gap-12 max-w-6xl mx-auto px-4">
             {{-- Card 1 - Sistem IT --}}
             <div class="flex justify-center" data-aos="fade-up">
-                <a href="#" class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
+                <a href="#"
+                    class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
 
                     <img class="w-full h-50 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek1.png') }}"
                         alt="Sistem IT">
@@ -276,7 +279,8 @@
 
             {{-- Card 2 - Bisnis --}}
             <div class="flex justify-center" data-aos="fade-up">
-                <a href="#" class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
+                <a href="#"
+                    class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
 
                     <img class="w-full h-50 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek2.png') }}"
                         alt="Bisnis">
@@ -289,7 +293,8 @@
 
             {{-- Card 3 - Perkantoran --}}
             <div class="flex justify-center" data-aos="fade-up">
-                <a href="#" class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
+                <a href="#"
+                    class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
                     <img class="w-full h-50 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek3.png') }}"
                         alt="Perkantoran">
                     <div class="p-4 flex justify-between items-center">
@@ -382,7 +387,8 @@
                     <button id="prevBtn" class="p-3 rounded-full border border-gray-400 hover:bg-gray-200 transition">
                         <img src="{{ asset('assets/icon/testimoni1.svg') }}" alt="Previous">
                     </button>
-                    <button id="nextBtn" class="p-3 rounded-full bg-purpleMain text-white hover:bg-indigo-700 transition">
+                    <button id="nextBtn"
+                        class="p-3 rounded-full bg-purpleMain text-white hover:bg-indigo-700 transition">
                         <img src="{{ asset('assets/icon/testimoni2.svg') }}" alt="Next">
                     </button>
                 </div>
@@ -391,29 +397,30 @@
             <!-- Testimonial Cards Section -->
             <div class="relative w-full shadow-lg rounded-lg">
                 @if ($testimonis->isEmpty())
-                    <p class="text-red-500">Tidak ada testimoni yang tersedia.</p>
+                <p class="text-red-500">Tidak ada testimoni yang tersedia.</p>
                 @else
                 <div id="testimonialContainer" class="relative overflow-hidden">
                     @foreach ($testimonis as $index => $testimoni)
-                    <div class="testimonial-item absolute w-full transition-all duration-500" 
-                         style="{{ $index === 0 ? 'opacity: 1; transform: translateX(0);' : 'opacity: 0; transform: translateX(100%);' }}"
-                         data-index="{{ $index }}">
+                    <div class="testimonial-item absolute w-full transition-all duration-500"
+                        style="{{ $index === 0 ? 'opacity: 1; transform: translateX(0);' : 'opacity: 0; transform: translateX(100%);' }}"
+                        data-index="{{ $index }}">
                         <!-- Main testimonial card -->
                         <div class="p-6 bg-white rounded-lg shadow-lg">
                             <div class="mb-4">
                                 <svg class="w-8 h-8 text-purpleMain opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                                    <path
+                                        d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                                 </svg>
                             </div>
-                            
+
                             <!-- Testimonial Content -->
                             <div class="text-lg text-gray-700 leading-relaxed mb-6">
                                 {{ $testimoni->testimoni }}
                             </div>
-                            
+
                             <!-- User Info - Anonymous Only -->
                             <div class="flex items-center">
-                                
+
                                 <div>
                                     <h4 class="text-lg font-semibold">
                                         Anonymous
@@ -421,7 +428,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Shadow card for next testimonial -->
                         <div class="absolute top-2 left-2 -z-10 w-full h-full bg-gray-200 rounded-lg shadow-md"></div>
                     </div>
@@ -432,8 +439,8 @@
         </div>
     </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
     // Get all testimonial items
     const testimonials = document.querySelectorAll('.testimonial-item');
     const container = document.getElementById('testimonialContainer');
@@ -528,9 +535,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 6000);
     });
 });
-</script>
-</section> 
-    
+    </script>
+</section>
+
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     AOS.init({

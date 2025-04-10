@@ -12,8 +12,8 @@ export default {
      },
     extend: {
       colors: {
-        primary: "#4338CA",
-        secondary: "#6366F1",
+        primary: "#FFFFFF",
+        secondary: "#FFFFFF",
         backgroundLight: "#FEFCFB",
         backgroundPrimary: "#FFFFFF",
         purpleMain: "#493D9E",
@@ -24,6 +24,7 @@ export default {
        foocolor: "F7F8FC",
        blackUnder: "#222222",
        purpleHover: "#5041BC",
+       textsecondary: "#666666",
       },
       screens: {
        },

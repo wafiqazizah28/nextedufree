@@ -17,6 +17,7 @@ body {
 }
 
 
+
 .btnn:hover {
     box-shadow: 10px 8px #feffff;
 }
@@ -31,6 +32,9 @@ body {
 
 .bayangan_field {
     box-shadow: 4px 3px #030723;
+}
+.navbar-default {
+    @apply bg-white;
 }
 
 .navbar-fixed {
@@ -387,63 +391,90 @@ html, body {
 
 .grid-register {
     display: grid;
-    grid-template-columns: 1fr; /* Default: 1 kolom untuk mobile */
-    gap: 14px 24px; /* Jarak antara elemen (vertikal 14px, horizontal 24px) */
-    margin-left: 0; /* Default posisi normal */
-}
-
-/* Untuk layar lebih besar dari 1024px (lg di Tailwind) */
-@media (min-width: 1024px) {
-    .grid-register {
-        grid-template-columns: repeat(2, 1fr); /* 2 kolom seimbang */
-        margin-left: -30px; /* Geser lebih ke kiri */
-    }
-}
-
-.form-container-register {
-    display: flex;
-    justify-content: flex-start; /* Biar lebih ke kiri */
-    margin-left: 0; /* Default posisi normal */
+    grid-template-columns: 1fr; /* Mobile: 1 kolom */
+    gap: 14px 24px;
+    justify-items: center; /* Posisikan item di tengah */
+    width: 100%;
+    padding: 0 1rem; /* Padding normal untuk mobile */
+    margin: 0 auto; /* Centered container */
 }
 
 /* Untuk layar lebih besar dari 1024px */
 @media (min-width: 1024px) {
-    .form-container-register {
-        margin-left: -40px; /* Geser lebih ke kiri */
+    .grid-register {
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: start; /* Kembalikan ke kiri */
+        margin-left: 0; /* Hapus margin negatif */
+        padding-left: 2rem; /* Tambah padding kiri */
     }
-}
-.btn-container {
-    display: flex;
-    justify-content: flex-start;
-    width: 100%; /* Pastikan tombol selebar form di mobile */
 }
 
-@media (min-width: 640px) { /* sm breakpoint (untuk layar kecil ke atas) */
-    .btn-container {
-        width: auto; /* Biarkan ukuran tombol menyesuaikan */
+.form-container-register {
+    display: flex;
+    justify-content: center; /* Tengah di mobile */
+    align-items: center;
+    width: 100%;
+    padding: 0; /* Hapus padding tambahan */
+}
+
+/* Layar besar */
+@media (min-width: 1024px) {
+    .form-container-register {
+        justify-content: flex-start;
+        margin-left: 0; /* Hapus margin negatif */
+        padding-left: 2rem; /* Tambah padding kiri */
     }
 }
+
+.btn-container {
+    display: flex;
+    justify-content: center; /* Tengahin tombol juga di mobile */
+    width: 100%;
+    padding: 0;
+}
+
+/* Atur ukuran tombol di mobile */
+.btn-container button {
+    width: 80%; /* Ukuran tombol di mobile */
+    max-width: 300px; /* Maksimum lebar */
+}
+
+/* Tombol auto-width saat layar medium ke atas */
+@media (min-width: 640px) {
+    .btn-container {
+        justify-content: flex-start;
+        width: auto;
+        margin-left: 0;
+        padding-left: 2rem;
+    }
+    
+    /* Atur ukuran tombol di desktop */
+    .btn-container button {
+        width: auto; /* Kembalikan ke auto width untuk desktop */
+    }
+}
+
 /* Styling untuk form registrasi */
 .form-container-register {
     display: flex;
-    justify-content: flex-start; /* Geser ke kiri */
+    justify-content: center; /* Center di mobile */
     align-items: center;
-     width: 100%;
-  }
-  
-  
-  /* Grid layout untuk form dengan 2 kolom pada layar besar */
-  .grid-register {
-    justify-content: flex-start;
-  }
-  
-  
-  @media (min-width: 640px) {
+    width: 100%;
+    padding: 0; /* Hapus padding tambahan */
+}
+
+/* Grid layout untuk form dengan 2 kolom pada layar besar */
+.grid-register {
+    justify-content: center; /* Untuk mobile, center */
+}
+
+@media (min-width: 640px) {
     .grid-register {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem 1.5rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem 1.5rem;
+        padding-left: 2rem; /* Tambahkan padding pada layar medium */
     }
-  }
+}
   
   /* Kontainer untuk label dan input */
   .input-box {

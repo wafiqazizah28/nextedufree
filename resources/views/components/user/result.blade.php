@@ -31,14 +31,15 @@
                 @endphp
                 
                 <span class="{{ $colorClass }}">
-                    {{ $per['hasil'] ?? 'Akutansi' }}
+                    {{ $per['hasil'] ?? 'Belum ada hasil' }}
                 </span>
               </td>
               <td class="py-4 px-4">
-                <a href="{{ route('testdetail.detail', $per->id) }}" class="text-purpleMain hover:text-blue-800 transition duration-300 flex items-center">
-                  
+                <a href="{{ route('testdetail.detail', $per->id) }}" 
+                  class="text-purpleMain hover:text-blue-800 transition duration-300 flex items-center" 
+                  onclick="event.preventDefault(); window.location.href='{{ route('testdetail.detail', $per->id) }}';">
                   Lihat
-                </a>
+               </a>
               </td>
             </tr>
             @endforeach
@@ -56,7 +57,7 @@
         <div class="my-2 w-full text-lg font-light text-primary md:text-xl text-center">
           Belum ada riwayat tes, mulai tes sekarang!
         </div>
-        <a href="/diagnose" class="my-2 rounded-sm border-2  bg-purpleMain py-3 px-8 text-white duration-300 ease-out hover:bg-white hover:text-purpleMain focus:outline-none focus:ring focus:ring-purpleMain focus:ring-opacity-50">
+        <a href="/tesminatmu" class="my-2 rounded-sm border-2  bg-purpleMain py-3 px-8 text-white duration-300 ease-out hover:bg-white hover:text-purpleMain focus:outline-none focus:ring focus:ring-purpleMain focus:ring-opacity-50">
           Tes sekarang
         </a>
       </div>

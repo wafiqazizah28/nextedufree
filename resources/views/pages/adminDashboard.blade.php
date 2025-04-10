@@ -24,7 +24,7 @@
         rel="stylesheet">
     <style>
         .content-wrapper {
-            min-height: calc(100vh - 2rem);
+            min-height: calc(100vh - 4rem);
             transition: all 0.2s ease-in-out;
         }
 
@@ -87,14 +87,133 @@
             align-items: center;
             justify-content: center;
         }
+        
+        /* Modern navbar styles */
+        .navbar {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .navbar-scrolled {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .profile-dropdown {
+            transform-origin: top right;
+            transform: scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+        
+        .profile-dropdown.active {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .dropdown-item {
+            transition: all 0.2s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+        
+        .page-title {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #7C3AED;
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile Sidebar Styles */
+        #sidebar {
+            transition: transform 0.3s ease;
+            width: 250px;
+            position: fixed;
+            height: 100%;
+            z-index: 1030;
+        }
+        
+        .content-container {
+            transition: margin-left 0.3s ease;
+        }
+
+        @media (min-width: 1024px) {
+            #sidebar {
+                transform: translateX(0) !important;
+            }
+            
+            .content-container {
+                margin-left: 250px;
+            }
+            
+            .navbar {
+                width: calc(100% - 250px) !important;
+                left: 250px;
+            }
+        }
+        
+        @media (max-width: 1023px) {
+            #sidebar {
+                transform: translateX(-100%);
+            }
+            
+            #sidebar.sidebar-active {
+                transform: translateX(0);
+            }
+            
+            .content-container {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .navbar {
+                width: 100% !important;
+                left: 0;
+            }
+        }
+        
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1020;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 </head>
 
 <body class="bg-white">
     <div class="flex min-h-screen">
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
         <!-- Sidebar with scroll container -->
-        <aside
-            class="w-1/5 h-screen bg-purpleMain border-2 border-purpleMain text-white shadow-lg flex flex-col items-center rounded-r-3xl overflow-hidden fixed">
+        <aside id="sidebar" class="bg-purpleMain border-2 border-purpleMain text-white shadow-lg flex flex-col items-center rounded-r-3xl overflow-hidden">
             <div class="sidebar-container w-full">
                 <!-- Logo area with white background -->
                 <div class="w-full bg-white py-6 px-4 flex justify-center items-center">
@@ -125,7 +244,6 @@
                         Settings Pertanyaan
                     </a>
 
-                    <!-- More menu items... (lainnya tetap sama) -->
                     <a href="/jurusan"
                         class="flex items-center px-3 py-2 rounded-lg text-sm font-medium hover:bg-white hover:text-purpleMain mb-2 transition-colors duration-200 btn-action">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
@@ -219,48 +337,84 @@
             </div>
         </aside>
 
-        <div class="w-1/5">
-            <!-- Spacer untuk mengatasi sidebar fixed -->
-        </div>
-
-        <div class="flex-1 flex flex-col">
-        
-            <nav class="bg-white shadow-sm py-4 px-0 w-100 flex items-center justify-between">
-                <!-- Judul Halaman (opsional) -->
-                <div class="text-gray-600 font-medium text-lg border-b-2 border-purpleMain pb-2">
-                    @yield('title', 'Admin Dashboard')
-                </div>
+        <div class="content-container flex-1 flex flex-col">
+            <!-- Modern Sticky Navbar -->
+            <nav class="navbar fixed top-0 right-0 bg-white/95 shadow-sm py-4 px-6 flex items-center justify-between transition-all duration-300">
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="lg:hidden flex items-center justify-center text-gray-700 hover:text-purple-600 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
                 
-                <!-- Profile Dropdown -->
-                <div class="relative ml-4">
-                    <button class="flex items-center focus:outline-none" id="profile-menu-button">
-                        <div class="flex items-center">
-                            <!-- Profile Image -->
-                            <div class="h-10 w-10 rounded-full bg-purpleMain flex items-center justify-center text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                <!-- Judul Halaman dengan animasi underline -->
+                <div class="flex items-center">
+                    <h1 class="page-title text-gray-700 font-semibold text-lg">
+                        @yield('title', 'Admin Dashboard')
+                    </h1>
+                </div>
+               
+                <!-- Right Menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Profile Dropdown -->
+                    <div class="relative">
+                        <button class="flex items-center focus:outline-none group" id="profile-menu-button">
+                            <div class="flex items-center space-x-3">
+                                <!-- Profile Image with purple gradient -->
+                                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white shadow-md overflow-hidden transition duration-300 group-hover:shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                
+                                <!-- Admin Name -->
+                                <div class="text-left hidden md:block">
+                                    <p class="text-sm font-medium text-gray-700 group-hover:text-purple-700 transition-colors duration-200">Admin Name</p>
+                                    <p class="text-xs text-gray-500">Administrator</p>
+                                </div>
+                                
+                                <!-- Dropdown indicator -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 transition-transform duration-200 group-hover:text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </div>
+                        </button>
+            
+                        <!-- Dropdown Menu -->
+                        <div class="profile-dropdown absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-lg py-2 ring-1 ring-black ring-opacity-5 focus:outline-none z-50" 
+                             id="profile-menu"
+                             role="menu"
+                             aria-orientation="vertical"
+                             aria-labelledby="profile-menu-button">
                             
-                            <!-- Admin Name -->
-                            <div class="ml-3 text-left">
-                                <p class="text-sm font-medium text-gray-700">Admin Name</p>
-                                <p class="text-xs text-gray-500">Administrator</p>
+                            <!-- Profile Header -->
+                            <div class="px-4 py-3 border-b border-gray-100">
+                                <p class="text-sm font-semibold text-gray-700">Admin Account</p>
+                                <p class="text-xs text-gray-500 truncate">admin@nextedu.com</p>
+                            </div>
+                            
+                            <!-- Menu Items -->
+                            <div class="py-1">
+                                <!-- Profile settings options could go here -->
+                            </div>
+                            
+                            <!-- Logout -->
+                            <div class="border-t border-gray-100 mt-1">
+                                <a href="#" class="dropdown-item flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                    </svg>
+                                     Keluar
+                                </a>
                             </div>
                         </div>
-                    </button>
-        
-                    <!-- Dropdown Menu -->
-                    <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none" 
-                         id="profile-menu"
-                         role="menu"
-                         aria-orientation="vertical"
-                         aria-labelledby="profile-menu-button">
-                         
-                       
                     </div>
                 </div>
             </nav>
+            
+            <!-- Spacer for fixed navbar -->
+            <div class="h-20"></div>
+            
             <!-- Main Content -->
             <main class="flex-1 p-8">
                 <!-- Dashboard Content -->
@@ -317,54 +471,144 @@
 
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
-        // Script untuk menangani transisi halus saat button diklik
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tangani semua button di sidebar
-            const sidebarLinks = document.querySelectorAll('nav a');
-            
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // Hanya jika bukan link eksternal yang dibuka di tab baru
-                    if (!e.ctrlKey && !e.metaKey && !e.shiftKey) {
-                        const contentContainer = document.getElementById('content-container');
-                        
-                        // Tambahkan kelas loading untuk animasi fade out
-                        contentContainer.style.opacity = '0.5';
-                        contentContainer.style.transition = 'opacity 0.2s ease';
-                        
-                        // Kembalikan opacity setelah halaman baru dimuat
-                        setTimeout(() => {
-                            contentContainer.style.opacity = '1';
-                        }, 300);
-                    }
-                });
-            });
-            
-            // Form submission handling
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
-                form.addEventListener('submit', function() {
-                    // Disable semua button untuk mencegah klik ganda
-                    const buttons = document.querySelectorAll('button[type="submit"]');
-                    buttons.forEach(button => {
-                        button.disabled = true;
-                        button.classList.add('opacity-75', 'cursor-not-allowed');
-                        
-                        // Tambahkan spinner jika diperlukan
-                        const originalText = button.innerHTML;
-                        button.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Loading...';
-                        
-                        // Kembalikan tampilan button setelah timeout (jika request lama)
-                        setTimeout(() => {
-                            button.disabled = false;
-                            button.classList.remove('opacity-75', 'cursor-not-allowed');
-                            button.innerHTML = originalText;
-                        }, 5000); // 5 detik timeout
-                    });
-                });
-            });
-        });
-    </script>
-</body>
+           
+   document.addEventListener('DOMContentLoaded', function() {
+       // Elements
+       const mobileMenuBtn = document.getElementById('mobile-menu-button');
+       const sidebar = document.getElementById('sidebar');
+       const overlay = document.getElementById('sidebar-overlay');
+       const profileButton = document.getElementById('profile-menu-button');
+       const profileMenu = document.getElementById('profile-menu');
+       
+       // 1. Mobile sidebar toggle functionality
+       function toggleSidebar() {
+           sidebar.classList.toggle('sidebar-active');
+           overlay.classList.toggle('active');
+           document.body.classList.toggle('overflow-hidden');
+       }
+       
+       if (mobileMenuBtn) {
+           // Make sure we use proper event binding 
+           mobileMenuBtn.addEventListener('click', function(e) {
+               e.preventDefault(); // Prevent default behavior
+               toggleSidebar();
+           });
+       }
+       
+       if (overlay) {
+           overlay.addEventListener('click', toggleSidebar);
+       }
+       
+       // 2. Profile dropdown toggle functionality
+       function toggleProfileMenu(e) {
+           e.preventDefault(); // Prevent default behavior
+           e.stopPropagation(); // Prevent event bubbling
+           profileMenu.classList.toggle('active');
+       }
+       
+       if (profileButton && profileMenu) {
+           profileButton.addEventListener('click', toggleProfileMenu);
+           
+           // Close the dropdown when clicking outside
+           document.addEventListener('click', function(event) {
+               if (profileMenu.classList.contains('active') && 
+                   !profileButton.contains(event.target) && 
+                   !profileMenu.contains(event.target)) {
+                   profileMenu.classList.remove('active');
+               }
+           });
+       }
+       
+       // 3. Close sidebar when clicking on a link (mobile)
+       const sidebarLinks = document.querySelectorAll('#sidebar a');
+       sidebarLinks.forEach(link => {
+           link.addEventListener('click', function() {
+               if (window.innerWidth < 1024 && sidebar.classList.contains('sidebar-active')) {
+                   toggleSidebar();
+               }
+           });
+       });
+       
+       // 4. Handle window resize
+       window.addEventListener('resize', function() {
+           if (window.innerWidth >= 1024) {
+               sidebar.classList.remove('sidebar-active');
+               overlay.classList.remove('active');
+               document.body.classList.remove('overflow-hidden');
+           }
+       });
+       
+       // 5. Sticky navbar effect on scroll
+       const navbar = document.querySelector('.navbar');
+       window.addEventListener('scroll', function() {
+           if (window.scrollY > 10) {
+               navbar.classList.add('navbar-scrolled');
+           } else {
+               navbar.classList.remove('navbar-scrolled');
+           }
+       });
+       
+       // 6. Content transition effect for sidebar links
+       sidebarLinks.forEach(link => {
+           link.addEventListener('click', function(e) {
+               // Only apply for internal links
+               if (!e.ctrlKey && !e.metaKey && !e.shiftKey) {
+                   const contentContainer = document.getElementById('content-container');
+                   
+                   if (contentContainer) {
+                       // Add fade out animation
+                       contentContainer.style.opacity = '0.5';
+                       contentContainer.style.transition = 'opacity 0.2s ease';
+                       
+                       // Restore opacity after new page loads
+                       setTimeout(() => {
+                           contentContainer.style.opacity = '1';
+                       }, 300);
+                   }
+               }
+           });
+       });
+       
+       // 7. Form submission handling
+       const forms = document.querySelectorAll('form');
+       forms.forEach(form => {
+           form.addEventListener('submit', function() {
+               // Disable all buttons to prevent double clicks
+               const buttons = form.querySelectorAll('button[type="submit"]');
+               buttons.forEach(button => {
+                   button.disabled = true;
+                   button.classList.add('opacity-75', 'cursor-not-allowed');
+                   
+                   // Add spinner if needed
+                   const originalText = button.innerHTML;
+                   button.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Loading...';
+                   
+                   // Restore button after timeout (if request takes too long)
+                   setTimeout(() => {
+                       button.disabled = false;
+                       button.classList.remove('opacity-75', 'cursor-not-allowed');
+                       button.innerHTML = originalText;
+                   }, 5000); // 5 seconds timeout
+               });
+           });
+       });
+              function setInitialState() {
+           // Check for desktop/mobile view
+           if (window.innerWidth >= 1024) {
+               sidebar.classList.remove('sidebar-active');
+               overlay.classList.remove('active');
+               document.body.classList.remove('overflow-hidden');
+           }
+           
+           // Initialize navbar state
+           if (window.scrollY > 10) {
+               navbar.classList.add('navbar-scrolled');
+           }
+       }
+       
+       // Execute initial setup
+       setInitialState();
+   });
+</script>
 
-</html>
+   

@@ -161,7 +161,7 @@
 
     <!-- Image (right on desktop) -->
     <div class="w-full lg:w-1/2 bg-[#493D9E] flex items-center justify-center p-6 order-1 lg:order-2">
-      <img src="{{ asset('assets/img/security.svg') }}" alt="Security Illustration" class="w-full max-w-md">
+      <img src="{{ asset('assets/img/imgReset.svg') }}" alt="Security Illustration" class="w-full max-w-md">
     </div>
   </div>
 

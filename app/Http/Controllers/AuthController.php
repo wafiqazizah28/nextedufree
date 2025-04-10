@@ -49,7 +49,7 @@ class AuthController extends Controller
             // Tentukan redirect berdasarkan peran user
             $redirectLink = Auth::user()->is_admin ? '/adminDashboard' : '/admminDashboard';
 
-            return redirect()->intended($redirectLink)->with('success', 'Logged in successfully as ' . Auth::user()->nama);
+            return redirect()->intended($redirectLink)->with('success', 'Login berhasil as ' . Auth::user()->nama);
         }
 
         return back()->with('error', 'Login failed, please check your credentials');

@@ -40,7 +40,23 @@ class SaranPekerjaanController extends Controller
             'userInfo' => User::all()
         ]);
     }
-
+/**
+ * Remove the specified resource from storage.
+ */
+public function destroy($id)
+{
+    $saranPekerjaan = SaranPekerjaan::findOrFail($id);
+    
+    // Delete the associated image if it exists
+    if ($saranPekerjaan->gambar) {
+        Storage::delete('public/' . $saranPekerjaan->gambar);
+    }
+    
+    // Delete the record
+    $saranPekerjaan->delete();
+    
+    return redirect('/saranpekerjaan')->with('success', 'Saran Pekerjaan berhasil dihapus');
+}
     /**
      * Show the form for creating a new resource.
      */

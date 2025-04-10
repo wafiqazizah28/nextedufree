@@ -1,7 +1,6 @@
 @extends('pages.adminDashboard')
 
 @section('content')
-<div class="w-full max-w-full px-4 lg:px-6">
   <div class="mb-10 w-full">
     <div class="w-full rounded-md border border-[#BBBBBB] bg-white p-4 shadow-sm">
       <div class="flex items-center justify-between px-4 mb-6">
@@ -110,7 +109,7 @@
       </div>
     </div>
   </div>
-</div>
+
 
 <!-- Add some custom CSS for better horizontal scrolling indicator -->
 <style>

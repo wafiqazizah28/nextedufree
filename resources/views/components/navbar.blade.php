@@ -1,6 +1,6 @@
 <!-- Simpan file ini sebagai components/navbar.blade.php -->
 
-<header id="navbar" class="fixed top-0 left-0 z-10 w-full bg-white transition-all duration-300">
+<header id="navbar" class="fixed top-0 left-0 z-10 w-full transition-all duration-300">
     <!-- Add Poppins font -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
@@ -27,8 +27,13 @@
         
         /* Style untuk navbar saat scroll */
         .navbar-fixed {
-            @apply fixed z-[9999] bg-white bg-opacity-80 backdrop-blur-sm;
+            @apply fixed z-[9999] bg-white bg-opacity-70 backdrop-blur-sm;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style untuk navbar transparan saat di atas */
+        .navbar-transparent {
+            @apply bg-transparent;
         }
 
         /* Style untuk avatar dan dropdown */
@@ -53,8 +58,9 @@
         <div class="relative flex items-center justify-between lg:py-2 py-1">
             <!-- Logo for mobile view -->
             <div class="lg:hidden flex items-center ml-8">
-                <a href="/">
-                    <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="Logo" class="w-28 sm:w-28">
+                <a href="/" class="flex items-center">
+                    <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="Logo" class="w-28 sm:w-28 h-auto object-contain">
+                    <img src="{{ asset('assets/icon/logosmk.svg') }}" alt="Logo 2" class="w-8 h-8 ml-2 object-contain">
                 </a>
             </div>
             
@@ -64,8 +70,9 @@
                     <!-- Logo aligned with navigation but positioned higher -->
                     <li class="group">
                         <div class="px-4 lg:flex lg:items-center hidden lg:-mt-3">
-                            <a href="/">
-                                <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="Logo" class="w-28">
+                            <a href="/" class="flex items-center">
+                                <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="Logo" class="w-28 h-auto object-contain">
+                                <img src="{{ asset('assets/icon/logosmk.svg') }}" alt="Logo 2" class="w-10 h-10 ml-2 object-contain">
                             </a>
                         </div>
                     </li>
@@ -103,17 +110,17 @@
                                 <form action='/logout' method="post" class="w-full">
                                     @csrf
                                     <button
-                                        class="w-full bg-purpleMain text-white font-bold py-2 rounded-lg hover:bg-purple-800 transition text-center">
+                                        class="w-full bg-purpleMain text-white font-bold py-2 rounded-lg hover:bg-purpleMain transition text-center">
                                         Logout
                                     </button>
                                 </form>
                             @else
                                 <a href="/login"
-                                class="w-full text-center bg-purpleMain text-white py-2 rounded-lg text-base font-semibold hover:bg-purple-800 transition">
+                                class="w-full text-center bg-purpleMain text-white py-2 rounded-lg text-base font-semibold hover:bg-purpleMain transition">
                                 Login
                                 </a>
                                 <a href="/register"
-                                class="w-full text-center bg-purpleMain text-white py-2 rounded-lg text-base font-semibold hover:bg-purple-800 transition">
+                                class="w-full text-center bg-purpleMain text-white py-2 rounded-lg text-base font-semibold hover:bg-purpleMain transition">
                                 Register
                                 </a>
                             @endif
@@ -224,15 +231,24 @@
 
 <!-- Tambahkan script ini di bagian bawah file atau di app.js -->
 <script>
-    // Fungsi untuk mengatur navbar fixed saat scrolling
+    // Fungsi untuk mengatur navbar saat page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbar = document.getElementById('navbar');
+        // Tambahkan kelas transparent saat awal load
+        navbar.classList.add('navbar-default');
+    });
+    
+    // Fungsi untuk mengatur navbar fixed dan transparan saat scrolling
     window.addEventListener('scroll', function() {
         const navbar = document.getElementById('navbar');
-        const fixedNav = navbar.offsetTop;
+        const navLinks = navbar.querySelectorAll('a');
         
-        if (window.pageYOffset > fixedNav) {
+        if (window.pageYOffset > 10) {
             navbar.classList.add('navbar-fixed');
+            navbar.classList.remove('navbar-transparent');
         } else {
             navbar.classList.remove('navbar-fixed');
+            navbar.classList.add('navbar-default');
         }
     });
     
