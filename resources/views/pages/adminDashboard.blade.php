@@ -87,7 +87,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         /* Modern navbar styles */
         .navbar {
             backdrop-filter: blur(10px);
@@ -95,12 +95,12 @@
             transition: all 0.3s ease;
             z-index: 1000;
         }
-        
+
         .navbar-scrolled {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             background-color: rgba(255, 255, 255, 0.95);
         }
-        
+
         .profile-dropdown {
             transform-origin: top right;
             transform: scale(0.95);
@@ -108,26 +108,26 @@
             visibility: hidden;
             transition: all 0.2s ease;
         }
-        
+
         .profile-dropdown.active {
             transform: scale(1);
             opacity: 1;
             visibility: visible;
         }
-        
+
         .dropdown-item {
             transition: all 0.2s ease;
         }
-        
+
         .dropdown-item:hover {
             background-color: rgba(124, 58, 237, 0.1);
         }
-        
+
         .page-title {
             position: relative;
             display: inline-block;
         }
-        
+
         .page-title::after {
             content: '';
             position: absolute;
@@ -147,7 +147,7 @@
             height: 100%;
             z-index: 1030;
         }
-        
+
         .content-container {
             transition: margin-left 0.3s ease;
         }
@@ -156,37 +156,37 @@
             #sidebar {
                 transform: translateX(0) !important;
             }
-            
+
             .content-container {
                 margin-left: 250px;
             }
-            
+
             .navbar {
                 width: calc(100% - 250px) !important;
                 left: 250px;
             }
         }
-        
+
         @media (max-width: 1023px) {
             #sidebar {
                 transform: translateX(-100%);
             }
-            
+
             #sidebar.sidebar-active {
                 transform: translateX(0);
             }
-            
+
             .content-container {
                 margin-left: 0;
                 width: 100%;
             }
-            
+
             .navbar {
                 width: 100% !important;
                 left: 0;
             }
         }
-        
+
         .sidebar-overlay {
             position: fixed;
             top: 0;
@@ -199,7 +199,7 @@
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        
+
         .sidebar-overlay.active {
             opacity: 1;
             visibility: visible;
@@ -211,9 +211,10 @@
     <div class="flex min-h-screen">
         <!-- Sidebar Overlay for Mobile -->
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
-        
+
         <!-- Sidebar with scroll container -->
-        <aside id="sidebar" class="bg-purpleMain border-2 border-purpleMain text-white shadow-lg flex flex-col items-center rounded-r-3xl overflow-hidden">
+        <aside id="sidebar"
+            class="bg-purpleMain border-2 border-purpleMain text-white shadow-lg flex flex-col items-center rounded-r-3xl overflow-hidden">
             <div class="sidebar-container w-full">
                 <!-- Logo area with white background -->
                 <div class="w-full bg-white py-6 px-4 flex justify-center items-center">
@@ -329,21 +330,25 @@
 
         <div class="content-container flex-1 flex flex-col">
             <!-- Modern Sticky Navbar -->
-            <nav class="navbar fixed top-0 right-0 bg-white/95 shadow-sm py-4 px-6 flex items-center justify-between transition-all duration-300">
+            <nav
+                class="navbar fixed top-0 right-0 bg-white/95 shadow-sm py-4 px-6 flex items-center justify-between transition-all duration-300">
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-button" class="lg:hidden flex items-center justify-center text-gray-700 hover:text-purple-600 focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                <button id="mobile-menu-button"
+                    class="lg:hidden flex items-center justify-center text-gray-700 hover:text-purple-600 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
-                
+
                 <!-- Judul Halaman dengan animasi underline -->
                 <div class="flex items-center">
                     <h1 class="page-title text-gray-700 font-semibold text-lg">
                         @yield('title', 'Admin Dashboard')
                     </h1>
                 </div>
-               
+
                 <!-- Right Menu -->
                 <div class="flex items-center space-x-4">
                     <!-- Profile Dropdown -->
@@ -351,60 +356,71 @@
                         <button class="flex items-center focus:outline-none group" id="profile-menu-button">
                             <div class="flex items-center space-x-3">
                                 <!-- Profile Image with purple gradient -->
-                                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white shadow-md overflow-hidden transition duration-300 group-hover:shadow-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                <div
+                                    class="h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white shadow-md overflow-hidden transition duration-300 group-hover:shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                 </div>
-                                
+
                                 <!-- Admin Name -->
                                 <div class="text-left hidden md:block">
-                                    <p class="text-sm font-medium text-gray-700 group-hover:text-purple-700 transition-colors duration-200">Admin Name</p>
+                                    <p
+                                        class="text-sm font-medium text-gray-700 group-hover:text-purple-700 transition-colors duration-200">
+                                        {{ Auth::user()->nama }}</p>
                                     <p class="text-xs text-gray-500">Administrator</p>
                                 </div>
-                                
+
                                 <!-- Dropdown indicator -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 transition-transform duration-200 group-hover:text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5 text-gray-400 transition-transform duration-200 group-hover:text-purple-500"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
                                 </svg>
                             </div>
                         </button>
-            
+
                         <!-- Dropdown Menu -->
-                        <div class="profile-dropdown absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-lg py-2 ring-1 ring-black ring-opacity-5 focus:outline-none z-50" 
-                             id="profile-menu"
-                             role="menu"
-                             aria-orientation="vertical"
-                             aria-labelledby="profile-menu-button">
-                            
+                        <div class="profile-dropdown absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-lg py-2 ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                            id="profile-menu" role="menu" aria-orientation="vertical"
+                            aria-labelledby="profile-menu-button">
+
                             <!-- Profile Header -->
                             <div class="px-4 py-3 border-b border-gray-100">
-                                <p class="text-sm font-semibold text-gray-700">Admin Account</p>
-                                <p class="text-xs text-gray-500 truncate">admin@nextedu.com</p>
+                                <p class="text-xs text-gray-500 truncate">{{ Auth::user()->email }}</p>
                             </div>
-                            
+
                             <!-- Menu Items -->
                             <div class="py-1">
                                 <!-- Profile settings options could go here -->
                             </div>
-                            
+
                             <!-- Logout -->
-                            <div class="border-t border-gray-100 mt-1">
-                                <a href="#" class="dropdown-item flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            <!-- Logout - Replace the existing logout link in the dropdown menu with this code -->
+                            <form method="POST" action="/logout"
+                            id="logout-form">
+                                @csrf
+                                <button type="submit"
+                                    class="dropdown-item flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-red-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                     </svg>
-                                     Keluar
-                                </a>
-                            </div>
+                                    Keluar
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </nav>
-            
+
             <!-- Spacer for fixed navbar -->
             <div class="h-20"></div>
-            
+
             <!-- Main Content -->
             <main class="flex-1 p-8">
                 <!-- Dashboard Content -->
@@ -413,7 +429,7 @@
                         <h1 class="text-2xl font-bold text-gray-800">Overview</h1>
                         <div class="flex items-center">
                             <div class="relative mr-4">
-                                 <div class="absolute left-3 top-2.5">
+                                <div class="absolute left-3 top-2.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -461,8 +477,7 @@
 
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
-           
-   document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
        // Elements
        const mobileMenuBtn = document.getElementById('mobile-menu-button');
        const sidebar = document.getElementById('sidebar');
@@ -599,6 +614,4 @@
        // Execute initial setup
        setInitialState();
    });
-</script>
-
-   
+    </script>

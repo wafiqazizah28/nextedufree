@@ -57,6 +57,27 @@ class EmailVerificationController extends Controller
     }
     
     /**
+     * Send verification code
+     */
+    public function sendVerificationCode()
+    {
+        $user = auth()->user();
+        
+        // Generate new 4-digit code
+        $code = rand(1000, 9999);
+        
+        // Update the code in the database
+        $user->verification_code = $code;
+        $user->verification_code_expires_at = now()->addMinutes(3);
+        $user->save();
+        
+        // Send the email with the code
+        Mail::to($user->email)->send(new EmailVerificationMail($code));
+        
+        return back()->with('success', 'Kode verifikasi telah dikirim ke email Anda.');
+    }
+    
+    /**
      * Resend verification code
      */
     public function resendVerificationCode()
@@ -68,7 +89,7 @@ class EmailVerificationController extends Controller
         
         // Update the code in the database
         $user->verification_code = $code;
-        $user->reset_code_expires_at = now()->addMinutes(3);
+        $user->verification_code_expires_at = now()->addMinutes(3);
         $user->save();
         
         // Send the email with the code

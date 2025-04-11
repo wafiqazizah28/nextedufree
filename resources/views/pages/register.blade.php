@@ -23,6 +23,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  @vite('resources/css/app.css')
+
+  <!-- Favicon standar -->
+
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicon_io/favicon-16x16.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon_io/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('assets/favicon_io/favicon-48x48.png') }}">
+  <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assets/favicon_io/favicon-96x96.png') }}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/favicon_io/android-chrome-192x192.png') }}">
+  <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('assets/favicon_io/android-chrome-512x512.png') }}">
+  <title>nextEdu</title>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <!-- Fonts -->
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
 <body class="bg-white min-h-screen">
   <!-- Navbar -->
   <header id="navbar"
@@ -31,7 +56,8 @@
       <div class="relative flex items-center justify-between py-4">
         <!-- Logo -->
         <div class="px-4">
-          <a href="/">
+          <a href="/" class="flex items-center">
+            <img src="{{ asset('assets/icon/logosmk.svg') }}" alt="SMK Logo" class="h-8 mr-2">
             <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="Logo" class="w-28">
           </a>
         </div>
@@ -129,8 +155,12 @@
     <div class="w-full lg:w-2/3 flex items-center justify-center bg-white lg:shadow-lg p-4 lg:p-6 mt-[-50px]">
       <div class="w-full max-w-md">
         <div class="text-center mt-20 mb-8 lg:mb-12">
-          <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="NextEdu Logo" class="h-10 lg:h-12 mx-auto">
+          <div class="flex items-center justify-center">
+            <img src="{{ asset('assets/icon/logosmk.svg') }}" alt="SMK Logo" class="h-10 mr-2">
+            <img src="{{ asset('assets/logo/logo-typo.svg') }}" alt="NextEdu Logo" class="h-10 lg:h-12">
+          </div>
           <p class="text-gray-600 font-semibold mt-2">Buat akun Anda</p>
+          
         </div>
 
         <div class="form-container-register">
@@ -313,5 +343,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
+
+</html>
 
 </html>

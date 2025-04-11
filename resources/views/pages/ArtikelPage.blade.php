@@ -3,8 +3,8 @@
 @section('content')
 <section class="bg-white min-h-screen">
     <!-- Hero Banner Background -->
-    <div class="relative w-full min-h-[400px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[580px] flex flex-col justify-center items-center px-4 sm:px-6 md:px-9 bg-no-repeat bg-cover bg-center"
-        style="background-image: url('{{ asset('assets/img/banner2.png') }}');">
+    <div class="relative w-full aspect-[16/9] sm:aspect-[16/8] md:aspect-[16/7] lg:min-h-[580px] bg-no-repeat bg-cover bg-center flex flex-col justify-center items-center px-4 sm:px-6 md:px-9"
+    style="background-image: url('{{ asset('assets/img/banner2.png') }}');">
 
         <!-- Hero Content -->
         <div class="flex flex-col text-left max-w-xl ml-auto pr-6">

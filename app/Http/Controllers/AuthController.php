@@ -14,22 +14,10 @@ use Illuminate\Validation\Rule;
 use App\Mail\EmailVerificationMail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPasswordMail;
+use App\Http\Controllers\EmailVerificationController;
 
 class AuthController extends Controller
 {
-    /**
-     * Constructor untuk menerapkan middleware
-     */
-    public function __construct()
-    {
-        // Middleware untuk memastikan user sudah terverifikasi emailnya
-        $this->middleware('verified_email')->only(['dashboard']);
-        // Middleware untuk admin role
-        $this->middleware('admin')->only(['adminDashboard']);
-        // Middleware untuk user role
-        $this->middleware('user')->only(['userDashboard']);
-    }
-
     /**
      * Menampilkan halaman login
      */
@@ -47,56 +35,32 @@ class AuthController extends Controller
     }
 
     /**
-     * Menampilkan dashboard admin
-     */
-    public function adminDashboard()
-    {
-        return view('pages.admin.dashboard');
-    }
-
-    /**
-     * Menampilkan dashboard user
-     */
-    public function userDashboard()
-    {
-        return view('pages.user.dashboard');
-    }
-
-    /**
      * Proses autentikasi user
      */
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|email:dns',
+            'password' => 'required'
         ]);
-    
+
         if (Auth::attempt($credentials)) {
-            // Check if the email is verified
+            // Check if user has verified their email
             if (!Auth::user()->email_verified_at) {
-                // Log out the user
                 Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-                
-                // Redirect to the verification notice page
-                return redirect('/email/verify')->with('error', 'Email belum diverifikasi. Silakan verifikasi email Anda terlebih dahulu.');
+                return redirect()->route('login')
+                    ->with('error', 'Email belum diverifikasi. Silakan verifikasi email Anda terlebih dahulu.');
             }
-            
-            $request->session()->regenerate();
-            
-            // Check if user is admin to redirect to admin dashboard
-            if (Auth::user()->is_admin) {
-                return redirect()->intended('/adminDashboard');
-            }
-            
-            return redirect()->intended('/dashboard');
+
+            $request->session()->regenerate(); // Hindari session fixation attack
+
+            // Tentukan redirect berdasarkan peran user (jika is_admin == 1 maka ke adminDashboard)
+            $redirectLink = Auth::user()->is_admin == 1 ? '/adminDashboard' : '/dashboard';
+
+            return redirect()->intended($redirectLink)->with('success', 'Login berhasil sebagai ' . Auth::user()->nama);
         }
-    
-        return back()->withErrors([
-            'email' => 'Kredensial yang diberikan tidak cocok dengan data kami.',
-        ])->onlyInput('email');
+
+        return back()->with('error', 'Login gagal, silakan cek kembali email dan password Anda');
     }
 
     /**
@@ -122,12 +86,13 @@ class AuthController extends Controller
         // Hash password sebelum disimpan
         $validatedData['password'] = Hash::make($validatedData['password']);
         $validatedData['is_admin'] = 0; // Default user biasa
-
+        
         try {
             // Generate verification code
             $code = rand(1000, 9999);
             $validatedData['verification_code'] = $code;
-            $validatedData['verification_code_expires_at'] = now()->addMinutes(30); // Perpanjang waktu kadaluarsa menjadi 30 menit
+            $validatedData['verification_code_expires_at'] = now()->addMinutes(30); // Lebih lama - 30 menit
+            $validatedData['email_verified_at'] = null; // Pastikan email belum terverifikasi
             
             // Simpan user ke database
             $user = User::create($validatedData);
@@ -135,12 +100,9 @@ class AuthController extends Controller
             // Send verification email
             Mail::to($user->email)->send(new EmailVerificationMail($code));
             
-            // Login user for verification process
-            Auth::login($user);
-            
             // Redirect to verification page
             return redirect()->route('email.verify.code')
-                ->with('success', 'Akun berhasil dibuat! Silakan verifikasi email Anda.');
+                ->with('success', 'Akun berhasil dibuat! Silakan verifikasi email Anda untuk dapat login.');
                 
         } catch (Exception $e) {
             Log::error('Registration error', [
@@ -155,74 +117,70 @@ class AuthController extends Controller
     /**
      * Verifikasi email dengan kode
      */
-    public function verifyEmailForm()
-    {
-        if (Auth::check() && Auth::user()->email_verified_at) {
-            return redirect()->route('user.dashboard')->with('info', 'Email Anda sudah terverifikasi');
-        }
-        
-        return view('pages.verify-email');
-    }
-
-    /**
-     * Proses verifikasi email dengan kode
-     */
     public function verifyEmail(Request $request)
     {
         $request->validate([
-            'verification_code' => 'required|numeric|digits:4'
+            'verification_code' => 'required|numeric|min:1000|max:9999',
         ]);
 
-        $user = Auth::user();
+        $user = User::where('email', $request->email)
+            ->where('verification_code', $request->verification_code)
+            ->where('verification_code_expires_at', '>', now())
+            ->first();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu');
+            return back()->with('error', 'Kode verifikasi tidak valid atau sudah kedaluwarsa.');
         }
 
-        // Cek apakah kode verifikasi benar dan belum kadaluarsa
-        if ($user->verification_code == $request->verification_code && 
-            now()->lt($user->verification_code_expires_at)) {
-            
-            // Update user sebagai terverifikasi
-            $user->email_verified_at = now();
-            $user->verification_code = null;
-            $user->verification_code_expires_at = null;
-            $user->save();
+        // Mark email as verified
+        $user->update([
+            'email_verified_at' => now(),
+            'verification_code' => null,
+            'verification_code_expires_at' => null,
+        ]);
 
-            return redirect()->route('user.dashboard')
-                ->with('success', 'Email berhasil diverifikasi! Selamat datang di dashboard.');
-        }
+        // Login user after verification
+        Auth::login($user);
 
-        return back()->with('error', 'Kode verifikasi salah atau sudah kadaluarsa');
+        return redirect('/dashboard')->with('success', 'Email berhasil diverifikasi. Selamat datang!');
+    }
+
+    /**
+     * Halaman untuk menampilkan form verifikasi
+     */
+    public function showVerificationForm()
+    {
+        return view('pages.email-verification');
     }
 
     /**
      * Kirim ulang kode verifikasi
      */
-    public function resendVerificationCode()
+    public function resendVerificationCode(Request $request)
     {
-        $user = Auth::user();
+        $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu');
+            return back()->with('error', 'Email tidak ditemukan.');
         }
 
         if ($user->email_verified_at) {
-            return redirect()->route('user.dashboard')->with('info', 'Email Anda sudah terverifikasi');
+            return back()->with('info', 'Email sudah terverifikasi.');
         }
 
-        // Generate kode baru
+        // Generate new code
         $code = rand(1000, 9999);
-        $user->verification_code = $code;
-        $user->verification_code_expires_at = now()->addMinutes(30);
-        $user->save();
+        $user->update([
+            'verification_code' => $code,
+            'verification_code_expires_at' => now()->addMinutes(30)
+        ]);
 
-        // Kirim email verifikasi
+        // Send new verification email
         Mail::to($user->email)->send(new EmailVerificationMail($code));
 
-        return back()->with('success', 'Kode verifikasi baru telah dikirim ke email Anda');
+        return back()->with('success', 'Kode verifikasi baru telah dikirim ke email Anda.');
     }
-
+    
     /**
      * Logout user dan hapus sesi
      */
@@ -232,7 +190,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Berhasil logout');
+        return redirect('/')->with('success', 'Logged out successfully');
     }
 
     /**
@@ -277,30 +235,24 @@ class AuthController extends Controller
             if ($findUser) {
                 // User found by google_id, login
                 Log::info('Found user by google_id', ['user_id' => $findUser->id]);
-                Auth::login($findUser);
-                
-                // Set email as verified jika belum
+
+                // Mark as verified if using Google OAuth
                 if (!$findUser->email_verified_at) {
-                    $findUser->email_verified_at = now();
-                    $findUser->save();
+                    $findUser->update(['email_verified_at' => now()]);
                 }
                 
-                return $findUser->is_admin ? 
-                    redirect()->route('admin.dashboard')->with('success', 'Login berhasil dengan Google!') :
-                    redirect()->route('user.dashboard')->with('success', 'Login berhasil dengan Google!');
+                Auth::login($findUser);
+                return redirect('/dashboard')->with('success', 'Anda berhasil login dengan Google!');
             } elseif ($userWithSameEmail) {
                 // User with same email exists, update their google_id and login
                 Log::info('Found user by email, updating google_id', ['user_id' => $userWithSameEmail->id]);
                 $userWithSameEmail->update([
                     'google_id' => $googleUser->getId(),
-                    'email_verified_at' => $userWithSameEmail->email_verified_at ?? now()
+                    'email_verified_at' => now() // Mark as verified if using Google OAuth
                 ]);
 
                 Auth::login($userWithSameEmail);
-                
-                return $userWithSameEmail->is_admin ? 
-                    redirect()->route('admin.dashboard')->with('success', 'Login berhasil dengan Google!') :
-                    redirect()->route('user.dashboard')->with('success', 'Login berhasil dengan Google!');
+                return redirect('/dashboard')->with('success', 'Anda berhasil login dengan Google!');
             } else {
                 // Create a new user with Google account data
                 Log::info('Creating new user with Google account');
@@ -314,7 +266,7 @@ class AuthController extends Controller
                     'nomer_hp' => 'Belum diisi',
                     'password' => Hash::make(Str::random(16)),
                     'is_admin' => 0,
-                    'email_verified_at' => now() // Set email as verified karena dari Google OAuth
+                    'email_verified_at' => now() // Mark as verified since using Google OAuth
                 ]);
 
                 Log::info('New user created', ['user_id' => $newUser->id]);
@@ -323,7 +275,7 @@ class AuthController extends Controller
                 Auth::login($newUser);
 
                 // Redirect to profile page to complete missing info
-                return redirect()->route('profile.edit')->with('info', 'Akun berhasil dibuat dengan Google. Silakan lengkapi profil Anda.');
+                return redirect('/profile/edit')->with('info', 'Akun berhasil dibuat dengan Google. Silakan lengkapi profil Anda.');
             }
         } catch (Exception $e) {
             // Get the SQL statement if it's a query exception
