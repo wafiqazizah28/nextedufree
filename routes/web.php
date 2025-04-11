@@ -71,21 +71,16 @@ Route::post('/submit-answer-guest', [AppController::class, 'forwardChainingGuest
 
 // AI Generation
 Route::post('/generate', [GenerativeAIController::class, 'generate']);
-
-// Email Verification Routes - moved outside of auth middleware for accessibility
-Route::get('/email/verify', [EmailVerificationController::class, 'sendVerificationCode'])
-    ->middleware('auth')
-    ->name('verification.notice');
-Route::get('/email/verify/code', [EmailVerificationController::class, 'showVerificationForm'])
-    ->middleware('auth')
-    ->name('email.verify.code');
-Route::post('/email/verify/code', [EmailVerificationController::class, 'verifyEmail'])
-    ->middleware('auth')
-    ->name('verification.verify');
-Route::post('/email/verification-notification', [EmailVerificationController::class, 'resendVerificationCode'])
-    ->middleware('auth')
-    ->name('verification.resend');
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/email/verify', [EmailVerificationController::class, 'showVerificationForm'])
+        ->name('verification.show');
+    Route::post('/email/verify', [EmailVerificationController::class, 'verifyEmail'])
+        ->name('verification.verify');
+    Route::post('/email/resend', [EmailVerificationController::class, 'resendVerificationCode'])
+        ->name('verification.resend');
+       
+});
+    
 // ===========================
 // 📌 Authenticated and Verified User Routes
 // ===========================
@@ -104,8 +99,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tanyaJurpan/page', [AppController::class, 'tanyaJurpan']);
     
     // Hasil Tes
-    Route::get('/tesminatmu', [AppController::class, 'hasilTes'])->name('hasilTes');
-    Route::get('/hasiltes', [HasilTesController::class, 'index']);
+   
     
     // Forward Chaining
     Route::post('/submit-answer/{id}', [AppController::class, 'forwardChaining']);
@@ -117,7 +111,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/testimoni/store', [TestimoniController::class, 'store'])->name('user.testimoni.store');
     
     // Test Detail
-    Route::get('/testdetail/{id}', [App\Http\Controllers\AppController::class, 'showDetail'])->name('testdetail.detail');
 });
 
 // ===========================
@@ -138,7 +131,6 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     
     // PDF Exports
     Route::get('/jurusan/export-pdf', [JurusanController::class, 'exportPDF']);
-    Route::get('/admin/hasil-tes', [HasilTesController::class, 'index'])->name('components.admin.hasiltes');
 });
 
 // ===========================
@@ -185,11 +177,8 @@ Route::get('/sekolah', [SekolahController::class, 'index'])->name('sekolah.index
 Route::get('/users/export-pdf', [UserController::class, 'exportPdf'])->name('users.export.pdf');
 
 // Route untuk mengunduh hasil tes sebagai PDF
-Route::get('/hasil-tes/{id}/download', [HasilTesController::class, 'downloadPDF'])->name('hasil-tes.download');
 
-// Route untuk melihat hasil tes
-Route::get('/hasiltes/{id}', [HasilTesController::class, 'show'])->name('hasil-tes.show');
-Route::get('/hasiltes/{hasilTes}/generate-share-image', [HasilTesShareController::class, 'generateShareImage']);
+
 
 // Password Reset Routes
 Route::get('/forgot-password', [PasswordResetController::class, 'showForgotForm'])
@@ -206,3 +195,11 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
     ->name('password.update');
 Route::post('/reset-password/resend', [PasswordResetController::class, 'resendCode'])
     ->name('password.code.resend');
+
+// route hasil tes
+Route::get('/hasiltes/{id}', [HasilTesController::class, 'show'])->name('hasiltes.show')->middleware(['auth', 'verified']);
+
+Route::get('/tesminatmu', [AppController::class, 'hasilTes'])->name('hasilTes');
+Route::get('/hasil-tes', [HasilTesController::class, 'index']);
+Route::get('/hasil-tes/{id}/download', [HasilTesController::class, 'downloadPDF'])->name('hasil-tes.download');
+

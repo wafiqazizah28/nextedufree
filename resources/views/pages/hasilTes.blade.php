@@ -136,7 +136,7 @@
 
                         <div class="pt-3 border-t">
                             <div class="relative mb-3">
-                                <input type="text" id="shareLink" value="{{ route('hasil-tes.show', $hasilTes->id) }}"
+                                <input type="text" id="shareLink" value="{{ route('hasiltes.show', $hasilTes->id) }}"
                                     class="w-full p-2 pr-20 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
                                     readonly>
                                 <button type="button" onclick="copyShareLink()"

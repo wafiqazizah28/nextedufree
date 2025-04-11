@@ -35,7 +35,7 @@ class PasswordResetController extends Controller
     ]);
     
     // Generate 4-digit code
-    $code = rand(1000, 9999);
+    $code = str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
     
     // Store the code in the database with expiry time (3 minutes)
     $user = User::where('email', $request->email)->first();

@@ -217,32 +217,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Submit answers
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
             $.ajax({
-                type: "POST",
-                url: `/submit-answer/${user.id}`,
-                dataType: "json",
-                data: {
-                    'data': answers
-                },
-                success: (response) => {
-                    if (response.status === 200) {
-                        window.location.replace("/hasiltes");
-                    } else {
-                        alert("Gagal mengirim jawaban");
-                    }
-                },
-                error: (error) => {
-                    console.error('Error:', error);
-                    alert("Terjadi kesalahan saat mengirim jawaban");
-                }
-            });
+    type: "POST",
+    url: `/submit-answer/${user.id}`,
+    dataType: "json",
+    data: {
+        '_token': $('meta[name="csrf-token"]').attr('content'),
+        'data': answers
+    },
+    success: (response) => {
+        if (response.status === 200) {
+            window.location.replace(response.redirect);
+        } else {
+            alert("Gagal mengirim jawaban: " + (response.message || "Unknown error"));
+        }
+    },
+    error: (error) => {
+        console.error('Error details:', error);
+        // Show more detailed error information
+        if (error.responseJSON && error.responseJSON.message) {
+            alert("Error: " + error.responseJSON.message);
+        } else if (error.status === 419) {
+            alert("CSRF token mismatch. Please refresh the page and try again.");
+        } else {
+            alert("Terjadi kesalahan saat mengirim jawaban (Status: " + error.status + ")");
+        }
+    }
+});
         });
     }
 });

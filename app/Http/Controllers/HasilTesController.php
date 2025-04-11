@@ -58,30 +58,31 @@ class HasilTesController extends Controller
     public function show($id)
     {
         $hasilTes = HasilTes::findOrFail($id);
-
-        if (auth()->id() !== $hasilTes->user_id && !auth()->user()->isAdmin()) {
-            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses ke hasil tes ini.');
+    
+        // Pastikan user hanya bisa melihat hasil tesnya sendiri
+        if (auth()->id() !== $hasilTes->user_id) {
+            return redirect()->route('/')->with('error', 'Anda tidak memiliki akses ke hasil tes ini.');
         }
-
+    
         $jurusanList = Jurusan::all();
         $jurusan = null;
-
+    
         foreach ($jurusanList as $j) {
             if (strtolower($j->jurusan) == strtolower($hasilTes->hasil)) {
                 $jurusan = $j;
                 break;
             }
         }
-
+    
         $saranPekerjaanList = [];
         $sekolahList = [];
-
+    
         if ($jurusan) {
             $saranPekerjaanList = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get();
             $sekolahList = Sekolah::where('jurusan_id', $jurusan->id)->orderBy('nama', 'asc')->get();
         }
-
-        return view('hasil-tes.show', [
+    
+        return view('pages.hasiltes', [
             'hasilTes' => $hasilTes,
             'jurusan' => $jurusan,
             'jurusanList' => $jurusanList,
@@ -95,7 +96,7 @@ class HasilTesController extends Controller
         $hasilTes = HasilTes::findOrFail($id);
 
         if (auth()->id() !== $hasilTes->user_id && !auth()->user()->isAdmin()) {
-            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses ke hasil tes ini.');
+            return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses ke hasil tes ini.');
         }
 
         $jurusanList = Jurusan::all();

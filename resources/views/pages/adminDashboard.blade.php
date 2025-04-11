@@ -255,7 +255,7 @@
                         Settings Jurusan
                     </a>
 
-                    <a href="/hasiltes"
+                    <a href="/hasil-tes"
                         class="flex items-center px-3 py-2 rounded-lg text-sm font-medium hover:bg-white hover:text-purpleMain mb-2 transition-colors duration-200 btn-action">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">

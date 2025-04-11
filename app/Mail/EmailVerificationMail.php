@@ -29,7 +29,7 @@ class EmailVerificationMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Verifikasi Email Anda')
-                    ->view('emails.verify-email');
+        return $this->view('emails.verify-email')
+                    ->subject('Kode Verifikasi Email nextEdu');
     }
 }

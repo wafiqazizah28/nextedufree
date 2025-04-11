@@ -22,15 +22,14 @@ class AppController extends Controller
     public function __construct()
     {
         $this->middleware('admin')->except([
-            'index', 
-            'hasilTes', 
-            'artikel', 
-            'tanyaJurpan', 
-            'forwardChaining', 
+            'index',
+            'hasilTes',
+            'artikel',
+            'tanyaJurpan',
+            'forwardChaining',
             'forwardChainingGuest',
             'filterByKategori',  // Tambahkan ini
             'search',
-            'testdetail'             // Tambahkan ini
         ]);
     }
 
@@ -60,6 +59,7 @@ class AppController extends Controller
 
     public function hasilTes()
     {
+        
         $jurusanList = Jurusan::all();
         $pertanyaanList = Pertanyaan::all();
         $saranPekerjaan = SaranPekerjaan::all(); // Ganti dari "solutions"
@@ -102,10 +102,41 @@ class AppController extends Controller
     }
     public function showDetail($id)
     {
-        $testDetail = HasilTes::with('user')->findOrFail($id);
-        return view('pages.testdetail', compact('testDetail'));
+        $hasilTes = HasilTes::with('user')->findOrFail($id);
+
+        // Pastikan user hanya bisa melihat hasil tes miliknya sendiri
+        // Pastikan user hanya bisa melihat hasil tes miliknya sendiri
+        if (auth()->id() !== $hasilTes->user_id && auth()->user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses ke hasil tes ini.');
+        }
+
+        $jurusanList = Jurusan::all();
+        $jurusan = null;
+
+        foreach ($jurusanList as $j) {
+            if (strtolower($j->jurusan) == strtolower($hasilTes->hasil)) {
+                $jurusan = $j;
+                break;
+            }
+        }
+
+        $saranPekerjaanList = [];
+        $sekolahList = [];
+
+        if ($jurusan) {
+            $saranPekerjaanList = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get();
+            $sekolahList = Sekolah::where('jurusan_id', $jurusan->id)->orderBy('nama', 'asc')->get();
+        }
+
+        return view('pages.testdetail', [
+            'testDetail' => $hasilTes,
+            'jurusan' => $jurusan,
+            'jurusanList' => $jurusanList,
+            'saranPekerjaanList' => $saranPekerjaanList,
+            'sekolahList' => $sekolahList
+        ]);
     }
-       public function artikel()
+    public function artikel()
     {
         $artikelList = Artikel::query();
         $kategoriList = Kategori::all(); // Get all categories
@@ -232,47 +263,47 @@ class AppController extends Controller
         $userData = $request->data;
         $rules = Rule::all();
         $jurusanList = Jurusan::all();
-
+    
         // Sort user data by pertanyaanId for consistent comparison
         usort($userData, function ($a, $b) {
             return $a['pertanyaanId'] - $b['pertanyaanId'];
         });
-
+    
         // Convert user data to associative array for easier lookup
         $userAnswers = [];
         foreach ($userData as $item) {
             $userAnswers[$item['pertanyaanId']] = $item['value'];
         }
-
+    
         $result = 'Tidak Diketahui'; // Default result if no matching jurusan found
         $bestMatch = null;
         $highestMatchCount = 0;
-
+    
         // Evaluate each jurusan separately
         foreach ($jurusanList as $jurusan) {
             // Get rules specific to this jurusan
             $jurusanRules = $rules->where('jurusan_id', $jurusan->id);
-
+    
             if ($jurusanRules->isEmpty()) {
                 continue; // Skip jurusan with no rules
             }
-
+    
             $matchedRules = 0;
             $totalRules = $jurusanRules->count();
-
+    
             // Check how many rules match with user data
             foreach ($jurusanRules as $rule) {
                 $pertanyaanId = $rule->pertanyaan_id;
-
+    
                 // If user answered this question and the answer matches rule value
                 if (isset($userAnswers[$pertanyaanId]) && $userAnswers[$pertanyaanId] == $rule->rule_value) {
                     $matchedRules++;
                 }
             }
-
+    
             // Calculate match percentage
             $matchPercentage = $totalRules > 0 ? ($matchedRules / $totalRules) * 100 : 0;
-
+    
             // If all rules for this jurusan match (perfect match)
             if ($matchedRules == $totalRules && $totalRules > 0) {
                 $result = $jurusan->jurusan;
@@ -285,24 +316,25 @@ class AppController extends Controller
                 $bestMatch = $jurusan;
             }
         }
-
+    
         // If no perfect match but we have a best match with over 70% matching rules
         if ($result == 'Tidak Diketahui' && $bestMatch && ($highestMatchCount / $rules->where('jurusan_id', $bestMatch->id)->count()) >= 0.7) {
             $result = $bestMatch->jurusan;
         }
-
+    
         // Log the test result for debugging (optional)
         \Log::info("Forward Chaining result for user $id: $result");
-
+    
         // Save test result to database
-        HasilTes::create([
+        $testResult = HasilTes::create([
             'user_id' => $id,
             'hasil' => $result
         ]);
-
+    
         return response()->json([
             'status' => 200,
-            'redirect' => url('/hasiltes')
+            'testId' => $testResult->id, // Add this line to return the test ID
+            'redirect' => url('/hasiltes/' . $testResult->id) // Update redirect URL to include the test ID
         ]);
     }
 }

@@ -10,179 +10,353 @@ use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use Illuminate\Support\Facades\Log;
+
 use Illuminate\Validation\Rule;
 use App\Mail\EmailVerificationMail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPasswordMail;
-use App\Http\Controllers\EmailVerificationController;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
     /**
-     * Menampilkan halaman login
+     * Constructor to apply middleware
+     */
+    public function __construct()
+    {
+        // Apply guest middleware to pages only guests should access
+        $this->middleware('guest')->except(['logout', 'me', 'verifyEmail']);
+        
+        // Apply auth middleware to pages that require authentication
+        $this->middleware('auth')->only(['logout', 'me']);
+    }
+
+    /**
+     * Display login page
      */
     public function login()
     {
-        return view('pages.login'); // Pastikan ada file resources/views/pages/login.blade.php
+        return view('pages.login');
     }
 
     /**
-     * Menampilkan halaman registrasi
+     * Display registration page
      */
     public function register()
     {
-        return view('pages.register'); // Pastikan ada file resources/views/pages/register.blade.php
+        return view('pages.register');
     }
 
     /**
-     * Proses autentikasi user
+     * Process user authentication
      */
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email:dns',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($credentials)) {
-            // Check if user has verified their email
-            if (!Auth::user()->email_verified_at) {
+        $remember = $request->boolean('remember', false);
+
+        if (Auth::attempt($credentials, $remember)) {
+            // Check if email is verified (if feature is enabled)
+            if (config('auth.verify_email', true) && !Auth::user()->hasVerifiedEmail()) {
                 Auth::logout();
                 return redirect()->route('login')
                     ->with('error', 'Email belum diverifikasi. Silakan verifikasi email Anda terlebih dahulu.');
             }
 
-            $request->session()->regenerate(); // Hindari session fixation attack
+            $request->session()->regenerate(); // Prevent session fixation attack
 
-            // Tentukan redirect berdasarkan peran user (jika is_admin == 1 maka ke adminDashboard)
-            $redirectLink = Auth::user()->is_admin == 1 ? '/adminDashboard' : '/dashboard';
-
-            return redirect()->intended($redirectLink)->with('success', 'Login berhasil sebagai ' . Auth::user()->nama);
+            // Determine redirect based on user role
+            $redirectTo = Auth::user()->is_admin ? route('admin.dashboard') : route('dashboard');
+            
+            return redirect()->intended($redirectTo)
+                ->with('success', 'Login berhasil sebagai ' . Auth::user()->nama);
         }
 
-        return back()->with('error', 'Login gagal, silakan cek kembali email dan password Anda');
+        // Do not reveal which credential was incorrect for security
+        return back()
+            ->withInput($request->only('email', 'remember'))
+            ->with('error', 'Kredensial yang Anda berikan tidak cocok dengan data kami.');
     }
 
     /**
-     * Proses registrasi user baru
+     * Register new user (temporarily store data until verification)
+     */    
+    /**
+     * Register new user
      */
     public function store(Request $request)
     {
-        // Validasi input sesuai database
+        // Validate user input
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'sekolah' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'nomer_hp' => 'required|regex:/^[0-9]+$/|min:10|max:15|unique:users,nomer_hp',
-            'password' => 'required|min:6|max:10|confirmed'
+            'password' => 'required|min:8|confirmed'
         ], [
             'email.unique' => 'Email ini sudah digunakan oleh pengguna lain.',
             'nomer_hp.unique' => 'Nomor HP harus angka dan belum terdaftar.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
-            'password.min' => 'Password minimal 6 karakter.',
-            'password.max' => 'Password maksimal 10 karakter.'
+            'password.min' => 'Password minimal 8 karakter.',
         ]);
-
-        // Hash password sebelum disimpan
-        $validatedData['password'] = Hash::make($validatedData['password']);
-        $validatedData['is_admin'] = 0; // Default user biasa
-        
+    
         try {
             // Generate verification code
-            $code = rand(1000, 9999);
-            $validatedData['verification_code'] = $code;
-            $validatedData['verification_code_expires_at'] = now()->addMinutes(30); // Lebih lama - 30 menit
-            $validatedData['email_verified_at'] = null; // Pastikan email belum terverifikasi
+            $code = str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
             
-            // Simpan user ke database
-            $user = User::create($validatedData);
+            // Create user in database
+            $user = User::create([
+                'nama' => $validatedData['nama'],
+                'sekolah' => $validatedData['sekolah'],
+                'email' => $validatedData['email'],
+                'nomer_hp' => $validatedData['nomer_hp'],
+                'password' => Hash::make($validatedData['password']),
+                'is_admin' => 0,
+                'verification_code' => $code,
+                'verification_code_expires_at' => now()->addMinutes(3)
+            ]);
             
             // Send verification email
             Mail::to($user->email)->send(new EmailVerificationMail($code));
             
+            // Log the user in
+            Auth::login($user);
+            
             // Redirect to verification page
-            return redirect()->route('email.verify.code')
-                ->with('success', 'Akun berhasil dibuat! Silakan verifikasi email Anda untuk dapat login.');
+            return redirect()->route('verification.show')
+                ->with('success', 'Silakan masukkan kode verifikasi yang telah dikirim ke email Anda.');
                 
         } catch (Exception $e) {
             Log::error('Registration error', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-
-            return back()->withInput()->with('error', 'Terjadi kesalahan saat mendaftar. Silakan coba lagi.');
+    
+            return back()->withInput()
+                ->with('error', 'Terjadi kesalahan saat mendaftar. Silakan coba lagi.');
         }
     }
 
     /**
-     * Verifikasi email dengan kode
+     * Verify email with code and create user if verified
      */
     public function verifyEmail(Request $request)
     {
         $request->validate([
-            'verification_code' => 'required|numeric|min:1000|max:9999',
+            'email' => 'required|email',
+            'verification_code' => 'required|numeric|min:100000|max:999999',
+            'token' => 'required|string'
         ]);
 
-        $user = User::where('email', $request->email)
-            ->where('verification_code', $request->verification_code)
-            ->where('verification_code_expires_at', '>', now())
-            ->first();
-
-        if (!$user) {
-            return back()->with('error', 'Kode verifikasi tidak valid atau sudah kedaluwarsa.');
+        // Retrieve the pending user data from cache
+        $pendingUserData = Cache::get('pending_user_' . $request->token);
+        
+        if (!$pendingUserData) {
+            return back()->with('error', 'Sesi verifikasi telah kedaluwarsa. Silakan daftar ulang.');
         }
+        
+        // Check if the verification code matches
+        if ($pendingUserData['verification_code'] != $request->verification_code) {
+            return back()->with('error', 'Kode verifikasi tidak valid.');
+        }
+        
+        // Check if the email matches (additional security)
+        if ($pendingUserData['user_data']['email'] != $request->email) {
+            return back()->with('error', 'Email tidak cocok dengan data pendaftaran.');
+        }
+        
+        // Check if verification has expired
+        if (now()->isAfter($pendingUserData['expires_at'])) {
+            // Clean up expired data
+            Cache::forget('pending_user_' . $request->token);
+            return back()->with('error', 'Kode verifikasi telah kedaluwarsa. Silakan daftar ulang.');
+        }
+        
+        try {
+            // Create user in database now that verification is complete
+            $userData = $pendingUserData['user_data'];
+            $userData['email_verified_at'] = now(); // Mark as verified
+            
+            $user = User::create($userData);
+            
+            // Clean up temporary data
+            Cache::forget('pending_user_' . $request->token);
+            
+            // Automatically login after verification
+            Auth::login($user);
+            
+            return redirect()->route('dashboard')
+                ->with('success', 'Email berhasil diverifikasi. Akun telah dibuat. Selamat datang!');
+                
+        } catch (Exception $e) {
+            Log::error('User creation after verification error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
 
-        // Mark email as verified
-        $user->update([
-            'email_verified_at' => now(),
-            'verification_code' => null,
-            'verification_code_expires_at' => null,
-        ]);
-
-        // Login user after verification
-        Auth::login($user);
-
-        return redirect('/dashboard')->with('success', 'Email berhasil diverifikasi. Selamat datang!');
+            return back()->with('error', 'Terjadi kesalahan saat membuat akun. Silakan coba lagi.');
+        }
     }
 
     /**
-     * Halaman untuk menampilkan form verifikasi
+     * Show email verification form
      */
     public function showVerificationForm()
     {
-        return view('pages.email-verification');
+        // Check if user is authenticated first
+        if (!auth()->check()) {
+            // Redirect to login page if no user is authenticated
+            return redirect()->route('login')
+                ->with('error', 'Anda harus login terlebih dahulu.');
+        }
+        
+        $user = auth()->user();
+        
+        // If user already verified
+        if ($user->email_verified_at) {
+            return redirect('/dashboard')->with('info', 'Email Anda sudah diverifikasi.');
+        }
+        
+         $verified = session('verified', false);
+         
+        return view('auth.verify.code', [
+            'email' => $user->email,
+            'verified' => $verified,
+         ]);
     }
+    
 
     /**
-     * Kirim ulang kode verifikasi
+     * Resend verification code
      */
     public function resendVerificationCode(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $request->validate([
+            'email' => 'required|email',
+            'token' => 'required|string'
+        ]);
 
-        if (!$user) {
-            return back()->with('error', 'Email tidak ditemukan.');
+        // Get pending user data
+        $pendingUserData = Cache::get('pending_user_' . $request->token);
+        
+        if (!$pendingUserData) {
+            return back()->with('error', 'Sesi pendaftaran telah kedaluwarsa. Silakan daftar ulang.');
         }
-
-        if ($user->email_verified_at) {
-            return back()->with('info', 'Email sudah terverifikasi.');
+        
+        // Check if the email matches
+        if ($pendingUserData['user_data']['email'] != $request->email) {
+            return back()->with('error', 'Email tidak cocok dengan data pendaftaran.');
+        }
+        
+        // Check if last code was sent recently
+        $lastCodeTime = $pendingUserData['expires_at']->subHours(1); // Original creation time
+        if (now()->diffInMinutes($lastCodeTime) < 5) {
+            return back()->with('error', 'Silakan tunggu beberapa menit sebelum meminta kode baru.');
         }
 
         // Generate new code
-        $code = rand(1000, 9999);
-        $user->update([
-            'verification_code' => $code,
-            'verification_code_expires_at' => now()->addMinutes(30)
-        ]);
+        $code = str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
+        
+        // Update the verification code in cache
+        $pendingUserData['verification_code'] = $code;
+        $pendingUserData['expires_at'] = now()->addHours(1);
+        
+        Cache::put('pending_user_' . $request->token, $pendingUserData, 3600);
 
         // Send new verification email
-        Mail::to($user->email)->send(new EmailVerificationMail($code));
+        Mail::to($request->email)->send(new EmailVerificationMail($code));
 
         return back()->with('success', 'Kode verifikasi baru telah dikirim ke email Anda.');
     }
     
     /**
-     * Logout user dan hapus sesi
+     * Show password reset request form
+     */
+    public function showForgotPasswordForm()
+    {
+        return view('pages.forgot-password');
+    }
+    
+    /**
+     * Process password reset request
+     */
+    public function sendPasswordResetLink(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+        
+        $user = User::where('email', $request->email)->first();
+        
+        // Generate token
+        $token = Str::random(64);
+        
+        // Store reset token in database
+        \DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now()
+        ]);
+        
+        // Send password reset email
+        Mail::to($request->email)->send(new ResetPasswordMail($token));
+        
+        return back()->with('success', 'Kami telah mengirimkan tautan reset password ke email Anda.');
+    }
+    
+    /**
+     * Show password reset form
+     */
+    public function showResetPasswordForm($token)
+    {
+        return view('pages.reset-password', ['token' => $token]);
+    }
+    
+    /**
+     * Process password reset
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:8|confirmed',
+            'token' => 'required'
+        ]);
+        
+        // Check if token is valid
+        $resetRecord = \DB::table('password_resets')
+            ->where('email', $request->email)
+            ->where('token', $request->token)
+            ->where('created_at', '>', now()->subHours(1))
+            ->first();
+            
+        if (!$resetRecord) {
+            return back()->with('error', 'Token reset password tidak valid atau sudah kedaluwarsa.');
+        }
+        
+        // Update password
+        User::where('email', $request->email)->update([
+            'password' => Hash::make($request->password)
+        ]);
+        
+        // Delete used token
+        \DB::table('password_resets')
+            ->where('email', $request->email)
+            ->delete();
+            
+        return redirect()->route('login')
+            ->with('success', 'Password berhasil direset. Silakan login dengan password baru Anda.');
+    }
+    
+    /**
+     * Logout user and invalidate session
      */
     public function logout(Request $request)
     {
@@ -190,11 +364,11 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Logged out successfully');
+        return redirect()->route('login')->with('success', 'Anda berhasil logout.');
     }
 
     /**
-     * Mendapatkan user yang sedang login
+     * Get current authenticated user
      */
     public function me(Request $request)
     {
@@ -204,94 +378,75 @@ class AuthController extends Controller
     }
 
     /**
-     * Redirect ke Google OAuth
+     * Redirect to Google OAuth
      */
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')
+            ->with(['prompt' => 'select_account'])
+            ->redirect();
     }
 
     /**
-     * Obtain the user information from Google.
+     * Handle Google OAuth callback
      */
     public function handleGoogleCallback()
     {
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            // Log the Google user information for debugging
-            Log::info('Google user retrieved', [
-                'google_id' => $googleUser->getId(),
-                'email' => $googleUser->getEmail(),
-                'name' => $googleUser->getName()
-            ]);
+            // Find existing user by Google ID
+            $user = User::where('google_id', $googleUser->getId())->first();
 
-            // First check if user exists with the same Google ID
-            $findUser = User::where('google_id', $googleUser->getId())->first();
-
-            // Then check if user exists with same email
-            $userWithSameEmail = User::where('email', $googleUser->getEmail())->first();
-
-            if ($findUser) {
-                // User found by google_id, login
-                Log::info('Found user by google_id', ['user_id' => $findUser->id]);
-
-                // Mark as verified if using Google OAuth
-                if (!$findUser->email_verified_at) {
-                    $findUser->update(['email_verified_at' => now()]);
-                }
+            // If no user found by Google ID, check by email
+            if (!$user) {
+                $user = User::where('email', $googleUser->getEmail())->first();
                 
-                Auth::login($findUser);
-                return redirect('/dashboard')->with('success', 'Anda berhasil login dengan Google!');
-            } elseif ($userWithSameEmail) {
-                // User with same email exists, update their google_id and login
-                Log::info('Found user by email, updating google_id', ['user_id' => $userWithSameEmail->id]);
-                $userWithSameEmail->update([
-                    'google_id' => $googleUser->getId(),
-                    'email_verified_at' => now() // Mark as verified if using Google OAuth
-                ]);
-
-                Auth::login($userWithSameEmail);
-                return redirect('/dashboard')->with('success', 'Anda berhasil login dengan Google!');
-            } else {
-                // Create a new user with Google account data
-                Log::info('Creating new user with Google account');
-
-                // Explicitly create with all required fields
-                $newUser = User::create([
-                    'nama' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'google_id' => $googleUser->getId(),
-                    'sekolah' => 'Belum diisi',
-                    'nomer_hp' => 'Belum diisi',
-                    'password' => Hash::make(Str::random(16)),
-                    'is_admin' => 0,
-                    'email_verified_at' => now() // Mark as verified since using Google OAuth
-                ]);
-
-                Log::info('New user created', ['user_id' => $newUser->id]);
-
-                // Login the new user
-                Auth::login($newUser);
-
-                // Redirect to profile page to complete missing info
-                return redirect('/profile/edit')->with('info', 'Akun berhasil dibuat dengan Google. Silakan lengkapi profil Anda.');
+                // If user found by email, link Google account
+                if ($user) {
+                    $user->update([
+                        'google_id' => $googleUser->getId(),
+                        'email_verified_at' => $user->email_verified_at ?? now()
+                    ]);
+                } else {
+                    // Create new user with Google data
+                    $user = User::create([
+                        'nama' => $googleUser->getName(),
+                        'email' => $googleUser->getEmail(),
+                        'google_id' => $googleUser->getId(),
+                        'sekolah' => 'Belum diisi',
+                        'nomer_hp' => 'Belum diisi',
+                        'password' => Hash::make(Str::random(24)),
+                        'is_admin' => 0,
+                        'email_verified_at' => now()
+                    ]);
+                    
+                    // Flag for profile completion
+                    session(['complete_profile' => true]);
+                }
             }
-        } catch (Exception $e) {
-            // Get the SQL statement if it's a query exception
-            $sqlStatement = ($e instanceof \Illuminate\Database\QueryException)
-                ? $e->getSql()
-                : 'Not an SQL error';
 
-            // Detailed error logging
+            // Login user
+            Auth::login($user, true);
+            
+            // Redirect based on profile completion status
+            if (session('complete_profile')) {
+                session()->forget('complete_profile');
+                return redirect()->route('profile.edit')
+                    ->with('info', 'Akun berhasil dibuat dengan Google. Silakan lengkapi profil Anda.');
+            }
+            
+            return redirect()->route('dashboard')
+                ->with('success', 'Anda berhasil login dengan Google!');
+                
+        } catch (Exception $e) {
             Log::error('Google login error', [
                 'error' => $e->getMessage(),
-                'sql' => $sqlStatement,
-                'trace' => $e->getTraceAsString(),
-                'previous' => $e->getPrevious() ? $e->getPrevious()->getMessage() : null
+                'trace' => $e->getTraceAsString()
             ]);
 
-            return redirect('/login')->with('error', 'Terjadi kesalahan saat login dengan Google. Silakan coba lagi atau hubungi administrator.');
+            return redirect()->route('login')
+                ->with('error', 'Terjadi kesalahan saat login dengan Google. Silakan coba lagi.');
         }
     }
 }
