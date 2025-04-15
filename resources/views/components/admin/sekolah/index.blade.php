@@ -13,7 +13,7 @@
     <div class="mb-10 w-full bg-white rounded-sm border border-[#BBBBBB] p-3">
       <form action="{{ route('components.admin.sekolah.index') }}" method="get" class="mb-4">
         <div class="flex items-center space-x-2">
-          <input type="text" id="search" name="search" placeholder="Search for sekolah"
+          <input type="text" jurusan="search" name="search" placeholder="Search for sekolah"
                  class="w-full rounded-sm border border-[#BBBBBB] bg-white p-2 focus:outline-none focus:ring focus:ring-indigo-300"
                  value="{{ request('search') ?? '' }}" />
           <button type="submit"
@@ -39,7 +39,7 @@
                 <tr class="border-b border-[#E5E7EB]">
                   <td class="px-4 py-3 text-center">{{ $loop->iteration }}</td>
                   <td class="px-4 py-3">{{ $item->nama }}</td>
-                  <td class="px-4 py-3">{{ $item->jurusan->name ?? '-' }}</td>
+                  <td class="px-4 py-3">{{ $item->jurusan->jurusan ?? '-' }}</td>
                   <td class="px-4 py-3">
                     <div class="flex justify-center space-x-2">
                       <a href="{{ route('components.admin.sekolah.edit', $item) }}">

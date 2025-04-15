@@ -48,7 +48,7 @@
 
         <div class="flex items-center justify-end py-2 px-3 border-t bg-gray-50">
           <span class="text-xs text-gray-500 italic">
-            Geser ke kanan untuk melihat semua jurusan
+            scroll untuk melihat semua jurusan
           </span>
         </div>
       @else

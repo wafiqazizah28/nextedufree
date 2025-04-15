@@ -8,19 +8,24 @@ use Illuminate\Http\Request;
 
 class SekolahController extends Controller
 {
-    public function index()
-    {
-        $sekolah = Sekolah::with('jurusan')->orderBy('nama', 'asc');
+    public function index(Request $request)
+{
+    $search = $request->search;
 
-        // Tambahkan logika pencarian
-        if (request('search')) {
-            $sekolah = $sekolah->where('nama', 'like', '%' . request('search') . '%');
-        }
+    $sekolah = Sekolah::with('jurusan')
+        ->when($search, function ($query, $search) {
+            $query->where('nama', 'like', '%' . $search . '%')
+                  ->orWhereHas('jurusan', function ($q) use ($search) {
+                      $q->where('jurusan', 'like', '%' . $search . '%');
+                  });
+        })
+        ->orderBy('nama', 'asc')
+        ->paginate(10)
+        ->withQueryString();
 
-        return view('components.admin.sekolah.index', [
-            'sekolah' => $sekolah->paginate(10)->withQueryString()
-        ]);
-    }
+    return view('components.admin.sekolah.index', compact('sekolah'));
+}
+
 
     public function create()
     {
