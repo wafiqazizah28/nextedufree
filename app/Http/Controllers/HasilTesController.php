@@ -6,6 +6,9 @@ use App\Models\Jurusan;
 use App\Models\SaranPekerjaan;
 use App\Models\HasilTes;
 use App\Models\Sekolah;
+use App\Models\Pertanyaan;
+use App\Models\Artikel;
+use App\Models\User;
 use App\Http\Requests\StoreHasilTesRequest;
 use App\Http\Requests\UpdateHasilTesRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -16,8 +19,18 @@ class HasilTesController extends Controller
     {
         // Ambil semua hasil tes beserta data user-nya (nama, email, dll)
         $hasilTests = HasilTes::with('user')->latest()->get();
+        $pertanyaanInfo = Pertanyaan::all();
+        $jurusanInfo = Jurusan::all();
+        $artikelInfo = Artikel::all();
+        $usersInfo = User::all();
 
-        return view('components.admin.hasiltes.hasiltes', compact('hasilTests'));
+        return view('components.admin.hasiltes.hasiltes', compact(
+            'hasilTests',
+            'pertanyaanInfo',
+            'jurusanInfo',
+            'artikelInfo',
+            'usersInfo'
+        ));
     }
 
     public function hasilTes()
@@ -58,30 +71,29 @@ class HasilTesController extends Controller
     public function show($id)
     {
         $hasilTes = HasilTes::findOrFail($id);
-    
-        // Pastikan user hanya bisa melihat hasil tesnya sendiri
+
         if (auth()->id() !== $hasilTes->user_id) {
             return redirect()->route('/')->with('error', 'Anda tidak memiliki akses ke hasil tes ini.');
         }
-    
+
         $jurusanList = Jurusan::all();
         $jurusan = null;
-    
+
         foreach ($jurusanList as $j) {
             if (strtolower($j->jurusan) == strtolower($hasilTes->hasil)) {
                 $jurusan = $j;
                 break;
             }
         }
-    
+
         $saranPekerjaanList = [];
         $sekolahList = [];
-    
+
         if ($jurusan) {
             $saranPekerjaanList = SaranPekerjaan::where('jurusan_id', $jurusan->id)->get();
             $sekolahList = Sekolah::where('jurusan_id', $jurusan->id)->orderBy('nama', 'asc')->get();
         }
-    
+
         return view('pages.hasilTes', [
             'hasilTes' => $hasilTes,
             'jurusan' => $jurusan,

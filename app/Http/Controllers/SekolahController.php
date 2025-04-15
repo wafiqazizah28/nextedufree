@@ -23,7 +23,13 @@ class SekolahController extends Controller
         ->paginate(10)
         ->withQueryString();
 
-    return view('components.admin.sekolah.index', compact('sekolah'));
+    return view('components.admin.sekolah.index', [
+        'sekolah' => $sekolah,
+        'jurusanInfo' => \App\Models\Jurusan::all(),
+        'pertanyaanInfo' => \App\Models\Pertanyaan::all(),
+        'artikelInfo' => \App\Models\Artikel::all(),
+        'usersInfo' => \App\Models\User::all(),
+    ]);
 }
 
 

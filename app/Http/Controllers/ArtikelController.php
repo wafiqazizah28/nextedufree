@@ -18,23 +18,28 @@ class ArtikelController extends Controller
      * Menampilkan daftar artikel.
      */
     public function index(Request $request)
-    {
-        $kategoriList = Kategori::all(); // Ambil semua kategori
-        $artikelList = Artikel::query();
-    
-        if ($request->has('kategori')) {
-            $artikelList->where('kategori_id', $request->kategori);
-        }
-    
-        if ($request->has('search')) {
-            $artikelList->where('judul', 'like', '%' . $request->search . '%');
-        }
-    
-        return view('components.admin.artikels.view', [
-            'artikelList' => $artikelList->paginate(10)->withQueryString(),
-            'kategoriList' => $kategoriList
-        ]);
+{
+    $kategoriList = Kategori::all(); // Ambil semua kategori
+    $artikelList = Artikel::query();
+
+    if ($request->has('kategori')) {
+        $artikelList->where('kategori_id', $request->kategori);
     }
+
+    if ($request->has('search')) {
+        $artikelList->where('judul', 'like', '%' . $request->search . '%');
+    }
+
+    return view('components.admin.artikels.view', [
+        'artikelList' => $artikelList->paginate(10)->withQueryString(),
+        'kategoriList' => $kategoriList,
+        'jurusanInfo' => \App\Models\Jurusan::all(),
+        'pertanyaanInfo' => \App\Models\Pertanyaan::all(),
+        'artikelInfo' => \App\Models\Artikel::all(),
+        'usersInfo' => \App\Models\User::all(),
+    ]);
+}
+
     
     /**
      * Menampilkan form tambah artikel.

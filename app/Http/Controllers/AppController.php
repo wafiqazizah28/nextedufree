@@ -238,6 +238,8 @@ public function storeTestimoni(Request $request)
             'jurusanRelations' => $jurusanRelation,
             'pertanyaanInfo' => $pertanyaanList,
             'jurusanInfo' => $jurusanList,
+            'artikelInfo' => Artikel::all(),
+            'usersInfo' => User::all()
         ]);
     }
 

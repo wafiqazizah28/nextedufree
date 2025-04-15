@@ -37,7 +37,7 @@ class SaranPekerjaanController extends Controller
             'jurusanInfo' => Jurusan::all(),
             'pertanyaanInfo' => Pertanyaan::all(),
             'artikelInfo' => Artikel::all(),
-            'userInfo' => User::all()
+            'usersInfo' => User::all()
         ]);
     }
 /**

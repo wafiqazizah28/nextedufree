@@ -15,31 +15,39 @@ class TestimoniController extends Controller
      * Display a listing of the resource for admin view.
      */
     public function index(Request $request)
-    {
-        // Update semua testimoni agar user_id menjadi 1 jika masih NULL
-        DB::table('testimonis')->whereNull('user_id')->update(['user_id' => 1]);
+{
+    // Update semua testimoni agar user_id menjadi 1 jika masih NULL
+    DB::table('testimonis')->whereNull('user_id')->update(['user_id' => 1]);
 
-        // Get search parameter
-        $search = $request->input('search');
-        
-        // Query with search condition
-        $testimonisQuery = Testimoni::with(['user', 'Hasil'])
-            ->when($search, function($query) use ($search) {
-                return $query->where('testimoni', 'like', '%' . $search . '%')
-                    ->orWhereHas('user', function($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%');
-                    })
-                    ->orWhereHas('Hasil', function($query) use ($search) {
-                        $query->where('hasil', 'like', '%' . $search . '%');
-                    });
-            })
-            ->latest();
-        
-        // Paginate the results
-        $testimonis = $testimonisQuery->paginate(10);
-        
-        return view('components.admin.testimoni.index', compact('testimonis'));
-    }
+    // Get search parameter
+    $search = $request->input('search');
+    
+    // Query with search condition
+    $testimonisQuery = Testimoni::with(['user', 'Hasil'])
+        ->when($search, function($query) use ($search) {
+            return $query->where('testimoni', 'like', '%' . $search . '%')
+                ->orWhereHas('user', function($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('Hasil', function($query) use ($search) {
+                    $query->where('hasil', 'like', '%' . $search . '%');
+                });
+        })
+        ->latest();
+    
+    // Paginate the results
+    $testimonis = $testimonisQuery->paginate(10);
+
+    // Return view with all needed data
+    return view('components.admin.testimoni.index', [
+        'testimonis' => $testimonis,
+        'jurusanInfo' => \App\Models\Jurusan::all(),
+        'pertanyaanInfo' => \App\Models\Pertanyaan::all(),
+        'artikelInfo' => \App\Models\Artikel::all(),
+        'usersInfo' => \App\Models\User::all()
+    ]);
+}
+
 
     /**
      * Show the form for creating a new resource.
