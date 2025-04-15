@@ -152,7 +152,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     // Admin Dashboard - Dasbor admin
     Route::get('/adminDashboard', [DashboardController::class, 'admin']);
-    Route::get('/admin/statistik', [DashboardController::class, 'statistik'])->middleware(['auth', 'admin']);
+    Route::get('/admin/statistik', [DashboardController::class, 'statistik'])->name('admin.statistik');
 
     // Rules Management - Manajemen aturan
     Route::get('/rules', [AppController::class, 'logicRelation']);
