@@ -344,7 +344,7 @@
                 <!-- Judul Halaman dengan animasi underline -->
                 <div class="flex items-center">
                     <h1 class="page-title text-gray-700 font-semibold text-lg">
-                        @yield('title', 'Admin Dashboard')
+                        @yield('title', 'Admin Nextedu')
                     </h1>
                 </div>
 
