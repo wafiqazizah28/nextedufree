@@ -1,7 +1,7 @@
 @extends('pages.adminDashboard')
 
 @section('content')
-<div class="w-full mx-auto p-2">
+<div class="w-full max-w-full px-4 lg:px-6">
   <div class="bg-white rounded border border-[#BBBBBB] shadow-sm">
     <div class="p-3 border-b">
       <h1 class="font-medium text-lg text-slate-800">Data Tabel</h1>
@@ -9,36 +9,39 @@
 
     <div class="bg-white relative">
       @if (count($jurusanRelations ?? []))
-        <div class="overflow-x-scroll custom-scrollbar" style="width: 100%;">
-          <table style="min-width: 100%; table-layout: auto;">
-            <thead>
-              <tr class="bg-indigo-700 text-white">
-                <th class="sticky left-0 z-20 bg-indigo-700 w-16 px-2 py-2 text-center text-sm border-r border-indigo-600">Kode</th>
-                <th class="sticky left-16 z-20 bg-indigo-700 w-48 px-2 py-2 text-left text-sm border-r border-indigo-600">Nama Jurusan</th>
-                @foreach ($pertanyaanInfo as $pertanyaan)
-                  <th class="whitespace-nowrap w-12 px-1 py-2 text-center text-sm border-r border-indigo-600">{{ $pertanyaan['pertanyaan_code'] }}</th>
-                @endforeach
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($jurusanRelations as $jurusan)
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="sticky left-0 z-10 bg-white w-16 px-2 py-3 text-center text-sm border-r">{{ $jurusan['id'] }}</td>
-                  <td class="sticky left-16 z-10 bg-white w-48 px-2 py-3 text-left text-sm border-r whitespace-normal">{{ $jurusan['name'] }}</td>
-                  @foreach ($jurusan['rules'] as $rule)
-                    <td class="px-1 py-3 text-center text-sm border-r">{{ $rule ? '✓' : '-' }}</td>
+        <div class="table-container">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="min-w-full table-fixed border-collapse">
+              <thead>
+                <tr class="bg-indigo-700 text-white">
+                  <th class="sticky left-0 z-20 bg-indigo-700 w-16 px-2 py-2 text-center text-sm border-r border-indigo-600">Kode</th>
+                  <th class="sticky left-16 z-20 bg-indigo-700 w-48 px-2 py-2 text-left text-sm border-r border-indigo-600">Nama Jurusan</th>
+                  @foreach ($pertanyaanInfo as $pertanyaan)
+                    <th class="whitespace-nowrap w-12 px-1 py-2 text-center text-sm border-r border-indigo-600">{{ $pertanyaan['pertanyaan_code'] }}</th>
                   @endforeach
-                  <td class="px-2 py-3 text-center">
-                    <a href="/rules/{{ $jurusan['id'] }}/edit" class="inline-block text-indigo-700 hover:text-indigo-900">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </a>
-                  </td>
+                  <th class="whitespace-nowrap w-12 px-1 py-2 text-center text-sm border-r border-indigo-600">Action</th>
                 </tr>
-              @endforeach
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                @foreach ($jurusanRelations as $jurusan)
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="sticky left-0 z-10 bg-white w-16 px-2 py-3 text-center text-sm border-r">{{ $jurusan['id'] }}</td>
+                    <td class="sticky left-16 z-10 bg-white w-48 px-2 py-3 text-left text-sm border-r whitespace-normal">{{ $jurusan['name'] }}</td>
+                    @foreach ($jurusan['rules'] as $rule)
+                      <td class="px-1 py-3 text-center text-sm border-r">{{ $rule ? '✓' : '-' }}</td>
+                    @endforeach
+                    <td class="px-2 py-3 text-center">
+                      <a href="/rules/{{ $jurusan['id'] }}/edit" class="inline-block text-indigo-700 hover:text-indigo-900">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </a>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
         </div>
         
         <div class="flex items-center justify-between py-2 px-3 border-t bg-gray-50">
@@ -76,33 +79,38 @@
 </div>
 
 <style>
-  /* Memastikan scrollbar selalu ditampilkan */
+  /* Table container styling */
+  .table-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden; /* Hide overflow on container */
+  }
+  
+  /* Custom scrollbar styling for horizontal scroll */
   .custom-scrollbar {
     width: 100%;
-    overflow-x: scroll !important; 
-    position: relative;
+    overflow-x: auto; 
     scrollbar-width: thin;
     scrollbar-color: #818cf8 #e0e7ff;
     -webkit-overflow-scrolling: touch;
+    max-width: 100%;
   }
   
-  /* Modifikasi untuk style scrollbar */
+  /* WebKit scrollbar styling */
   .custom-scrollbar::-webkit-scrollbar {
-    height: 10px !important;
+    height: 8px;
     display: block !important;
   }
   
   .custom-scrollbar::-webkit-scrollbar-track {
     background: #e0e7ff;
     border-radius: 4px;
-    display: block !important;
   }
   
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #818cf8;
     border-radius: 4px;
     border: 1px solid #e0e7ff;
-    display: block !important;
   }
   
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -113,9 +121,10 @@
   .sticky {
     position: sticky;
     background-clip: padding-box;
+    z-index: 1;
   }
   
-  /* Shadow effects for better visual separation */
+  /* Shadow effects for sticky columns */
   th.sticky.left-0, td.sticky.left-0 {
     box-shadow: 2px 0 5px -2px rgba(0,0,0,0.15);
   }
@@ -124,112 +133,86 @@
     box-shadow: 2px 0 5px -2px rgba(0,0,0,0.15);
   }
   
-  /* Handle row hover effects properly with sticky columns */
+  /* Handle row hover effects with sticky columns */
   tr:hover td.sticky {
-    background-color: #f9fafb; /* match hover color */
+    background-color: #f9fafb !important; /* match hover color */
   }
   
-  /* Ensure consistent table cell sizing */
+  /* Better cell sizing for question columns */
   th, td {
     min-width: 3rem;
+  }
+  
+  /* Question columns */
+  th:not(.sticky), td:not(.sticky) {
+    min-width: 3.5rem;
+    max-width: 5rem;
+  }
+  
+  /* Force table layout to respect column widths */
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  /* Desktop-specific enhancements */
+  @media (min-width: 1024px) {
+    .custom-scrollbar {
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    
+    /* First two columns are fixed width on desktop */
+    th.sticky.left-0, td.sticky.left-0 {
+      width: 64px;
+    }
+    
+    th.sticky.left-16, td.sticky.left-16 {
+      width: 192px;
+    }
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const scrollContainer = document.querySelector('.custom-scrollbar');
-    const scrollLeftBtn = document.getElementById('scroll-left');
-    const scrollRightBtn = document.getElementById('scroll-right');
-    const visibleColumnsElement = document.getElementById('visible-columns');
-    const totalColumnsElement = document.getElementById('total-columns');
-    
-    // Memastikan tabel memiliki width minimum yang memaksa scrollbar muncul
-    const tableElement = scrollContainer.querySelector('table');
-    const headerCells = scrollContainer.querySelectorAll('th');
-    
-    // Hitung total minimum width berdasarkan header
-    let minWidth = 0;
-    headerCells.forEach(cell => {
-      // Width minimal per cell + padding
-      minWidth += 50;
-    });
-    
-    // Set minimum width pada tabel jika perlu
-    if (minWidth > scrollContainer.clientWidth) {
-      tableElement.style.minWidth = minWidth + 'px';
-    } else {
-      // Jika tidak cukup kolom, tetapkan minimal width yang lebih besar dari container
-      tableElement.style.minWidth = (scrollContainer.clientWidth + 200) + 'px';
-    }
-    
-    // Paksa scrollbar muncul dengan CSS
-    scrollContainer.style.overflowX = 'scroll';
-    
-    if (scrollContainer && scrollLeftBtn && scrollRightBtn) {
-      // Smooth scroll functionality
-      scrollLeftBtn.addEventListener('click', function() {
-        scrollContainer.scrollBy({
-          left: -150,
-          behavior: 'smooth'
-        });
-      });
-      
-      scrollRightBtn.addEventListener('click', function() {
-        scrollContainer.scrollBy({
-          left: 150,
-          behavior: 'smooth'
-        });
-      });
-      
-      // Update visible columns counter and button states
-      function updateScrollInfo() {
-        const containerWidth = scrollContainer.clientWidth;
-        const totalWidth = scrollContainer.scrollWidth;
-        const scrollPosition = scrollContainer.scrollLeft;
-        
-        // Calculate approximately how many columns are visible
-        // Assuming each column is roughly 48px wide (12 + padding)
-        const visibleWidth = containerWidth - 76; // Subtracting width of fixed columns
-        const approxColumnsVisible = Math.floor(visibleWidth / 48);
-        
-        if (visibleColumnsElement) {
-          visibleColumnsElement.textContent = Math.min(approxColumnsVisible, 
-            parseInt(totalColumnsElement.textContent));
-        }
-        
-        // Update button states
-        const isAtStart = scrollPosition === 0;
-        const isAtEnd = Math.ceil(scrollPosition + containerWidth) >= totalWidth;
-        
-        scrollLeftBtn.disabled = isAtStart;
-        scrollLeftBtn.classList.toggle('opacity-50', isAtStart);
-        scrollRightBtn.disabled = isAtEnd;
-        scrollRightBtn.classList.toggle('opacity-50', isAtEnd);
-      }
-      
-      // Initial update and add event listener
-      updateScrollInfo();
-      scrollContainer.addEventListener('scroll', updateScrollInfo);
-      window.addEventListener('resize', updateScrollInfo);
-      
-      // Add keyboard shortcuts (arrow keys) when the table has focus
-      scrollContainer.tabIndex = 0; // Make it focusable
-      scrollContainer.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowLeft') {
-          scrollContainer.scrollBy({
-            left: -50,
-            behavior: 'smooth'
-          });
-          e.preventDefault();
-        } else if (e.key === 'ArrowRight') {
-          scrollContainer.scrollBy({
-            left: 50,
-            behavior: 'smooth'
-          });
-          e.preventDefault();
-        }
-      });
-    }
+document.addEventListener('DOMContentLoaded', function() {
+  const scrollContainer = document.querySelector('.custom-scrollbar');
+  const scrollLeftBtn = document.getElementById('scroll-left');
+  const scrollRightBtn = document.getElementById('scroll-right');
+  const visibleColumnsEl = document.getElementById('visible-columns');
+  const totalColumnsEl = document.getElementById('total-columns');
+  
+  // Scroll buttons functionality
+  scrollLeftBtn.addEventListener('click', function() {
+    scrollContainer.scrollBy({ left: -200, behavior: 'smooth' });
   });
+  
+  scrollRightBtn.addEventListener('click', function() {
+    scrollContainer.scrollBy({ left: 200, behavior: 'smooth' });
+  });
+  
+  // Update visible columns counter
+  function updateVisibleColumns() {
+    if (!visibleColumnsEl) return;
+    
+    const tableWidth = scrollContainer.querySelector('table').offsetWidth;
+    const containerWidth = scrollContainer.offsetWidth;
+    const totalColumns = parseInt(totalColumnsEl.textContent);
+    
+    // Calculate visible columns (excluding the fixed columns)
+    const fixedWidth = 64 + 192; // Width of the fixed columns
+    const availableWidth = containerWidth - fixedWidth;
+    const questionColumnWidth = 56; // Approximate width of each question column
+    
+    // Calculate how many question columns are fully visible
+    const visibleQuestionColumns = Math.floor(availableWidth / questionColumnWidth);
+    visibleColumnsEl.textContent = Math.min(visibleQuestionColumns, totalColumns);
+  }
+  
+  // Initial update and on resize
+  updateVisibleColumns();
+  window.addEventListener('resize', updateVisibleColumns);
+  scrollContainer.addEventListener('scroll', updateVisibleColumns);
+});
 </script>
+
 @endsection
