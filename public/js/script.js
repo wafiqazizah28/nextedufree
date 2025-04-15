@@ -10,13 +10,28 @@ window.onscroll = function () {
     }
 };
 
-// hamburger
-const hamburger = document.querySelector("#hamburger");
-const navMenu = document.querySelector("#nav-menu");
-hamburger.addEventListener("click", function () {
-    hamburger.classList.toggle("hamburger-active");
-    navMenu.classList.toggle("hidden");
-});
+    // Fungsi untuk mengatur navbar saat page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbar = document.getElementById('navbar');
+        // Tambahkan kelas transparent saat awal load
+        navbar.classList.add('navbar-default');
+    });
+    
+    // Fungsi untuk mengatur navbar fixed dan transparan saat scrolling
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        const navLinks = navbar.querySelectorAll('a');
+        
+        if (window.pageYOffset > 10) {
+            navbar.classList.add('navbar-fixed');
+            navbar.classList.remove('navbar-transparent');
+        } else {
+            navbar.classList.remove('navbar-fixed');
+            navbar.classList.add('navbar-default');
+        }
+    });
+    
+    
 
 
 

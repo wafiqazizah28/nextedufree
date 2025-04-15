@@ -225,7 +225,7 @@
 
                 <!-- Navigation Items -->
                 <nav class="w-full px-4 py-4 flex-grow">
-                    <a href="/adminDashboard"
+                    <a href="/admin/statistik"
                         class="flex items-center px-3 py-2 rounded-lg text-sm font-medium hover:bg-white hover:text-purpleMain mb-2 transition-colors duration-200 btn-action">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -281,8 +281,7 @@
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                        Setting Sekolah
+                </svg >                      Settings Sekolah
                     </a>
 
                     <a href="/artikels"
@@ -331,8 +330,8 @@
         <div class="content-container flex-1 flex flex-col">
             <!-- Modern Sticky Navbar -->
             <nav
-                class="navbar fixed top-0 right-0 bg-white/95 shadow-sm py-4 px-6 flex items-center justify-between transition-all duration-300">
-                <!-- Mobile Menu Button -->
+            class="navbar fixed top-0 left-0 right-0 w-full bg-white/95 shadow-sm py-4 px-6 flex items-center justify-between transition-all duration-300 z-50">
+            <!-- Mobile Menu Button -->
                 <button id="mobile-menu-button"
                     class="lg:hidden flex items-center justify-center text-gray-700 hover:text-purple-600 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -444,26 +443,26 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                         <div class="bg-white rounded-lg border p-6 shadow-sm">
                             <div class="flex flex-col items-center">
-                                <h2 class="text-4xl font-bold text-purple-600">{{ count($pertanyaanInfo ?? []) }}</h2>
+                                <h2 class="text-4xl font-bold text-purpleMain">{{ count($pertanyaanInfo ?? []) }}</h2>
                                 <p class="text-gray-600 mt-2">Jumlah Pertanyaan</p>
                             </div>
                         </div>
                         <div class="bg-white rounded-lg border p-6 shadow-sm">
                             <div class="flex flex-col items-center">
-                                <h2 class="text-4xl font-bold text-purple-600">{{ count($jurusanInfo ?? [])}}</h2>
+                                <h2 class="text-4xl font-bold text-purpleMain">{{ count($jurusanInfo ?? [])}}</h2>
                                 <p class="text-gray-600 mt-2">Total List Jurusan</p>
                             </div>
                         </div>
                         <div class="bg-white rounded-lg border p-6 shadow-sm">
                             <div class="flex flex-col items-center">
-                                <h2 class="text-4xl font-bold text-purple-600">{{ count($artikelInfo ?? []) }}</h2>
+                                <h2 class="text-4xl font-bold text-purpleMain">{{ count($artikelInfo ?? []) }}</h2>
                                 <p class="text-gray-600 mt-2">Total Artikel Masuk</p>
                             </div>
                         </div>
                         <div class="bg-white rounded-lg border p-6 shadow-sm">
                             <div class="flex flex-col items-center">
-                                <h2 class="text-4xl font-bold text-purple-600">{{ count($usersInfo ?? []) }}</h2>
-                                <p class="text-gray-600 mt-2">New Customer</p>
+                                <h2 class="text-4xl font-bold text-purpleMain">{{ count($usersInfo ?? []) }}</h2>
+                                <p class="text-gray-600 mt-2">Total Pengguna</p>
                             </div>
                         </div>
                     </div>

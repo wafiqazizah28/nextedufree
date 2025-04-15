@@ -82,7 +82,7 @@ class HasilTesController extends Controller
             $sekolahList = Sekolah::where('jurusan_id', $jurusan->id)->orderBy('nama', 'asc')->get();
         }
     
-        return view('pages.hasiltes', [
+        return view('pages.hasilTes', [
             'hasilTes' => $hasilTes,
             'jurusan' => $jurusan,
             'jurusanList' => $jurusanList,

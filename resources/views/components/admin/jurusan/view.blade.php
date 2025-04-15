@@ -96,5 +96,4 @@
     @endif
   </div>
 
-  {{-- Remove the print script since we're using a dedicated route --}}
-@endsection
+ @endsection

@@ -9,6 +9,7 @@ use App\Models\SaranPekerjaan;
 use App\Models\Pertanyaan;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -40,5 +41,27 @@ class DashboardController extends Controller
             'artikelInfo' => $artikelInfo,
             'usersInfo' => $usersInfo
         ]);
+    }
+
+    public function statistik()
+    {
+        // Get user registration count grouped by month based on created_at
+        $userData = DB::table('users')
+            ->select(DB::raw('MONTH(created_at) as month, COUNT(*) as user_count'))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+        
+        // Format data for the chart
+        $months = [];
+        $counts = [];
+        
+        foreach ($userData as $data) {
+            $months[] = date('M', mktime(0, 0, 0, $data->month, 1));
+            $counts[] = $data->user_count;
+        }
+        
+        return view('pages.adminDashboard', compact('months', 'counts'));
     }
 }

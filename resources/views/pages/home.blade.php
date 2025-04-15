@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <section id="Home" class="pt-16 pb-16 lg:pt-24 lg:pb-20 bg-backgroundLight min-h-screen max-w-screen overflow-hidden">
     <div class="container mx-auto px-4">
         <!-- Hero Section -->
@@ -23,8 +24,7 @@
                         </h1>
                     </div>
                 </div>
-                <p class="mt-6 mb-4 text-slate-400 text-lg leading-relaxed max-w-xl mx-auto text-left text-textsecondary"
-                    data-aos="fade-up">
+                <p class="mt-6 mb-4 text-slate-400 text-lg  max-w-xl  text-left text-textsecondary" data-aos="fade-up">
                     Temukan informasi lengkap seputar jurusan yang sesuai dengan minat dan bakatmu.
                 </p>
 
@@ -239,74 +239,75 @@
 
 <section id="prospek"
     class="pt-12 pb-20 lg:pt-16 lg:pb-24 bg-backgroundPrimary min-h-screen max-w-screen overflow-hidden">
-    <script>
-        document.querySelectorAll(".hover-card").forEach(card => {
-            card.addEventListener("mouseenter", () => {
-                card.classList.add("scale-105", "shadow-lg");
-            });
-    
-            card.addEventListener("mouseleave", () => {
-                card.classList.remove("scale-105", "shadow-lg");
-            });
-        });
-    </script>
-
     <div class="container mx-auto">
         {{-- Header Section --}}
         <div class="text-center mb-12" data-aos="fade-up">
             <h2 class="text-4xl font-bold mb-4">Top peluang <span class="text-purpleMain">jurusan</span></h2>
             <p class="text-gray-600 text-1xl">
-                Jurusan yang banyak diminati dengan prospek kuliah <br> dan kerja terbaik
+                Jurusan yang ada di SMK Muhammadiyah Kroya, dengan peluang <br> kerja dan kuliah terjamin.
             </p>
         </div>
 
-
         {{-- Cards Container --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 lg:gap-12 max-w-6xl mx-auto px-4">
-            {{-- Card 1 - Sistem IT --}}
-            <div class="flex justify-center" data-aos="fade-up">
-                <a href="#"
-                    class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
+        <div class="max-w-6xl mx-auto px-4 py-6">
+            {{-- Grid Layout for Cards --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {{-- Card 1 - Sistem IT --}}
+                <div data-aos="fade-up">
+                    <a href="#"
+                        class="bg-white rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300 block h-full border border-gray-200">
+                        <img class="w-full h-64 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek1.png') }}"
+                            alt="Sistem IT">
+                        <div class="p-8 flex justify-between items-center">
+                            <h3 class="text-lg font-semibold">Sistem IT</h3>
+                            <span class="text-purpleMain font-bold">01</span>
+                        </div>
+                    </a>
+                </div>
 
-                    <img class="w-full h-50 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek1.png') }}"
-                        alt="Sistem IT">
-                    <div class="p-4 flex justify-between items-center">
-                        <h3 class="text-xl font-semibold">Sistem IT</h3>
-                        <span class="text-purpleMain font-bold">01</span>
-                    </div>
-                </a>
-            </div>
+                {{-- Card 2 - Bisnis --}}
+                <div data-aos="fade-up">
+                    <a href="#"
+                        class="bg-white rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300 block h-full border border-gray-200">
+                        <img class="w-full h-64 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek2.png') }}"
+                            alt="Bisnis">
+                        <div class="p-8 flex justify-between items-center">
+                            <h3 class="text-lg font-semibold">Bisnis</h3>
+                            <span class="text-purpleMain font-bold">02</span>
+                        </div>
+                    </a>
+                </div>
 
-            {{-- Card 2 - Bisnis --}}
-            <div class="flex justify-center" data-aos="fade-up">
-                <a href="#"
-                    class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
+                {{-- Card 3 - Perkantoran --}}
+                <div data-aos="fade-up">
+                    <a href="#"
+                        class="bg-white rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300 block h-full border border-gray-200">
+                        <img class="w-full h-64 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek3.png') }}"
+                            alt="Perkantoran">
+                        <div class="p-8 flex justify-between items-center">
+                            <h3 class="text-lg font-semibold">Perkantoran</h3>
+                            <span class="text-purpleMain font-bold">03</span>
+                        </div>
+                    </a>
+                </div>
 
-                    <img class="w-full h-50 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek2.png') }}"
-                        alt="Bisnis">
-                    <div class="p-4 flex justify-between items-center">
-                        <h3 class="text-xl font-semibold">Bisnis</h3>
-                        <span class="text-purpleMain font-bold">02</span>
-                    </div>
-                </a>
-            </div>
-
-            {{-- Card 3 - Perkantoran --}}
-            <div class="flex justify-center" data-aos="fade-up">
-                <a href="#"
-                    class="bg-white w-[290px] h-[320px] rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300">
-                    <img class="w-full h-50 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek3.png') }}"
-                        alt="Perkantoran">
-                    <div class="p-4 flex justify-between items-center">
-                        <h3 class="text-xl font-semibold">Perkantoran</h3>
-                        <span class="text-purpleMain font-bold">03</span>
-                    </div>
-                </a>
+                {{-- Card 4 - Admin Perkantoran --}}
+                <div data-aos="fade-up">
+                    <a href="#"
+                        class="bg-white rounded-lg shadow-orange transition-transform transform hover:scale-105 duration-300 block h-full border border-gray-200">
+                        <img class="w-full h-64 object-cover rounded-t-lg" src="{{ asset('assets/img/prospek4.png') }}"
+                            alt="Admin Perkantoran">
+                        <div class="p-8 flex justify-between items-center">
+                            <h3 class="text-lg font-semibold">Admin Perkantoran</h3>
+                            <span class="text-purpleMain font-bold">04</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
-
-
     </div>
+
+    
 </section>
 
 <section id="fitur"

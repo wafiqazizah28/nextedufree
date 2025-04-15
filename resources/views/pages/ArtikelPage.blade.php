@@ -4,36 +4,47 @@
 <section class="bg-white min-h-screen">
     <!-- Hero Banner Background -->
     <div class="relative w-full aspect-[16/9] sm:aspect-[16/8] md:aspect-[16/7] lg:min-h-[580px] bg-no-repeat bg-cover bg-center flex flex-col justify-center items-center px-4 sm:px-6 md:px-9"
-    style="background-image: url('{{ asset('assets/img/banner2.png') }}');">
+        style="background-image: url('{{ asset('assets/img/banner2.png') }}');">
 
         <!-- Hero Content -->
         <div class="flex flex-col text-left max-w-xl ml-auto pr-6">
-            <h1 class="text-[1.375rem] sm:text-[1.75rem] lg:text-[2.22rem] text-white font-bold leading-tight mb-4 sm:mb-6">
-                Informasi 
-                <a href="#artikel-list" class="text-white underline cursor-pointer">Artikel</a> 
+            <h1
+                class="text-[1rem] xs:text-[1.2rem] sm:text-[1.75rem] lg:text-[2.22rem] text-white font-bold leading-tight mb-2 xs:mb-3 sm:mb-6">
+                Informasi
+                <a href="#artikel-list" class="text-white underline cursor-pointer">Artikel</a>
                 untuk kamu!
             </h1>
-            
-            <div class="w-full max-w-md mt-2 sm:mt-3">
-                <form id="search-form" action="/artikel" method="get" 
-                    class="search-form flex items-center bg-white bg-opacity-90 rounded-lg px-4 py-2 shadow-lg"
+
+            <div class="w-full max-w-full xs:max-w-sm sm:max-w-md mt-1 xs:mt-2 sm:mt-3">
+                <form id="search-form" action="/artikel" method="get"
+                    class="search-form flex items-center bg-white bg-opacity-90 rounded-lg px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 shadow-lg"
                     onsubmit="return validateSearchForm()">
-                    <button type="submit" class="search-icon text-gray-600 mr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <button type="submit" class="search-icon text-gray-600 mr-1.5 xs:mr-2 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 xs:h-4.5 sm:h-5 sm:w-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </button>
-                    <input id="search-input" type="text" name="search" 
-                        placeholder="Ingin mencari tahu info sekolah dan artikel lainnya?" 
-                        class="search-input w-full bg-transparent border-none focus:outline-none text-xs sm:text-sm"
-                        pattern="[A-Za-z0-9\s]+" 
-                        title="Hanya huruf, angka, dan spasi yang diperbolehkan"
+                    <input id="search-input" type="text" name="search"
+                        placeholder="Ingin mencari tahu info sekolah dan artikel lainnya?"
+                        class="search-input w-full bg-transparent border-none focus:outline-none text-xs xs:text-xs sm:text-sm"
+                        pattern="[A-Za-z0-9\s]+" title="Hanya huruf, angka, dan spasi yang diperbolehkan"
                         maxlength="100">
                 </form>
             </div>
-            
+
+            <!-- Tambahkan styling ini di bagian head atau file CSS Anda -->
+            <style>
+                @media (max-width: 360px) {
+                    .search-input::placeholder {
+                        font-size: 10px;
+                    }
+                }
+            </style>
+
             <script>
-            function validateSearchForm() {
+                function validateSearchForm() {
                 const searchInput = document.getElementById('search-input');
                 const searchValue = searchInput.value.trim();
                 
@@ -106,24 +117,25 @@
         <div class="container mx-auto px-4">
             <!-- Tabs Section -->
             @if (isset($kategoriList) && $kategoriList->isEmpty())
-                <p class="text-gray-500">Kategori tidak ditemukan.</p>
+            <p class="text-gray-500 text-sm sm:text-base">Kategori tidak ditemukan.</p>
             @endif
 
-            <div class="flex flex-wrap gap-4 sm:gap-6 md:space-x-4 lg:space-x-8 border-b-2 pb-2 overflow-x-auto scrollbar-hide">
+            <div
+                class="flex flex-wrap gap-3 sm:gap-4 md:space-x-4 lg:space-x-8 border-b-2 pb-2 overflow-x-auto scrollbar-hide">
                 <button onclick="filterArtikel('all')"
-                    class="category-btn text-gray-600 hover:text-secondary pb-2 border-b-2 border-transparent hover:border-secondary whitespace-nowrap"
+                    class="category-btn text-gray-600 hover:text-secondary pb-2 border-b-2 border-transparent hover:border-secondary whitespace-nowrap text-sm sm:text-base px-2 sm:px-4"
                     data-id="all">
                     Semua
                 </button>
 
                 @if(isset($kategoriList))
-                    @foreach ($kategoriList as $kategori)
-                    <button onclick="filterArtikel({{ $kategori->id }})"
-                        class="category-btn text-gray-600 hover:text-secondary pb-2 border-b-2 border-transparent hover:border-secondary whitespace-nowrap"
-                        data-id="{{ $kategori->id }}">
-                        {{ $kategori->nama_kategori }}
-                    </button>
-                    @endforeach
+                @foreach ($kategoriList as $kategori)
+                <button onclick="filterArtikel({{ $kategori->id }})"
+                    class="category-btn text-gray-600 hover:text-secondary pb-2 border-b-2 border-transparent hover:border-secondary whitespace-nowrap text-sm sm:text-base px-2 sm:px-4"
+                    data-id="{{ $kategori->id }}">
+                    {{ $kategori->nama_kategori }}
+                </button>
+                @endforeach
                 @endif
             </div>
 
@@ -227,9 +239,10 @@
                     filterArtikel(currentCategory);
                 });
             </script>
-            
+
             <!-- Articles Grid -->
-            <div id="artikel-list" class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div id="artikel-list"
+                class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 <!-- Articles will be loaded here via JavaScript -->
                 <p class="text-gray-500 col-span-full text-center">Memuat artikel...</p>
             </div>

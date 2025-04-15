@@ -59,7 +59,6 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $testimoni->user->name ?? 'User Tidak Diketahui' }}</td>
-                        <td>{{ $testimoni->user->asal_sekolah ?? 'Tidak Diketahui' }}</td>
                         <td>
                             @if(isset($testimoni->jurusan))
                                 {{ $testimoni->jurusan->jurusan ?? 'Jurusan Tidak Diketahui' }}

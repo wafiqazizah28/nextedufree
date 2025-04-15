@@ -33,10 +33,8 @@
           <thead>
             <tr class="bg-indigo-700 text-white">
               <th class="py-3 px-4 text-left border border-indigo-800">No</th>
-              <th class="py-3 px-4 text-left border border-indigo-800">Foto</th>
               <th class="py-3 px-4 text-left border border-indigo-800">Nama User</th>
-              <th class="py-3 px-4 text-left border border-indigo-800">Asal Sekolah</th>
-              <th class="py-3 px-4 text-left border border-indigo-800">Jurusan</th>
+              <th class="py-3 px-4 text-left border border-indigo-800">Hasil Tes</th>
               <th class="py-3 px-4 text-left border border-indigo-800">Testimoni</th>
               <th class="py-3 px-4 text-left border border-indigo-800">Tanggal</th>
             </tr>
@@ -45,15 +43,11 @@
             @foreach ($testimonis as $index => $testimoni)
               <tr class="border-b hover:bg-gray-50">
                 <td class="py-2 px-4 border border-gray-200">{{ ($testimonis->currentPage() - 1) * $testimonis->perPage() + $loop->iteration }}</td>
+            
+                <td class="py-2 px-4 border border-gray-200">{{ $testimoni->user->nama ?? 'User Tidak Diketahui' }}</td>
                 <td class="py-2 px-4 border border-gray-200">
-                  <img src="{{ $testimoni->user->foto_profil ? asset('storage/' . $testimoni->user->foto_profil) : asset('storage/default.png') }}" 
-                       alt="Foto" class="w-10 h-10 rounded-full">
-                </td>
-                <td class="py-2 px-4 border border-gray-200">{{ $testimoni->user->name ?? 'User Tidak Diketahui' }}</td>
-                <td class="py-2 px-4 border border-gray-200">{{ $testimoni->user->asal_sekolah ?? 'Tidak Diketahui' }}</td>
-                <td class="py-2 px-4 border border-gray-200">
-                  @if(isset($testimoni->jurusan))
-                    {{ $testimoni->jurusan->jurusan ?? 'Jurusan Tidak Diketahui' }}
+                  @if(isset($testimoni->Hasil))
+                    {{ $testimoni->Hasil->hasil ?? 'Jurusan Tidak Diketahui' }}
                   @else
                     Jurusan Tidak Diketahui
                   @endif

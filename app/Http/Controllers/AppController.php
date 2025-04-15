@@ -128,7 +128,7 @@ class AppController extends Controller
             $sekolahList = Sekolah::where('jurusan_id', $jurusan->id)->orderBy('nama', 'asc')->get();
         }
 
-        return view('pages.testdetail', [
+        return view('pages.hasilTes', [
             'testDetail' => $hasilTes,
             'jurusan' => $jurusan,
             'jurusanList' => $jurusanList,
@@ -213,7 +213,7 @@ class AppController extends Controller
         $jurusan = Jurusan::find($id); // Menggunakan Eloquent untuk mengambil satu jurusan
 
         if (!$jurusan) {
-            return redirect()->back()->with('error', 'Jurusan tidak ditemukan!');
+            return redirect()->back()->with('error', 'Jurusan selinear dengan SMA!');
         }
 
         $jurusanDetail = [

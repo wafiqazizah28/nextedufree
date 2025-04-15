@@ -7,28 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class Testimoni extends Model
 {
-    public $timestamps = false;
-
     use HasFactory;
+    
+    // Set timestamp fields
+    public $timestamps = true;
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
 
     protected $table = 'testimonis';
-    protected $fillable = ['user_id', 'jurusan_id', 'asal_sekolah', 'testimoni'];
+    protected $fillable = ['user_id', 'hasil', 'testimoni'];
 
     // Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id')->withDefault([
             'name' => 'User Tidak Diketahui',
-            'foto_profil' => 'assets/img/default-profile.png',  // Sesuai dengan path di Blade
-            'asal_sekolah' => 'Tidak Diketahui',
         ]);
     }
 
-    // Relasi ke Jurusan
-    public function jurusan()
+    // Relasi ke Jurusan (sekarang menggunakan kolom 'hasil')
+    public function Hasil()
     {
-        return $this->belongsTo(Jurusan::class, 'jurusan_id')->withDefault([
-            'name' => 'Jurusan Tidak Diketahui',
+        return $this->belongsTo(HasilTes::class, 'hasil')->withDefault([
+            'hasil' => 'hasil Tidak Diketahui',
         ]);
     }
 }

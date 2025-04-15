@@ -223,7 +223,7 @@
             @endif
         </div>
 
-        <di>
+        <div>
             < {{-- Rekomendasi Sekolah --}} <h3 class="mt-16 text-lg font-semibold  text-purpleMain text-center">
                 Rekomendasi Sekolah untuk jurusan ini:</h3>
 
@@ -274,125 +274,148 @@
 
                 </div>
 
-    </div>
-    {{-- Testimoni Section --}}
-    {{-- Testimoni Section --}}
-    <div class="mt-24 lg:mt-32 container mx-auto max-w-4xl px-4 pb-32 lg:pb-40">
-        <div
-            class="bg-white shadow-md rounded-xl p-6 border border-purple-100 transform transition-all duration-500 hover:shadow-lg animate-fadeIn">
-            <h3 class="text-xl font-semibold text-purpleMain text-center mb-6">
-                <span class="inline-block animate-slideDown">Bagikan Pengalaman Anda</span>
-            </h3>
-
-            {{-- Flash Messages --}}
-            @if (session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded animate-fadeInRight"
-                role="alert">
-                <p>{{ session('success') }}</p>
-            </div>
-            @endif
-
-            @if (session('error'))
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded animate-fadeInRight"
-                role="alert">
-                <p>{{ session('error') }}</p>
-            </div>
-            @endif
-
-            {{-- Testimoni Form --}}
-            <form action="{{ route('testimoni.store') }}" method="POST" class="space-y-4 animate-fadeIn"
-                style="animation-delay: 0.3s;">
-                @csrf
-
-                {{-- Hidden field for jurusan_id --}}
-                <input type="hidden" name="jurusan_id" value="{{ $jurusanTerkait->id ?? '' }}">
-
-                <div class="transition-all duration-300 transform hover:translate-y-[-2px]">
-                    <label for="testimoni" class="block text-sm font-medium text-gray-700 mb-1">Testimoni Anda</label>
-                    <textarea id="testimoni" name="testimoni" rows="4"
-                        class="w-full rounded-md border border-purple-200 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 @error('testimoni') border-red-500 @enderror transition-all duration-300"
-                        placeholder="Bagikan pengalaman atau kesan Anda tentang hasil tes jurusan ini...">{{ old('testimoni') }}</textarea>
-                    @error('testimoni')
-                    <p class="text-red-500 text-xs mt-1 animate-pulse">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <input type="hidden" id="asal_sekolah" name="asal_sekolah"
-                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 @error('asal_sekolah') border-red-500 @enderror"
-                        value="{{ old('asal_sekolah') ?? Auth::user()->sekolah ?? '' }}"
-                        placeholder="Masukkan nama sekolah Anda">
-                    @error('asal_sekolah')
-                    <p class="text-red-500 text-xs mt-1 animate-pulse">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="flex justify-end">
-                    <button type="submit"
-                        class="px-4 py-2 bg-purpleMain text-white rounded-md hover:bg-purple-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transform hover:scale-105 hover:shadow-md animate-fadeIn"
-                        style="animation-delay: 0.5s;">
-                        <span class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                            </svg>
-                            Kirim Testimoni
-                        </span>
-                    </button>
-                </div>
-            </form>
         </div>
-    </div>
+        {{-- Testimoni Section --}}
+        <div class="mt-24 lg:mt-32 container mx-auto max-w-4xl px-4 pb-32 lg:pb-40">
+            <div
+                class="bg-white shadow-md rounded-xl p-6 border border-purple-100 transform transition-all duration-500 hover:shadow-lg animate-fadeIn">
+                <h3 class="text-xl font-semibold text-purpleMain text-center mb-6">
+                    <span class="inline-block animate-slideDown">Bagikan Pengalaman Anda</span>
+                </h3>
 
-    {{-- Add these animation styles to your CSS or in a style tag --}}
-    <style>
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
+                {{-- Flash Messages --}}
+                @if (session('success'))
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded animate-fadeInRight"
+                    role="alert">
+                    <p>{{ session('success') }}</p>
+                </div>
+                @endif
+
+                @if (session('error'))
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded animate-fadeInRight"
+                    role="alert">
+                    <p>{{ session('error') }}</p>
+                </div>
+                @endif
+
+                {{-- Testimoni Form --}}
+                {{-- Testimoni Form --}}
+                @php
+                // Check if the user has already submitted a testimoni for this test result
+                $existingTestimoni = null;
+                if(auth()->check() && isset($hasilTes->id)) {
+                $existingTestimoni = \App\Models\Testimoni::where('user_id', auth()->id())
+                ->where('hasil', $hasilTes->id)
+                ->first();
+                }
+                @endphp
+
+                <form action="{{ route('testimoni.store') }}" method="POST" class="space-y-4 animate-fadeIn"
+                    style="animation-delay: 0.3s;">
+                    @csrf
+
+                    {{-- Hidden field for hasil (previously jurusan_id) --}}
+                    <input type="hidden" name="hasil" value="{{ $hasilTes->id ?? '' }}">
+
+                    <div class="transition-all duration-300 transform hover:translate-y-[-2px]">
+                        <label for="testimoni" class="block text-sm font-medium text-gray-700 mb-1">Testimoni
+                            Anda</label>
+                        <textarea id="testimoni" name="testimoni" rows="4"
+                            class="w-full rounded-md border border-purple-200 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 @error('testimoni') border-red-500 @enderror transition-all duration-300"
+                            placeholder="Bagikan pengalaman atau kesan Anda tentang hasil tes jurusan ini..." {{
+                            $existingTestimoni ? 'disabled' : ''
+                            }}>{{ $existingTestimoni ? $existingTestimoni->testimoni : old('testimoni') }}</textarea>
+                        @error('testimoni')
+                        <p class="text-red-500 text-xs mt-1 animate-pulse">{{ $message }}</p>
+                        @enderror
+
+                        @if($existingTestimoni)
+                        <p class="text-purple-500 text-xs mt-1">Anda sudah memberikan testimoni untuk hasil tes ini.</p>
+                        @endif
+                    </div>
+
+                    <div class="flex justify-end">
+                        @if(!$existingTestimoni)
+                        <button type="submit"
+                            class="px-4 py-2 bg-purpleMain text-white rounded-md hover:bg-purple-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transform hover:scale-105 hover:shadow-md animate-fadeIn"
+                            style="animation-delay: 0.5s;">
+                            <span class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                                Kirim Testimoni
+                            </span>
+                        </button>
+                        @else
+                        <button type="button" disabled
+                            class="px-4 py-2 bg-purpleMain text-white rounded-md hover:bg-purple-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transform hover:scale-105 hover:shadow-md animate-fadeIn opacity-70 cursor-not-allowed"
+                            style="animation-delay: 0.5s;">
+                            <span class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                Testimoni Terkirim
+                            </span>
+                        </button>
+                        @endif
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {{-- Animation styles --}}
+        <style>
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
             }
 
-            to {
-                opacity: 1;
-            }
-        }
+            @keyframes fadeInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(20px);
+                }
 
-        @keyframes fadeInRight {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
-        }
 
-        .animate-fadeIn {
-            animation: fadeIn 0.8s ease-in-out forwards;
-        }
+            .animate-fadeIn {
+                animation: fadeIn 0.8s ease-in-out forwards;
+            }
 
-        .animate-fadeInRight {
-            animation: fadeInRight 0.6s ease-out forwards;
-        }
+            .animate-fadeInRight {
+                animation: fadeInRight 0.6s ease-out forwards;
+            }
 
-        .animate-slideDown {
-            animation: slideDown 0.7s ease-out forwards;
-        }
-    </style>
+            .animate-slideDown {
+                animation: slideDown 0.7s ease-out forwards;
+            }
+        </style>
+
 </section>
 
 

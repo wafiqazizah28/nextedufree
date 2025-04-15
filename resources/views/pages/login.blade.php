@@ -147,6 +147,26 @@
 
         <form action="/login" method="POST">
           @csrf
+          <!-- Alert Container - Modified to include auto-dismiss -->
+  <div id="alerts-container">
+    <!-- Display session error message -->
+    @if(session('error'))
+    <div class="bg-red-100 border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 alert-dismissible" role="alert">
+      <span class="block sm:inline">{{ session('error') }}</span>
+      <!-- Progress bar and close button will be added by JavaScript -->
+    </div>
+    @endif
+  </div>
+          <!-- Display validation errors -->
+          @if($errors->any())
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <ul>
+              @foreach($errors->all() as $error)
+              <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+          @endif
           <div class="grid grid-cols-1 gap-y-3">
             <!-- Email -->
             <div class="form-group">
@@ -254,7 +274,165 @@
     </div>
   </div>
 
-
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if there are any error messages
+      const hasEmailError = document.querySelector('[class*="email_error"]') !== null;
+      const hasPasswordError = document.querySelector('[class*="password_error"]') !== null;
+      const generalError = document.querySelector('.bg-red-100');
+      
+      // Function to add shake animation
+      function addShakeAnimation(element) {
+        if (element) {
+          element.classList.add('animate__animated', 'animate__shakeX');
+        }
+      }
+      
+      // Apply shake animation to general error first
+      if (generalError) {
+        addShakeAnimation(generalError);
+      }
+      
+      // Handle email field error
+      if (hasEmailError) {
+        const emailField = document.getElementById('email');
+        const emailContainer = emailField.closest('.rectangle');
+        
+        // Add error styling
+        emailContainer.classList.add('border-red-500');
+        emailField.classList.add('bg-red-50');
+        
+        // Focus on email field
+        setTimeout(() => {
+          emailField.focus();
+          addShakeAnimation(emailContainer);
+        }, 300);
+      }
+      
+      // Handle password field error
+      if (hasPasswordError) {
+        const passwordField = document.getElementById('password');
+        const passwordContainer = passwordField.closest('.rectangle');
+        
+        // Add error styling
+        passwordContainer.classList.add('border-red-500');
+        passwordField.classList.add('bg-red-50');
+        
+        // Only focus on password if no email error (email takes precedence)
+        if (!hasEmailError) {
+          setTimeout(() => {
+            passwordField.focus();
+            addShakeAnimation(passwordContainer);
+          }, 300);
+        }
+      }
+    });
+  </script>
+<style>
+  /* Improved alert styling with countdown */
+  .bg-red-100 {
+    background-color: #fee2e2;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden; /* For the progress bar */
+    border-left: 4px solid #ef4444;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: opacity 0.5s ease, transform 0.3s ease;
+  }
+  
+  /* Progress bar animation */
+  @keyframes countdown {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
+  
+  /* Field error messages */
+  .text-red-500 {
+    color: #ef4444;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    transition: opacity 0.5s ease;
+  }
+  
+  /* Close button hover effect */
+  .bg-red-100 button:hover {
+    color: #b91c1c;
+    transform: scale(1.1);
+  }
+  
+  /* Make sure all transitions are smooth */
+  .bg-red-100, .text-red-500, .bg-red-100 button {
+    transition: all 0.3s ease;
+  }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Function to add and control progress bar for alerts
+    function setupAlertCountdowns() {
+      // Duration in milliseconds
+      const duration = 5000; 
+      
+      // Select all error alert elements
+      const alertContainers = document.querySelectorAll('.bg-red-100');
+      const errorMessages = document.querySelectorAll('.text-red-500');
+      
+      // Process main alert containers
+      if (alertContainers.length > 0) {
+        alertContainers.forEach(container => {
+          // Add a close button
+          const closeBtn = document.createElement('button');
+          closeBtn.innerHTML = '&times;';
+          closeBtn.className = 'ml-auto text-lg font-bold leading-none';
+          closeBtn.style.marginLeft = 'auto';
+          closeBtn.onclick = function() {
+            container.style.opacity = '0';
+            setTimeout(() => container.style.display = 'none', 300);
+          };
+          container.appendChild(closeBtn);
+          
+          // Add progress bar
+          const progressBar = document.createElement('div');
+          progressBar.className = 'absolute bottom-0 left-0 h-1 bg-red-400';
+          progressBar.style.width = '100%';
+          progressBar.style.transition = `width ${duration/1000}s linear`;
+          container.style.position = 'relative';
+          container.appendChild(progressBar);
+          
+          // Start the countdown animation
+          setTimeout(() => {
+            progressBar.style.width = '0%';
+          }, 50);
+          
+          // Hide the alert when time expires
+          setTimeout(() => {
+            container.style.transition = 'opacity 0.5s ease';
+            container.style.opacity = '0';
+            setTimeout(() => container.style.display = 'none', 500);
+          }, duration);
+        });
+      }
+      
+      // Process individual field error messages
+      if (errorMessages.length > 0) {
+        errorMessages.forEach(message => {
+          // Hide field error messages after the same duration
+          setTimeout(() => {
+            message.style.transition = 'opacity 0.5s ease';
+            message.style.opacity = '0';
+            setTimeout(() => message.style.display = 'none', 500);
+          }, duration);
+        });
+      }
+    }
+    
+    // Run the function
+    setupAlertCountdowns();
+  });
+</script>
 </body>
 
 </html>

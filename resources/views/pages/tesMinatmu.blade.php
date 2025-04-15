@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="bg-white min-h-screen">
+<section class="bg-backgroundLight min-h-screen max-w-screen overflow-hidden">
     <!-- Responsive Banner - No shadow, user greeting on the right -->
     <div class="relative w-full aspect-[16/9] sm:aspect-[16/8] md:aspect-[16/7] lg:min-h-[580px] bg-no-repeat bg-cover bg-center flex flex-col justify-center items-center px-4 sm:px-6 md:px-9"
     style="background-image: url('{{ asset('assets/img/bannerTes.png') }}');">

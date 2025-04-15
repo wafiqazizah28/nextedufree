@@ -37,8 +37,8 @@ class PertanyaanController extends Controller
         return view('components.admin.pertanyaan.view', [
             'pertanyaanList' => $query->paginate(10)->withQueryString(),
             'pertanyaanInfo' => Pertanyaan::all(),
-            'namajurusanInfo' => Jurusan::all(),
-            'artikelsInfo' => Artikel::all(),
+            'jurusanInfo' => Jurusan::all(),
+            'artikelInfo' => Artikel::all(),
             'usersInfo' => User::all()
         ]);
     }
@@ -47,8 +47,8 @@ class PertanyaanController extends Controller
     {
         return view('components.admin.pertanyaan.add', [
             'pertanyaanInfo' => Pertanyaan::all(),
-            'namajurusanInfo' => Jurusan::all(),
-            'artikelsInfo' => Artikel::all(),
+            'jurusanInfo' => Jurusan::all(),
+            'artikelInfo' => Artikel::all(),
             'usersInfo' => User::all()
         ]);
     }
@@ -76,8 +76,8 @@ class PertanyaanController extends Controller
         return view('components.admin.pertanyaan.edit', [
             'pertanyaan' => $pertanyaan,
             'pertanyaanInfo' => Pertanyaan::all(),
-            'namajurusanInfo' => Jurusan::all(),
-            'artikelsInfo' => Artikel::all(),
+            'jurusanInfo' => Jurusan::all(),
+            'artikelInfo' => Artikel::all(),
             'usersInfo' => User::all()
         ]);
     }

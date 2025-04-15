@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Testimoni;
+use App\Models\HasilTes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,15 +23,14 @@ class TestimoniController extends Controller
         $search = $request->input('search');
         
         // Query with search condition
-        $testimonisQuery = Testimoni::with(['user', 'jurusan'])
+        $testimonisQuery = Testimoni::with(['user', 'Hasil'])
             ->when($search, function($query) use ($search) {
                 return $query->where('testimoni', 'like', '%' . $search . '%')
                     ->orWhereHas('user', function($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%')
-                              ->orWhere('asal_sekolah', 'like', '%' . $search . '%');
+                        $query->where('name', 'like', '%' . $search . '%');
                     })
-                    ->orWhereHas('jurusan', function($query) use ($search) {
-                        $query->where('jurusan', 'like', '%' . $search . '%');
+                    ->orWhereHas('Hasil', function($query) use ($search) {
+                        $query->where('hasil', 'like', '%' . $search . '%');
                     });
             })
             ->latest();
@@ -56,30 +56,24 @@ class TestimoniController extends Controller
     {
         $request->validate([
             'testimoni' => 'required|string',
-            'jurusan_id' => 'required|exists:jurusan,id',
-            'asal_sekolah' => 'nullable|string|max:255',
+            'hasil' => 'required|exists:hasil_tes,id',  // Pastikan memeriksa id di tabel hasil_tes
         ]);
     
-        // Get user's school if they're logged in
-        $Sekolah = null;
-        if (Auth::check()) {
-            $Sekolah = Auth::user()->sekolah;
+        // Check if user already submitted a testimoni for this specific hasil
+        $existingTestimoni = Testimoni::where('user_id', Auth::id())
+                                    ->where('hasil', $request->hasil)
+                                    ->first();
+                                    
+        if ($existingTestimoni) {
+            return redirect()->back()->with('error', 'Anda sudah memberikan testimoni untuk hasil tes ini.');
         }
     
         // Create the testimoni record
         Testimoni::create([
             'user_id' => Auth::id() ?? 1, // Use 1 as fallback if not logged in
-            'jurusan_id' => $request->jurusan_id,
+            'hasil' => $request->hasil,
             'testimoni' => $request->testimoni,
-            'asal_sekolah' => $request->sekolah ?? $Sekolah, // Use provided value or user's value
         ]);
-    
-        // If user is logged in, update their asal_sekolah field if provided
-        if (Auth::check() && $request->filled('asal_sekolah')) {
-            $user = Auth::user();
-            $user->sekolah = $request->sekolah;
-            $user->save();
-        }
     
         return redirect()->back()->with('success', 'Testimoni berhasil dikirim');
     }
@@ -90,7 +84,7 @@ class TestimoniController extends Controller
     public function show(Testimoni $testimoni)
     {
         // Load the necessary relationships
-        $testimoni->load(['user', 'jurusan']);
+        $testimoni->load(['user', 'Hasil']);
         
         // Return the view with the testimoni data
         return view('components.admin.testimoni.show', compact('testimoni'));
@@ -139,7 +133,7 @@ class TestimoniController extends Controller
     {
         try {
             // Get all testimonials with relationships
-            $testimonis = Testimoni::with(['user', 'jurusan'])
+            $testimonis = Testimoni::with(['user', 'Hasil'])
                 ->orderBy('created_at', 'desc')
                 ->get();
             
