@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\Authenticate;
 use App\Models\HasilTes;
 use Illuminate\Support\Facades\DB;
 use App\Models\Jurusan;
@@ -16,23 +17,11 @@ use Illuminate\Support\Facades\Schema; // Tambahkan ini di atas
 use Illuminate\Support\Facades\Log; // Import Log facade
 use Illuminate\Http\Request;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Auth;
+
 
 class AppController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin')->except([
-            'index',
-            'hasilTes',
-            'artikel',
-            'tanyaJurpan',
-            'forwardChaining',
-            'forwardChainingGuest',
-            'filterByKategori',  // Tambahkan ini
-            'search',
-        ]);
-    }
-
     public function index()
     {
         $users = User::all();
@@ -49,6 +38,52 @@ class AppController extends Controller
             'testimonis' => $testimonis // Kirim testimoni ke view
         ]);
     }
+// In AppController.php
+ 
+
+// Add this method to your AppController class
+// In App\Http\Controllers\AppController.php
+
+  
+
+public function storeTestimoni(Request $request)
+{
+    // Debugging - log the request data
+    \Log::info('Testimonial submission attempt', [
+        'user_id' => Auth::id(),
+        'hasil' => $request->hasil,
+        'testimoni' => $request->testimoni
+    ]);
+    
+    $request->validate([
+        'testimoni' => 'required|string',
+        'hasil' => 'required|exists:hasil_tes,id',
+    ]);
+    
+    // Check if user already submitted a testimoni for this specific hasil
+    $existingTestimoni = Testimoni::where('user_id', Auth::id())
+                               ->where('hasil', $request->hasil)
+                               ->first();
+    
+    if ($existingTestimoni) {
+        return redirect()->back()->with('error', 'Anda sudah memberikan testimoni untuk hasil tes ini.');
+    }
+    
+    try {
+        // Create the testimoni record
+        $testimoni = new Testimoni();
+        $testimoni->user_id = Auth::id();
+        $testimoni->hasil = $request->hasil;
+        $testimoni->testimoni = $request->testimoni;
+        $testimoni->save();
+        
+        return redirect()->back()->with('success', 'Testimoni berhasil dikirim');
+    } catch (\Exception $e) {
+        \Log::error('Testimoni Error: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    }
+}
+
 
     public function tanyaJurpan()
     {

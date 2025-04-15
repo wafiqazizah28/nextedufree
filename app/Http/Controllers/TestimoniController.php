@@ -54,30 +54,39 @@ class TestimoniController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'testimoni' => 'required|string',
-            'hasil' => 'required|exists:hasil_tes,id',  // Pastikan memeriksa id di tabel hasil_tes
-        ]);
+        try {
+            $validated = $request->validate([
+                'testimoni' => 'required|string',
+                'hasil' => 'required|exists:hasil_tes,id',
+            ]);
     
-        // Check if user already submitted a testimoni for this specific hasil
-        $existingTestimoni = Testimoni::where('user_id', Auth::id())
-                                    ->where('hasil', $request->hasil)
-                                    ->first();
-                                    
-        if ($existingTestimoni) {
-            return redirect()->back()->with('error', 'Anda sudah memberikan testimoni untuk hasil tes ini.');
+            // Check for existing testimoni
+            $existingTestimoni = Testimoni::where('user_id', Auth::id())
+                ->where('hasil', $request->hasil)
+                ->first();
+    
+            if ($existingTestimoni) {
+                return redirect()->back()->with('error', 'Anda sudah memberikan testimoni untuk hasil tes ini.');
+            }
+    
+            // Create the testimoni record
+            $testimoni = Testimoni::create([
+                'user_id' => Auth::id(),
+                'hasil' => $request->hasil,
+                'testimoni' => $request->testimoni,
+            ]);
+    
+            if ($testimoni) {
+                return redirect()->back()->with('success', 'Testimoni berhasil dikirim');
+            } else {
+                return redirect()->back()->with('error', 'Gagal menyimpan testimoni');
+            }
+        } catch (\Exception $e) {
+            \Log::error('Testimoni Error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-    
-        // Create the testimoni record
-        Testimoni::create([
-            'user_id' => Auth::id() ?? 1, // Use 1 as fallback if not logged in
-            'hasil' => $request->hasil,
-            'testimoni' => $request->testimoni,
-        ]);
-    
-        return redirect()->back()->with('success', 'Testimoni berhasil dikirim');
     }
-
+    
     /**
      * Display the specified resource.
      */

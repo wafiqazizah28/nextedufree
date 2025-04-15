@@ -32,4 +32,9 @@ class Testimoni extends Model
             'hasil' => 'hasil Tidak Diketahui',
         ]);
     }
+    // In your User model
+public function testimonials()
+{
+    return $this->hasMany(Testimoni::class);
+}
 }

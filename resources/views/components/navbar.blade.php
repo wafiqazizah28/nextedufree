@@ -117,11 +117,11 @@
                             @else
                                 <a href="/login"
                                 class="w-full text-center bg-purpleMain text-white py-2 rounded-lg text-base font-semibold hover:bg-purpleMain transition">
-                                Login
+                                Masuk
                                 </a>
                                 <a href="/register"
                                 class="w-full text-center bg-purpleMain text-white py-2 rounded-lg text-base font-semibold hover:bg-purpleMain transition">
-                                Register
+                                Daftar
                                 </a>
                             @endif
                         </div>
@@ -216,11 +216,11 @@
                     <div class="flex space-x-3">
                         <a href="/login"
                             class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-800 transition font-poppins">
-                            Login
+                            Masuk
                         </a>
                         <a href="/register"
                             class="bg-purpleMain text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-800 transition">
-                            Register
+                            Daftar
                         </a>
                     </div>
                 @endif

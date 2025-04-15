@@ -139,28 +139,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Sekolah Based on Hasil Tes - Sekolah berdasarkan hasil tes
     Route::get('/sekolah-hasil-tes', [SekolahController::class, 'showByHasilTes'])->name('sekolah.hasilTes');
-    Route::get('/admin/statistik', [DashboardController::class, 'statistik'])->middleware(['auth', 'admin']);
+    Route::post('/testimoni/store', [AppController::class, 'storeTestimoni'])->name('testimoni.store');
 
     // Testimoni - Testimoni pengguna
-    Route::post('/testimoni/store', [TestimoniController::class, 'store'])->name('user.testimoni.store');
 });
 
 // ===========================
 // 📌 Admin Routes - Rute Admin
 // ===========================
 
+
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     // Admin Dashboard - Dasbor admin
     Route::get('/adminDashboard', [DashboardController::class, 'admin']);
-    
+    Route::get('/admin/statistik', [DashboardController::class, 'statistik'])->middleware(['auth', 'admin']);
+
     // Rules Management - Manajemen aturan
     Route::get('/rules', [AppController::class, 'logicRelation']);
     Route::get('/rules/{id}/edit', [AppController::class, 'edit']);
     Route::post('/rules-change', [AppController::class, 'update']);
     
     // View Testimoni (Admin) - Lihat testimoni (Admin)
-    Route::get('/admin/testimoni', [TestimoniController::class, 'index'])->name('admin.testimoni.view');
-    
     // PDF Exports - Ekspor PDF
     Route::get('/jurusan/export-pdf', [JurusanController::class, 'exportPDF']);
     Route::get('/testimoni/export-pdf', [TestimoniController::class, 'exportPDF'])->name('testimoni.export-pdf');
@@ -174,10 +173,10 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
         'saranpekerjaan' => SaranPekerjaanController::class,
         'artikels' => ArtikelController::class,
         'users' => UserController::class,
-        'testimoni' => TestimoniController::class,
         'sekolah' => SekolahController::class
     ]);
-    
+    Route::resource('testimoni', TestimoniController::class)->except(['store']);
+
     // Admin Sekolah Routes with Custom Names - Rute sekolah admin dengan nama kustom
     Route::prefix('admin')->group(function () {
         Route::resource('sekolah', SekolahController::class)
