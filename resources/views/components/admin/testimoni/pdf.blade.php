@@ -43,40 +43,42 @@
     <h1>Daftar Testimoni</h1>
     
     <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama User</th>
-                <th>Asal Sekolah</th>
-                <th>Jurusan</th>
-                <th>Testimoni</th>
-                <th>Tanggal</th>
-            </tr>
-        </thead>
+ 
         <tbody>
             @if(isset($testimonis) && $testimonis->count() > 0)
-                @foreach($testimonis as $index => $testimoni)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $testimoni->user->name ?? 'User Tidak Diketahui' }}</td>
-                        <td>
-                            @if(isset($testimoni->jurusan))
-                                {{ $testimoni->jurusan->jurusan ?? 'Jurusan Tidak Diketahui' }}
-                            @else
-                                Jurusan Tidak Diketahui
-                            @endif
-                        </td>
-                        <td class="testimoni-text">{{ $testimoni->testimoni ?? 'Tidak Ada Testimoni' }}</td>
-                        <td>{{ $testimoni->created_at ? $testimoni->created_at->format('d M Y') : '-' }}</td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="6" class="empty-message">
-                        Tidak ada data testimoni
-                    </td>
-                </tr>
-            @endif
+                           <table class="table table-striped">
+                               <thead>
+                                   <tr>
+                                       <th>No</th>
+                                       <th>Nama User</th>
+                                       <th>Hasil Tes</th>
+                                       <th>Testimoni</th>
+                                       <th>Tanggal</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   @foreach($testimonis as $index => $testimoni)
+                                       <tr>
+                                           <td>{{ $index + 1 }}</td>
+                                           <td>{{ $testimoni->user->nama ?? 'User Tidak Diketahui' }}</td>
+                                           <td>
+                                               @if(isset($testimoni->Hasil))
+                                                   {{ $testimoni->Hasil->hasil ?? 'Jurusan Tidak Diketahui' }}
+                                               @else
+                                                   Jurusan Tidak Diketahui
+                                               @endif
+                                           </td>
+                                           <td>{{ $testimoni->testimoni ?? 'Tidak Ada Testimoni' }}</td>
+                                           <td>{{ $testimoni->created_at ? $testimoni->created_at->format('d M Y') : '-' }}</td>
+                                       </tr>
+                                   @endforeach
+                               </tbody>
+                           </table>
+                       @else
+                           <div class="alert alert-info">
+                               Tidak ada data testimoni
+                           </div>
+                       @endif
         </tbody>
     </table>
     

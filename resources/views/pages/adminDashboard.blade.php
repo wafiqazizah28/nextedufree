@@ -225,7 +225,7 @@
 
                 <!-- Navigation Items -->
                 <nav class="w-full px-4 py-4 flex-grow">
-                    <a href="/admin/statistik"
+                    <a href="/adminDashboard"
                         class="flex items-center px-3 py-2 rounded-lg text-sm font-medium hover:bg-white hover:text-purpleMain mb-2 transition-colors duration-200 btn-action">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -425,7 +425,7 @@
                 <!-- Dashboard Content -->
                 <div class="content-wrapper bg-white rounded-lg shadow-md p-6 mb-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h1 class="text-2xl font-bold text-gray-800">Overview</h1>
+                        <h1 class="text-2xl font-bold text-gray-800">Statistik</h1>
                         <div class="flex items-center">
                             <div class="relative mr-4">
                                 <div class="absolute left-3 top-2.5">

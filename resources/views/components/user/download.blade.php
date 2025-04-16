@@ -95,7 +95,7 @@
         </div>
         
         <div class="user-info">
-            <p><strong>Nama:</strong> {{ $user->name }}</p>
+            <p><strong>Nama:</strong> {{ $user->nama }}</p>
             <p><strong>Email:</strong> {{ $user->email }}</p>
             <p><strong>Tanggal Tes:</strong> {{ $hasilTes->created_at->format('d F Y') }}</p>
         </div>

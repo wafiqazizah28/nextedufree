@@ -2,7 +2,7 @@
 
 @section('content')
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-indigo-800">Data Tabel</h1>
+    <h1 class="text-2xl font-bold text-indigo-800">Data Tabel Jurusan</h1>
     <div class="flex space-x-2">
       <a href="/jurusan/create"
          class="inline-block rounded bg-indigo-700 py-2 px-4 text-white hover:bg-indigo-800 transition duration-300 text-sm">
@@ -20,7 +20,7 @@
     {{-- Form Pencarian Jurusan --}}
     <form action="/jurusan" method="get" class="p-4 border-b">
       <div class="flex items-center space-x-2">
-        <input type="text" id="search" name="search" placeholder="Search for jurusan"
+        <input type="text" id="search" name="search" placeholder="Cari jurusan"
                class="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-indigo-300 text-sm"
                value="{{ request('search') ?? '' }}" />
         <button type="submit"
@@ -35,7 +35,7 @@
       <div class="overflow-x-auto" id="printable-table">
         <table class="w-full border-collapse text-sm">
           <thead>
-            <tr class="bg-indigo-700 text-white">
+            <tr class="bg-purpleMain text-white">
               <th class="py-3 px-4 text-left border border-indigo-800">No</th>
               <th class="py-3 px-4 text-left border border-indigo-800">Kode Jurusan</th>
               <th class="py-3 px-4 text-left border border-indigo-800">Nama Jurusan</th>

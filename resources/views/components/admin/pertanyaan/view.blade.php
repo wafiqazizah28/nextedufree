@@ -2,7 +2,7 @@
 
 @section('content')
   <div class="flex justify-between items-center mb-4">
-    <button class="rounded-lg bg-purpleMain py-2.5 px-5 text-white hover:bg-purple-800 transition-all duration-300 focus:ring-2 focus:ring-purple-300 font-medium">
+    <button class="rounded-lg bg-purpleMain py-2.5 px-5 text-white hover:bg-purple-800 transition-all duration-300 focus:ring-2 focus:ring-purple-300 ">
       <a href="/pertanyaan/create" class="flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -11,7 +11,7 @@
       </a>
     </button>
 
-    <button id="exportPDF" class="rounded-lg bg-[#226847] py-2.5 px-5 text-white transition-all duration-300 focus:ring-2 focus:ring-red-300 font-medium">
+    <button id="exportPDF" class="rounded-lg bg-[#226847] py-2.5 px-5 text-white transition-all duration-300 focus:ring-2 focus:ring-red-300 ">
       <div class="flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -45,10 +45,10 @@
            
             <thead class="bg-purpleMain text-white">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">No</th>
-                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Kode Pertanyaan</th>
-                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider border border-gray-300">Pertanyaan</th>
-                <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider border border-gray-300">Aksi</th>
+                <th class="px-6 py-3 text-left  tracking-wider border border-gray-300">No</th>
+                <th class="px-6 py-3 text-left tracking-wider border border-gray-300">Kode Pertanyaan</th>
+                <th class="px-6 py-3 text-left  tracking-wider border border-gray-300">Pertanyaan</th>
+                <th class="px-6 py-3 text-center   tracking-wider border border-gray-300">Aksi</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">

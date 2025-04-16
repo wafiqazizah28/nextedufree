@@ -27,7 +27,7 @@ class TestimoniController extends Controller
         ->when($search, function($query) use ($search) {
             return $query->where('testimoni', 'like', '%' . $search . '%')
                 ->orWhereHas('user', function($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
+                    $query->where('nama', 'like', '%' . $search . '%');
                 })
                 ->orWhereHas('Hasil', function($query) use ($search) {
                     $query->where('hasil', 'like', '%' . $search . '%');

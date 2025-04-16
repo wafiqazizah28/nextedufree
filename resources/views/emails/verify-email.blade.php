@@ -69,7 +69,7 @@
             <div class="code">{{ $code }}</div>
         </div>
         
-        <p>Kode ini hanya berlaku selama 60 menit. Jika Anda tidak mendaftar di nextEdu, silakan abaikan email ini.</p>
+        <p>Kode ini hanya berlaku selama 3 menit. Jika Anda tidak mendaftar di nextEdu, silakan abaikan email ini.</p>
         
         <p>Salam,<br>Tim nextEdu</p>
         

@@ -16,12 +16,12 @@
     {{-- Form Pencarian Testimoni --}}
     <form action="/testimoni" method="get" class="p-4 border-b">
       <div class="flex items-center space-x-2">
-        <input type="text" id="search" name="search" placeholder="Search for testimoni"
+        <input type="text" id="search" name="search" placeholder="Cari testimoni"
                class="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-indigo-300 text-sm"
                value="{{ request('search') ?? '' }}" />
         <button type="submit"
                 class="rounded bg-indigo-700 py-2 px-4 text-white hover:bg-indigo-800 transition duration-300 text-sm">
-          Search
+          Cari
         </button>
       </div>
     </form>
